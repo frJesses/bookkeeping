@@ -1,0 +1,122 @@
+.page {
+  min-height: 100vh;
+  padding: 36rpx 32rpx 220rpx;
+  box-sizing: border-box;
+}
+
+.header-card,
+.chart-card,
+.trend-card {
+  background: #ffffff;
+  border-radius: 30rpx;
+  box-shadow: 0 16rpx 36rpx rgba(16, 24, 40, 0.06);
+}
+
+.header-card,
+.chart-card,
+.trend-card {
+  padding: 30rpx;
+}
+
+.title,
+.desc,
+.chart-value,
+.chart-label,
+.trend-text {
+  display: block;
+}
+
+.title {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #101828;
+}
+
+.desc,
+.chart-label,
+.trend-text {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  color: #667085;
+}
+
+.chart-card,
+.trend-card {
+  margin-top: 24rpx;
+}
+
+.chart-ring {
+  position: relative;
+  width: 280rpx;
+  height: 280rpx;
+  margin: 12rpx auto;
+  border-radius: 50%;
+  background: #eef4ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-segment {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 140rpx;
+  height: 280rpx;
+  border-radius: 140rpx 0 0 140rpx;
+  background: #2f6bff;
+  transform: rotate(64deg);
+  transform-origin: left center;
+}
+
+.chart-ring-inner {
+  position: relative;
+  z-index: 1;
+  width: 192rpx;
+  height: 192rpx;
+  border-radius: 50%;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-value {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #101828;
+}
+
+.bar-group {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 220rpx;
+}
+
+.bar {
+  width: 84rpx;
+  border-radius: 24rpx 24rpx 0 0;
+  background: linear-gradient(180deg, #6fa2ff 0%, #2f6bff 100%);
+}
+
+.bar-1 {
+  height: 110rpx;
+}
+
+.bar-2 {
+  height: 160rpx;
+}
+
+.bar-3 {
+  height: 136rpx;
+}
+
+.bar-4 {
+  height: 188rpx;
+}
+
+.bar-5 {
+  height: 148rpx;
+}

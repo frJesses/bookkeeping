@@ -1,0 +1,47 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/bill/bill",
+    "pages/add/add",
+    "pages/stats/stats",
+    "pages/profile/profile",
+    "pages/logs/logs"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "Bookkeeping Mini",
+    "navigationBarBackgroundColor": "#f7f8fc",
+    "backgroundColor": "#f7f8fc"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#98a1b2",
+    "selectedColor": "#2f6bff",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/bill/bill",
+        "text": "账单"
+      },
+      {
+        "pagePath": "pages/add/add",
+        "text": "添加"
+      },
+      {
+        "pagePath": "pages/stats/stats",
+        "text": "统计"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "componentFramework": "glass-easel",
+  "lazyCodeLoading": "requiredComponents"
+}

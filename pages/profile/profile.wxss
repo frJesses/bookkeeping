@@ -1,0 +1,69 @@
+.page {
+  min-height: 100vh;
+  padding: 36rpx 32rpx 220rpx;
+  box-sizing: border-box;
+}
+
+.profile-card,
+.menu-item {
+  background: #ffffff;
+  border-radius: 30rpx;
+  box-shadow: 0 16rpx 36rpx rgba(16, 24, 40, 0.06);
+}
+
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  padding: 30rpx;
+}
+
+.avatar {
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2f6bff 0%, #6fa2ff 100%);
+  color: #ffffff;
+  font-size: 36rpx;
+  font-weight: 700;
+  text-align: center;
+  line-height: 112rpx;
+}
+
+.name,
+.desc {
+  display: block;
+}
+
+.name {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #101828;
+}
+
+.desc {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  color: #667085;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 18rpx;
+  margin-top: 28rpx;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx;
+  font-size: 28rpx;
+  color: #182230;
+}
+
+.arrow {
+  color: #98a1b2;
+  font-size: 34rpx;
+}

@@ -1,0 +1,20 @@
+<view class="tab-shell">
+  <view class="tabbar">
+    <block wx:for="{{tabs}}" wx:key="pagePath">
+      <view
+        class="tab-item {{item.isSpecial ? 'tab-item-special' : ''}}"
+        data-path="{{item.pagePath}}"
+        bindtap="switchTab"
+      >
+        <view
+          class="tab-icon {{selectedPath === item.pagePath ? 'tab-icon-active' : ''}} {{item.isSpecial ? 'tab-icon-plus' : ''}}"
+        >
+          {{item.icon}}
+        </view>
+        <text class="tab-text {{selectedPath === item.pagePath ? 'tab-text-active' : ''}}">
+          {{item.text}}
+        </text>
+      </view>
+    </block>
+  </view>
+</view>

@@ -1,0 +1,70 @@
+<view class="page">
+  <view class="hero">
+    <view>
+      <text class="eyebrow">今日概览</text>
+      <text class="title">把每一笔收支都记得清清楚楚</text>
+    </view>
+    <view class="balance-card">
+      <text class="balance-label">本月结余</text>
+      <text class="balance-value">¥ 12,680.50</text>
+      <view class="balance-meta">
+        <text>收入 ¥ 18,400.00</text>
+        <text>支出 ¥ 5,719.50</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">快捷入口</text>
+    </view>
+    <view class="shortcut-grid">
+      <view class="shortcut-item">
+        <text class="shortcut-icon">¥</text>
+        <text class="shortcut-text">记一笔支出</text>
+      </view>
+      <view class="shortcut-item">
+        <text class="shortcut-icon">↑</text>
+        <text class="shortcut-text">记录收入</text>
+      </view>
+      <view class="shortcut-item">
+        <text class="shortcut-icon">◎</text>
+        <text class="shortcut-text">预算管理</text>
+      </view>
+      <view class="shortcut-item">
+        <text class="shortcut-icon">%</text>
+        <text class="shortcut-text">分类统计</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">最近记录</text>
+      <text class="section-link">查看全部</text>
+    </view>
+    <view class="record-list">
+      <view class="record-item">
+        <view>
+          <text class="record-name">午餐</text>
+          <text class="record-time">今天 12:30</text>
+        </view>
+        <text class="record-amount expense">- ¥ 36.00</text>
+      </view>
+      <view class="record-item">
+        <view>
+          <text class="record-name">交通</text>
+          <text class="record-time">今天 09:10</text>
+        </view>
+        <text class="record-amount expense">- ¥ 12.00</text>
+      </view>
+      <view class="record-item">
+        <view>
+          <text class="record-name">工资</text>
+          <text class="record-time">昨天 18:00</text>
+        </view>
+        <text class="record-amount income">+ ¥ 8,000.00</text>
+      </view>
+    </view>
+  </view>
+</view>

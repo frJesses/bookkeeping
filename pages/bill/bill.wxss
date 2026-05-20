@@ -1,0 +1,90 @@
+.page {
+  min-height: 100vh;
+  padding: 36rpx 32rpx 220rpx;
+  box-sizing: border-box;
+}
+
+.header,
+.summary-card,
+.bill-item {
+  background: #ffffff;
+  border-radius: 28rpx;
+  box-shadow: 0 16rpx 36rpx rgba(16, 24, 40, 0.06);
+}
+
+.header {
+  padding: 30rpx;
+}
+
+.title,
+.subtitle,
+.summary-label,
+.summary-value,
+.summary-chip,
+.bill-name,
+.bill-time,
+.bill-amount {
+  display: block;
+}
+
+.title {
+  font-size: 40rpx;
+  font-weight: 700;
+}
+
+.subtitle,
+.summary-label,
+.bill-time {
+  margin-top: 10rpx;
+  color: #667085;
+  font-size: 24rpx;
+}
+
+.summary-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24rpx;
+  padding: 30rpx;
+}
+
+.summary-value {
+  margin-top: 14rpx;
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #101828;
+}
+
+.summary-chip {
+  padding: 12rpx 18rpx;
+  border-radius: 999rpx;
+  background: #eef4ff;
+  color: #2f6bff;
+  font-size: 24rpx;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 18rpx;
+  margin-top: 28rpx;
+}
+
+.bill-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx;
+}
+
+.bill-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #101828;
+}
+
+.bill-amount {
+  font-size: 30rpx;
+  color: #f04438;
+  font-weight: 700;
+}

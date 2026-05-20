@@ -1,0 +1,27 @@
+<view class="page">
+  <view class="header-card">
+    <text class="title">统计分析</text>
+    <text class="desc">快速查看本月消费结构和趋势</text>
+  </view>
+
+  <view class="chart-card">
+    <view class="chart-ring">
+      <view class="chart-segment"></view>
+      <view class="chart-ring-inner">
+        <text class="chart-value">68%</text>
+        <text class="chart-label">餐饮占比</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="trend-card">
+    <view class="bar-group">
+      <view class="bar bar-1"></view>
+      <view class="bar bar-2"></view>
+      <view class="bar bar-3"></view>
+      <view class="bar bar-4"></view>
+      <view class="bar bar-5"></view>
+    </view>
+    <text class="trend-text">最近 5 天支出总体平稳，周末略有上升。</text>
+  </view>
+</view>

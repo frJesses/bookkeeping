@@ -1,0 +1,81 @@
+.page {
+  min-height: 100vh;
+  padding: 36rpx 32rpx 220rpx;
+  box-sizing: border-box;
+}
+
+.panel,
+.action-card {
+  background: #ffffff;
+  border-radius: 30rpx;
+  box-shadow: 0 16rpx 36rpx rgba(16, 24, 40, 0.06);
+}
+
+.panel {
+  padding: 32rpx;
+}
+
+.title,
+.desc,
+.action-icon,
+.action-title,
+.action-desc {
+  display: block;
+}
+
+.title {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #101828;
+}
+
+.desc {
+  margin-top: 16rpx;
+  line-height: 1.7;
+  font-size: 26rpx;
+  color: #667085;
+}
+
+.action-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  margin-top: 28rpx;
+}
+
+.action-card {
+  padding: 30rpx;
+}
+
+.action-icon {
+  width: 76rpx;
+  height: 76rpx;
+  border-radius: 24rpx;
+  text-align: center;
+  line-height: 76rpx;
+  font-size: 44rpx;
+  font-weight: 700;
+}
+
+.action-card.expense .action-icon {
+  background: #fff1f3;
+  color: #f04438;
+}
+
+.action-card.income .action-icon {
+  background: #ecfdf3;
+  color: #12b76a;
+}
+
+.action-title {
+  margin-top: 22rpx;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #101828;
+}
+
+.action-desc {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  color: #667085;
+}

@@ -1,0 +1,19 @@
+<view class="page">
+  <view class="panel">
+    <text class="title">快速新增</text>
+    <text class="desc">这里是中间异形 Tab 对应的新增页，可以继续接入表单、金额键盘和分类选择。</text>
+  </view>
+
+  <view class="action-list">
+    <view class="action-card expense">
+      <text class="action-icon">-</text>
+      <text class="action-title">新增支出</text>
+      <text class="action-desc">餐饮、交通、购物等</text>
+    </view>
+    <view class="action-card income">
+      <text class="action-icon">+</text>
+      <text class="action-title">新增收入</text>
+      <text class="action-desc">工资、奖金、兼职等</text>
+    </view>
+  </view>
+</view>

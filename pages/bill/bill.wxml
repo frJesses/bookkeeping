@@ -1,0 +1,38 @@
+<view class="page">
+  <view class="header">
+    <text class="title">账单</text>
+    <text class="subtitle">按照时间查看所有流水</text>
+  </view>
+
+  <view class="summary-card">
+    <view>
+      <text class="summary-label">本月支出</text>
+      <text class="summary-value">¥ 5,719.50</text>
+    </view>
+    <text class="summary-chip">共 38 笔</text>
+  </view>
+
+  <view class="list">
+    <view class="bill-item">
+      <view>
+        <text class="bill-name">餐饮</text>
+        <text class="bill-time">今天 12:30</text>
+      </view>
+      <text class="bill-amount">- ¥ 36.00</text>
+    </view>
+    <view class="bill-item">
+      <view>
+        <text class="bill-name">交通</text>
+        <text class="bill-time">今天 09:10</text>
+      </view>
+      <text class="bill-amount">- ¥ 12.00</text>
+    </view>
+    <view class="bill-item">
+      <view>
+        <text class="bill-name">日用品</text>
+        <text class="bill-time">昨天 20:40</text>
+      </view>
+      <text class="bill-amount">- ¥ 89.00</text>
+    </view>
+  </view>
+</view>
