@@ -1,90 +1,237 @@
 .page {
-  min-height: 100vh;
-  padding: 36rpx 32rpx 220rpx;
+  height: 100vh;
+  background: #f6f8fc;
+}
+
+.page-scroll {
+  height: 100%;
+}
+
+.page-content {
+  min-height: 100%;
+  padding: 28rpx 28rpx 15px;
   box-sizing: border-box;
 }
 
 .header,
 .summary-card,
+.group-head,
 .bill-item {
-  background: #ffffff;
-  border-radius: 28rpx;
-  box-shadow: 0 16rpx 36rpx rgba(16, 24, 40, 0.06);
+  position: relative;
 }
 
 .header {
-  padding: 30rpx;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
-.title,
-.subtitle,
+.page-title,
+.page-subtitle,
+.month-pill,
 .summary-label,
 .summary-value,
-.summary-chip,
+.mini-chip-label,
+.mini-chip-value,
+.group-title,
+.group-subtitle,
 .bill-name,
 .bill-time,
-.bill-amount {
+.bill-amount,
+.bill-tag {
   display: block;
 }
 
-.title {
-  font-size: 40rpx;
+.page-title {
+  font-size: 44rpx;
   font-weight: 700;
+  color: #182033;
 }
 
-.subtitle,
-.summary-label,
-.bill-time {
+.page-subtitle {
   margin-top: 10rpx;
-  color: #667085;
   font-size: 24rpx;
+  color: #8b93a7;
+}
+
+.month-pill {
+  padding: 12rpx 22rpx;
+  border-radius: 999rpx;
+  background: #ffffff;
+  color: #4d5b7c;
+  font-size: 22rpx;
+  font-weight: 600;
+  box-shadow: 0 10rpx 24rpx rgba(46, 63, 106, 0.06);
 }
 
 .summary-card {
+  margin-top: 24rpx;
+  padding: 28rpx;
+  border-radius: 32rpx;
+  background: linear-gradient(135deg, #5471ff 0%, #7ba9ff 100%);
+  box-shadow: 0 22rpx 46rpx rgba(84, 113, 255, 0.22);
+  color: #ffffff;
+}
+
+.summary-label-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-top: 24rpx;
-  padding: 30rpx;
+  gap: 10rpx;
+}
+
+.summary-label {
+  font-size: 24rpx;
+  opacity: 0.82;
+}
+
+.eye-button {
+  width: 36rpx;
+  height: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eye-icon {
+  width: 28rpx;
+  height: 28rpx;
 }
 
 .summary-value {
-  margin-top: 14rpx;
-  font-size: 44rpx;
+  margin-top: 16rpx;
+  font-size: 60rpx;
+  line-height: 1.05;
   font-weight: 700;
-  color: #101828;
 }
 
-.summary-chip {
-  padding: 12rpx 18rpx;
-  border-radius: 999rpx;
-  background: #eef4ff;
-  color: #2f6bff;
-  font-size: 24rpx;
+.summary-side {
+  display: flex;
+  gap: 18rpx;
+  margin-top: 24rpx;
 }
 
-.list {
+.mini-chip {
+  flex: 1;
+  padding: 20rpx 22rpx;
+  border-radius: 24rpx;
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 0 0 1rpx rgba(255, 255, 255, 0.12);
+}
+
+.mini-chip-label {
+  font-size: 22rpx;
+  opacity: 0.82;
+}
+
+.mini-chip-value {
+  margin-top: 10rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.date-group {
+  margin-top: 30rpx;
+}
+
+.group-head {
+  padding: 0 4rpx 16rpx;
+}
+
+.group-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #1d2340;
+}
+
+.group-subtitle {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #8b93a7;
+}
+
+.bill-list {
   display: flex;
   flex-direction: column;
   gap: 18rpx;
-  margin-top: 28rpx;
 }
 
 .bill-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 28rpx;
+  padding: 28rpx 24rpx;
+  border-radius: 28rpx;
+  background: #ffffff;
+  box-shadow: 0 16rpx 34rpx rgba(80, 92, 135, 0.08);
+}
+
+.bill-avatar {
+  width: 76rpx;
+  height: 76rpx;
+  border-radius: 24rpx;
+  text-align: center;
+  line-height: 76rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.bill-avatar-pink {
+  background: #ffe3ef;
+  color: #ff5b96;
+}
+
+.bill-avatar-blue {
+  background: #dde8ff;
+  color: #4b74ff;
+}
+
+.bill-avatar-green {
+  background: #dff8eb;
+  color: #21b66f;
+}
+
+.bill-avatar-yellow {
+  background: #fff2c8;
+  color: #e4a100;
+}
+
+.bill-body {
+  flex: 1;
+  margin-left: 20rpx;
 }
 
 .bill-name {
-  font-size: 30rpx;
-  font-weight: 600;
-  color: #101828;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1c2240;
+}
+
+.bill-time {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  color: #8a91aa;
+}
+
+.bill-side {
+  margin-left: 16rpx;
+  text-align: right;
 }
 
 .bill-amount {
   font-size: 30rpx;
-  color: #f04438;
   font-weight: 700;
+}
+
+.bill-amount.expense {
+  color: #ff5b6d;
+}
+
+.bill-amount.income {
+  color: #17b66f;
+}
+
+.bill-tag {
+  margin-top: 10rpx;
+  font-size: 20rpx;
+  color: #9ca3bb;
 }

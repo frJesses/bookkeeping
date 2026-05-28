@@ -1,70 +1,103 @@
 <view class="page">
-  <view class="hero">
-    <view>
-      <text class="eyebrow">今日概览</text>
-      <text class="title">把每一笔收支都记得清清楚楚</text>
-    </view>
-    <view class="balance-card">
-      <text class="balance-label">本月结余</text>
-      <text class="balance-value">¥ 12,680.50</text>
-      <view class="balance-meta">
-        <text>收入 ¥ 18,400.00</text>
-        <text>支出 ¥ 5,719.50</text>
-      </view>
-    </view>
-  </view>
+  <scroll-view
+    scroll-y
+    class="page-scroll"
+    style="height: calc(100vh - {{tabBarSpacer + tabBarGap}}px);"
+  >
+    <view class="page-content">
+      <view class="hero-panel">
+        <view class="hero-glow hero-glow-left"></view>
+        <view class="hero-glow hero-glow-right"></view>
+        <view class="hero-head">
+          <view>
+            <text class="eyebrow">Hi，{{nickname}}，今天也要把钱花得明明白白</text>
+            <text class="title">钱小迹</text>
+          </view>
+          <view class="hero-badge">
+            <text class="hero-badge-dot"></text>
+            <text class="hero-badge-text">{{statusText}}</text>
+          </view>
+        </view>
 
-  <view class="section">
-    <view class="section-head">
-      <text class="section-title">快捷入口</text>
-    </view>
-    <view class="shortcut-grid">
-      <view class="shortcut-item">
-        <text class="shortcut-icon">¥</text>
-        <text class="shortcut-text">记一笔支出</text>
-      </view>
-      <view class="shortcut-item">
-        <text class="shortcut-icon">↑</text>
-        <text class="shortcut-text">记录收入</text>
-      </view>
-      <view class="shortcut-item">
-        <text class="shortcut-icon">◎</text>
-        <text class="shortcut-text">预算管理</text>
-      </view>
-      <view class="shortcut-item">
-        <text class="shortcut-icon">%</text>
-        <text class="shortcut-text">分类统计</text>
-      </view>
-    </view>
-  </view>
+        <view class="hero-balance">
+          <view class="hero-balance-main">
+            <text class="balance-caption">本月可支配</text>
+            <text class="balance-value">¥ {{disposableAmountText}}</text>
+          </view>
+          <view class="hero-balance-side">
+            <view class="mini-chip">
+              <text class="mini-chip-label">收入</text>
+              <text class="mini-chip-value">{{monthIncomeText}}</text>
+            </view>
+            <view class="mini-chip mini-chip-warm">
+              <text class="mini-chip-label">支出</text>
+              <text class="mini-chip-value">{{monthExpenseText}}</text>
+            </view>
+          </view>
+        </view>
 
-  <view class="section">
-    <view class="section-head">
-      <text class="section-title">最近记录</text>
-      <text class="section-link">查看全部</text>
+        <view class="trend-strip">
+          <view class="trend-pill">
+            <text class="trend-pill-icon">↗</text>
+            <text class="trend-pill-text">{{trendText}}</text>
+          </view>
+          <text class="trend-note">{{statusText}}</text>
+        </view>
+      </view>
+
+      <view class="section">
+        <view class="section-head">
+          <text class="section-title">今天做点什么</text>
+        </view>
+        <view class="shortcut-grid">
+          <view class="shortcut-item shortcut-item-pink" data-type="expense" bindtap="goToAdd">
+            <text class="shortcut-icon">￥</text>
+            <text class="shortcut-text">记一笔支出</text>
+            <text class="shortcut-desc">奶茶、晚饭、打车一秒记录</text>
+          </view>
+          <view class="shortcut-item shortcut-item-blue" data-type="income" bindtap="goToAdd">
+            <text class="shortcut-icon">↑</text>
+            <text class="shortcut-text">收一笔进账</text>
+            <text class="shortcut-desc">工资到账也值得好好庆祝</text>
+          </view>
+          <view class="shortcut-item shortcut-item-mint" data-action="budget" bindtap="goToShortcut">
+            <text class="shortcut-icon">◎</text>
+            <text class="shortcut-text">预算提醒</text>
+            <text class="shortcut-desc">别让月底又突然心虚</text>
+          </view>
+          <view class="shortcut-item shortcut-item-yellow" data-action="stats" bindtap="goToShortcut">
+            <text class="shortcut-icon">%</text>
+            <text class="shortcut-text">分类统计</text>
+            <text class="shortcut-desc">看看谁才是真正的吞金兽</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="section">
+        <view class="section-head">
+          <view>
+            <text class="section-title">最近记录</text>
+            <text class="section-subtitle">你的消费轨迹，正在慢慢变清晰</text>
+          </view>
+          <text class="section-link" bindtap="goToBill">查看全部</text>
+        </view>
+
+        <view class="record-list">
+          <block wx:for="{{recentRecords}}" wx:key="id">
+            <view class="record-item">
+              <view class="record-avatar record-avatar-pink">{{item.avatarText}}</view>
+              <view class="record-body">
+                <text class="record-name">{{item.title}}</text>
+                <text class="record-time">{{item.timeText}}</text>
+              </view>
+              <view class="record-side">
+                <text class="record-amount {{item.amountClass}}">{{item.amountText}}</text>
+                <text class="record-tag">{{item.tagText}}</text>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
     </view>
-    <view class="record-list">
-      <view class="record-item">
-        <view>
-          <text class="record-name">午餐</text>
-          <text class="record-time">今天 12:30</text>
-        </view>
-        <text class="record-amount expense">- ¥ 36.00</text>
-      </view>
-      <view class="record-item">
-        <view>
-          <text class="record-name">交通</text>
-          <text class="record-time">今天 09:10</text>
-        </view>
-        <text class="record-amount expense">- ¥ 12.00</text>
-      </view>
-      <view class="record-item">
-        <view>
-          <text class="record-name">工资</text>
-          <text class="record-time">昨天 18:00</text>
-        </view>
-        <text class="record-amount income">+ ¥ 8,000.00</text>
-      </view>
-    </view>
-  </view>
+  </scroll-view>
 </view>

@@ -1,27 +1,75 @@
 <view class="page">
-  <view class="header-card">
-    <text class="title">统计分析</text>
-    <text class="desc">快速查看本月消费结构和趋势</text>
-  </view>
-
-  <view class="chart-card">
-    <view class="chart-ring">
-      <view class="chart-segment"></view>
-      <view class="chart-ring-inner">
-        <text class="chart-value">68%</text>
-        <text class="chart-label">餐饮占比</text>
+  <view class="page-content" style="height: calc(100vh - {{tabBarSpacer + tabBarGap}}px);">
+    <view class="page-top">
+      <view class="report-switch">
+        <block wx:for="{{reportOptions}}" wx:key="key" wx:for-index="index">
+          <view class="report-segment">
+            <view class="report-item {{activeReport === item.key ? 'report-item-active' : ''}}" data-report="{{item.key}}" bindtap="selectReport">
+              <image class="report-icon" src="{{item.icon}}" mode="aspectFit"></image>
+              <text class="report-label">{{item.label}}</text>
+            </view>
+            <view wx:if="{{index !== reportOptions.length - 1}}" class="report-divider"></view>
+          </view>
+        </block>
+      </view>
+      <view class="page-inner">
+        <view class="toolbar">
+          <view class="date-picker">
+            <view class="date-arrow">‹</view>
+            <text class="date-value">{{dateRange}}</text>
+            <view class="date-arrow">›</view>
+          </view>
+          <view class="flow-switch">
+            <view class="flow-pill {{activeFlow === 'expense' ? 'flow-pill-active' : ''}}" data-flow="expense" bindtap="selectFlow">支出</view>
+            <view class="flow-pill {{activeFlow === 'income' ? 'flow-pill-active' : ''}}" data-flow="income" bindtap="selectFlow">收入</view>
+          </view>
+        </view>
       </view>
     </view>
-  </view>
-
-  <view class="trend-card">
-    <view class="bar-group">
-      <view class="bar bar-1"></view>
-      <view class="bar bar-2"></view>
-      <view class="bar bar-3"></view>
-      <view class="bar bar-4"></view>
-      <view class="bar bar-5"></view>
-    </view>
-    <text class="trend-text">最近 5 天支出总体平稳，周末略有上升。</text>
+    <scroll-view scroll-y class="content-scroll">
+      <view class="page-inner">
+        <view class="report-body">
+          <view class="summary-card">
+            <view class="metric-grid">
+              <block wx:for="{{metrics}}" wx:key="label">
+                <view class="metric-item">
+                  <view class="metric-label-row">
+                    <view class="metric-dot"></view>
+                    <text class="metric-label">{{item.label}}</text>
+                  </view>
+                  <text class="metric-value {{item.accent === 'orange' ? 'metric-value-warm' : ''}}">{{item.value}}</text>
+                </view>
+              </block>
+            </view>
+          </view>
+          <view class="chart-card">
+            <text class="card-title">{{lineCardTitle}}</text>
+            <view class="ucharts-box">
+              <qiun-data-charts
+                type="line"
+                canvas2d="{{true}}"
+                inScrollView="{{true}}"
+                chartData="{{lineChartData}}"
+                opts="{{lineChartOpts}}"
+                ontap="{{true}}"
+                tooltipShow="{{true}}"
+              />
+            </view>
+          </view>
+          <view class="chart-card chart-card-bottom">
+            <text class="card-title">{{trendTitle}}</text>
+            <bar-trend
+              axisLabels="{{barAxisLabels}}"
+              points="{{barPoints}}"
+              activeFlow="{{activeFlow}}"
+              hasActivePoint="{{hasActiveBarPoint}}"
+              tooltipLabel="{{barTooltipLabel}}"
+              dateRange="{{dateRange}}"
+              bind:select="selectBarPoint"
+            />
+          </view>
+        </view>
+      </view>
+    </scroll-view>
   </view>
 </view>

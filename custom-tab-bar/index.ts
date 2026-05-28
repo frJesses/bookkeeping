@@ -1,3 +1,9 @@
+type CustomTabBarInstance = WechatMiniprogram.Component.TrivialInstance & {
+  data: {
+    selectedPath: string
+  }
+}
+
 Component({
   data: {
     selectedPath: '/pages/index/index',
@@ -5,39 +11,51 @@ Component({
       {
         text: '首页',
         pagePath: '/pages/index/index',
-        icon: '⌂',
+        icon: '/assets/tabbar/home.svg',
+        activeIcon: '/assets/tabbar/home-active.svg',
       },
       {
         text: '账单',
         pagePath: '/pages/bill/bill',
-        icon: '≡',
+        icon: '/assets/tabbar/bill.svg',
+        activeIcon: '/assets/tabbar/bill-active.svg',
       },
       {
         text: '添加',
         pagePath: '/pages/add/add',
-        icon: '+',
+        icon: '/assets/tabbar/add.svg',
+        activeIcon: '/assets/tabbar/add.svg',
         isSpecial: true,
       },
       {
         text: '统计',
         pagePath: '/pages/stats/stats',
-        icon: '◔',
+        icon: '/assets/tabbar/stats.svg',
+        activeIcon: '/assets/tabbar/stats-active.svg',
       },
       {
         text: '我的',
         pagePath: '/pages/profile/profile',
-        icon: '◡',
+        icon: '/assets/tabbar/profile.svg',
+        activeIcon: '/assets/tabbar/profile-active.svg',
       },
     ],
   },
   methods: {
-    switchTab(e: WechatMiniprogram.BaseEvent) {
-      const { path } = e.currentTarget.dataset as { path: string }
-
-      if (!path || path === this.data.selectedPath) {
+    switchTab(this: CustomTabBarInstance, e: WechatMiniprogram.BaseEvent) {
+      const { path, special } = e.currentTarget.dataset as { path: string; special?: boolean }
+      if (!path) {
         return
       }
-
+      if (special) {
+        wx.navigateTo({
+          url: path,
+        })
+        return
+      }
+      if (path === this.data.selectedPath) {
+        return
+      }
       wx.switchTab({
         url: path,
       })

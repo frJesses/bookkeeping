@@ -3,7 +3,7 @@
   "projectname": "bookkeeping-mini",
   "setting": {
     "compileHotReLoad": true,
-    "urlCheck": true,
+    "urlCheck": false,
     "coverView": false,
     "lazyloadPlaceholderEnable": false,
     "skylineRenderEnable": true,
@@ -18,5 +18,18 @@
     "checkInvalidKey": true,
     "ignoreDevUnusedFiles": true
   },
-  "libVersion": "3.16.0"
+  "libVersion": "3.16.0",
+  "condition": {
+    "miniprogram": {
+      "list": [
+        {
+          "name": "pages/stats/stats",
+          "pathName": "pages/stats/stats",
+          "query": "",
+          "scene": null,
+          "launchMode": "default"
+        }
+      ]
+    }
+  }
 }

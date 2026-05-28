@@ -1,0 +1,13 @@
+<view class="empty-state">
+  <van-empty image="{{image}}" description="{{description}}" />
+  <van-button
+    wx:if="{{buttonText}}"
+    round
+    block
+    color="{{buttonColor}}"
+    custom-class="empty-state-button"
+    bindtap="handleAction"
+  >
+    {{buttonText}}
+  </van-button>
+</view>

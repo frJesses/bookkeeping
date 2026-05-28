@@ -1,24 +1,76 @@
 <view class="page">
-  <view class="profile-card">
-    <view class="avatar">FR</view>
-    <view class="profile-meta">
-      <text class="name">Frank</text>
-      <text class="desc">保持记录，才能看见钱花到了哪里。</text>
-    </view>
-  </view>
+  <scroll-view scroll-y class="page-scroll" style="height: calc(100vh - {{tabBarSpacer + tabBarGap}}px);">
+    <view class="page-content">
+      <view class="profile-main">
+        <view class="avatar">FR</view>
+        <view class="profile-meta">
+          <text class="name">{{nickname}}</text>
+          <text class="desc">{{desc}}</text>
+          <view class="tag-row">
+            <view class="tag">
+              <view class="tag-dot"></view>
+              <text class="tag-text">{{syncText}}</text>
+            </view>
+            <view class="tag tag-soft">
+              <text class="tag-text">{{streakText}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
 
-  <view class="menu">
-    <view class="menu-item">
-      <text>预算设置</text>
-      <text class="arrow">›</text>
+      <view class="summary-strip">
+        <block wx:for="{{summaryItems}}" wx:key="label">
+          <view class="summary-item">
+            <text class="summary-value">{{item.value}}</text>
+            <text class="summary-label">{{item.label}}</text>
+          </view>
+        </block>
+      </view>
+
+      <view class="quick-panel">
+        <block wx:for="{{quickActions}}" wx:key="label">
+          <view class="quick-item">
+            <view class="quick-icon quick-icon-{{item.tone}}">{{item.icon}}</view>
+            <text class="quick-label">{{item.label}}</text>
+          </view>
+        </block>
+      </view>
+
+      <view class="group">
+        <text class="group-title">账户服务</text>
+        <view class="menu-list">
+          <block wx:for="{{serviceItems}}" wx:key="label">
+            <view class="menu-item">
+              <view class="menu-left">
+                <view class="menu-icon menu-icon-{{item.tone}}">{{item.icon}}</view>
+                <view class="menu-body">
+                  <text class="menu-label">{{item.label}}</text>
+                  <text class="menu-desc">{{item.desc}}</text>
+                </view>
+              </view>
+              <text class="arrow">›</text>
+            </view>
+          </block>
+        </view>
+      </view>
+
+      <view class="group">
+        <text class="group-title">偏好与支持</text>
+        <view class="menu-list">
+          <block wx:for="{{supportItems}}" wx:key="label">
+            <view class="menu-item">
+              <view class="menu-left">
+                <view class="menu-icon menu-icon-{{item.tone}}">{{item.icon}}</view>
+                <view class="menu-body">
+                  <text class="menu-label">{{item.label}}</text>
+                  <text class="menu-desc">{{item.desc}}</text>
+                </view>
+              </view>
+              <text class="arrow">›</text>
+            </view>
+          </block>
+        </view>
+      </view>
     </view>
-    <view class="menu-item">
-      <text>分类管理</text>
-      <text class="arrow">›</text>
-    </view>
-    <view class="menu-item">
-      <text>数据导出</text>
-      <text class="arrow">›</text>
-    </view>
-  </view>
+  </scroll-view>
 </view>

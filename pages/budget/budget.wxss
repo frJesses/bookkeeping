@@ -1,0 +1,123 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f5f7ff 0%, #f7f8fc 42%, #eef3ff 100%);
+}
+
+.page-content {
+  min-height: 100vh;
+  padding: 32rpx 28rpx calc(env(safe-area-inset-bottom) + 40rpx);
+  box-sizing: border-box;
+}
+
+.hero-card {
+  padding: 32rpx 28rpx;
+  border-radius: 32rpx;
+  background: linear-gradient(135deg, #2f6bff 0%, #6da1ff 100%);
+  box-shadow: 0 24rpx 60rpx rgba(47, 107, 255, 0.18);
+}
+
+.hero-title {
+  display: block;
+  color: #ffffff;
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+.hero-desc {
+  display: block;
+  margin-top: 16rpx;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 24rpx;
+  line-height: 1.7;
+}
+
+.empty-panel,
+.budget-panel {
+  margin-top: 24rpx;
+  padding: 24rpx;
+  border-radius: 30rpx;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 18rpx 48rpx rgba(28, 48, 94, 0.08);
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.section-head-gap {
+  margin-top: 28rpx;
+}
+
+.section-title {
+  color: #15213b;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.section-tip {
+  color: #8b96ab;
+  font-size: 22rpx;
+}
+
+.budget-group {
+  margin-top: 18rpx;
+  overflow: hidden;
+  border-radius: 24rpx;
+}
+
+.budget-field {
+  min-height: 96rpx;
+}
+
+.budget-field-input {
+  text-align: right;
+}
+
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20rpx;
+  margin-top: 20rpx;
+}
+
+.month-card {
+  padding: 22rpx 20rpx;
+  border: 1rpx solid #e5eaf5;
+  border-radius: 24rpx;
+  background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+}
+
+.month-label {
+  display: block;
+  color: #22304d;
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.month-input {
+  height: 76rpx;
+  margin-top: 12rpx;
+  padding: 0 20rpx;
+  border-radius: 18rpx;
+  border: 2rpx solid transparent;
+  background: #eef3fb;
+  color: #1d2740;
+  font-size: 26rpx;
+  box-sizing: border-box;
+}
+
+.month-input:focus {
+  border-color: #7da7ff;
+  background: #f7faff;
+}
+
+.save-bar {
+  margin-top: 28rpx;
+}
+
+.save-button {
+  height: 84rpx;
+  box-shadow: 0 20rpx 42rpx rgba(47, 107, 255, 0.24);
+}

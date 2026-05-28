@@ -1,0 +1,13 @@
+.DS_Store
+npm-debug.log*
+
+node_modules/
+miniprogram_npm/
+
+/dist
+.idea/
+.vscode/
+
+yarn.lock
+package-lock.json
+project.private.config.json

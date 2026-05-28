@@ -1,3 +1,10 @@
 {
-  "navigationBarTitleText": "统计"
+  "navigationBarTitleText": "收支报表",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "renderer": "webview",
+  "usingComponents": {
+    "qiun-data-charts": "/components/qiun-data-charts/index",
+    "bar-trend": "/pages/stats/component/bar-trend/index"
+  }
 }

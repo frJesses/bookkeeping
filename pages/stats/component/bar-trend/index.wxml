@@ -1,0 +1,29 @@
+<view class="bar-chart">
+  <view class="y-axis bar-axis">
+    <block wx:for="{{axisLabels}}" wx:key="*this">
+      <text class="axis-label">{{item}}</text>
+    </block>
+  </view>
+  <view class="bar-chart-main">
+    <view class="bar-grid-lines">
+      <view class="grid-line"></view>
+      <view class="grid-line"></view>
+      <view class="grid-line"></view>
+    </view>
+    <view class="bar-columns">
+      <block wx:for="{{animatedPoints}}" wx:key="label">
+        <view class="bar-column" data-index="{{index}}" bindtap="handleSelect">
+          <view class="bar-wrapper">
+            <view class="bar-fill {{item.active ? 'bar-fill-active' : ''}}" style="height: {{item.animatedHeight}}rpx;"></view>
+            <view wx:if="{{hasActivePoint && item.active}}" class="bar-tooltip">
+              <text class="bar-tooltip-label">{{tooltipLabel}} {{activeFlow === 'expense' ? '支出' : '收入'}}</text>
+              <text class="bar-tooltip-value">¥ {{item.value}}</text>
+              <text class="bar-tooltip-date">{{dateRange}}</text>
+            </view>
+          </view>
+          <text class="bar-label">{{item.label}}</text>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>

@@ -35,7 +35,7 @@
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "condition": {},
-  "srcMiniprogramRoot": "miniprogram/",
+  "srcMiniprogramRoot": "/",
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2

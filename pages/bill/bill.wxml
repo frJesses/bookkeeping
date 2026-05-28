@@ -1,38 +1,65 @@
 <view class="page">
-  <view class="header">
-    <text class="title">账单</text>
-    <text class="subtitle">按照时间查看所有流水</text>
-  </view>
+  <scroll-view scroll-y class="page-scroll" style="height: calc(100vh - {{tabBarSpacer + tabBarGap}}px);">
+    <view class="page-content">
+      <view class="header">
+        <view>
+          <text class="page-title">账单</text>
+          <text class="page-subtitle">按时间查看每一笔收支去向</text>
+        </view>
+        <view class="month-pill">{{monthLabel}}</view>
+      </view>
 
-  <view class="summary-card">
-    <view>
-      <text class="summary-label">本月支出</text>
-      <text class="summary-value">¥ 5,719.50</text>
-    </view>
-    <text class="summary-chip">共 38 笔</text>
-  </view>
+      <view class="summary-card">
+        <view class="summary-main">
+          <view class="summary-label-row">
+            <text class="summary-label">今日支出</text>
+            <view class="eye-button" bindtap="toggleAmountVisible">
+              <image
+                class="eye-icon"
+                src="{{amountVisible ? '/assets/bill/eye-open.svg' : '/assets/bill/eye-close.svg'}}"
+                mode="aspectFit"
+              />
+            </view>
+          </view>
+          <text class="summary-value">{{amountVisible ? '¥ ' + todayExpenseText : '****'}}</text>
+        </view>
+        <view class="summary-side">
+          <view class="mini-chip">
+            <text class="mini-chip-label">本月支出（元）</text>
+            <text class="mini-chip-value">{{amountVisible ? '¥ ' + monthExpenseText : '****'}}</text>
+          </view>
+          <view class="mini-chip">
+            <text class="mini-chip-label">本月收入（元）</text>
+            <text class="mini-chip-value">{{amountVisible ? '¥ ' + monthIncomeText : '****'}}</text>
+          </view>
+        </view>
+      </view>
 
-  <view class="list">
-    <view class="bill-item">
-      <view>
-        <text class="bill-name">餐饮</text>
-        <text class="bill-time">今天 12:30</text>
-      </view>
-      <text class="bill-amount">- ¥ 36.00</text>
+      <block wx:for="{{groups}}" wx:key="date" wx:for-item="group">
+        <view class="date-group">
+          <view class="group-head">
+            <view>
+              <text class="group-title">{{group.dateLabel}}</text>
+              <text class="group-subtitle">{{group.summaryText}}</text>
+            </view>
+          </view>
+          <view class="bill-list">
+            <block wx:for="{{group.items}}" wx:key="id" wx:for-item="bill">
+              <view class="bill-item">
+                <view class="bill-avatar bill-avatar-pink">{{bill.avatarText}}</view>
+                <view class="bill-body">
+                  <text class="bill-name">{{bill.title}}</text>
+                  <text class="bill-time">{{bill.timeText}}</text>
+                </view>
+                <view class="bill-side">
+                  <text class="bill-amount {{bill.amountClass}}">{{bill.amountText}}</text>
+                  <text class="bill-tag">{{bill.tagText}}</text>
+                </view>
+              </view>
+            </block>
+          </view>
+        </view>
+      </block>
     </view>
-    <view class="bill-item">
-      <view>
-        <text class="bill-name">交通</text>
-        <text class="bill-time">今天 09:10</text>
-      </view>
-      <text class="bill-amount">- ¥ 12.00</text>
-    </view>
-    <view class="bill-item">
-      <view>
-        <text class="bill-name">日用品</text>
-        <text class="bill-time">昨天 20:40</text>
-      </view>
-      <text class="bill-amount">- ¥ 89.00</text>
-    </view>
-  </view>
+  </scroll-view>
 </view>

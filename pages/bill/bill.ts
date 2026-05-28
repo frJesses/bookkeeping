@@ -1,14 +1,28 @@
-Page({
-  onShow() {
-    const pageInstance = this as WechatMiniprogram.Page.Instance<WechatMiniprogram.IAnyObject, WechatMiniprogram.IAnyObject> & {
-      getTabBar?: () => WechatMiniprogram.Component.TrivialInstance
-    }
-    const tabBar = typeof pageInstance.getTabBar === 'function' ? pageInstance.getTabBar() : undefined
+import { createTabBarBehavior, type TabBarBehaviorPageInstance } from '../../behaviors/tabbar'
+import { createBillPageState, getBillPageData } from '../../services/bill'
 
-    if (tabBar) {
-      tabBar.setData({
-        selectedPath: '/pages/bill/bill',
-      })
+Page({
+  behaviors: [createTabBarBehavior('/pages/bill/bill')],
+  data: createBillPageState(),
+  onLoad(this: TabBarBehaviorPageInstance) {
+    this.initTabBarLayout()
+    void this.loadPageData()
+  },
+  onShow(this: TabBarBehaviorPageInstance) {
+    this.syncTabBarState()
+    void this.loadPageData()
+  },
+  async loadPageData() {
+    try {
+      const data = await getBillPageData()
+      this.setData(data)
+    } catch (error) {
+      console.error('load bill page failed', error)
     }
+  },
+  toggleAmountVisible() {
+    this.setData({
+      amountVisible: !this.data.amountVisible,
+    })
   },
 })

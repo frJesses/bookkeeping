@@ -1,69 +1,241 @@
 .page {
-  min-height: 100vh;
-  padding: 36rpx 32rpx 220rpx;
+  height: 100vh;
+  background: linear-gradient(180deg, #f8faff 0%, #f5f7fb 46%, #f3f5f9 100%);
+}
+
+.page-scroll {
+  height: 100%;
+}
+
+.page-content {
+  min-height: 100%;
+  padding: 32rpx 28rpx 48rpx;
   box-sizing: border-box;
 }
 
-.profile-card,
-.menu-item {
-  background: #ffffff;
-  border-radius: 30rpx;
-  box-shadow: 0 16rpx 36rpx rgba(16, 24, 40, 0.06);
-}
-
-.profile-card {
+.profile-main {
   display: flex;
   align-items: center;
-  gap: 24rpx;
-  padding: 30rpx;
 }
 
 .avatar {
   width: 112rpx;
   height: 112rpx;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #2f6bff 0%, #6fa2ff 100%);
+  border-radius: 34rpx;
+  background: linear-gradient(135deg, #4f6cff 0%, #7ba8ff 100%);
   color: #ffffff;
   font-size: 36rpx;
   font-weight: 700;
-  text-align: center;
   line-height: 112rpx;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.profile-meta {
+  flex: 1;
+  min-width: 0;
+  margin-left: 20rpx;
 }
 
 .name,
-.desc {
+.desc,
+.tag-text,
+.summary-value,
+.summary-label,
+.quick-label,
+.group-title,
+.menu-label,
+.menu-desc {
   display: block;
 }
 
 .name {
-  font-size: 36rpx;
+  font-size: 40rpx;
   font-weight: 700;
-  color: #101828;
+  color: #1d2338;
 }
 
 .desc {
-  margin-top: 12rpx;
+  margin-top: 10rpx;
   font-size: 24rpx;
-  color: #667085;
+  line-height: 1.5;
+  color: #8790a8;
 }
 
-.menu {
+.tag-row {
   display: flex;
-  flex-direction: column;
+  gap: 12rpx;
+  margin-top: 16rpx;
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  height: 42rpx;
+  padding: 0 16rpx;
+  border-radius: 999rpx;
+  background: rgba(78, 108, 255, 0.08);
+}
+
+.tag-soft {
+  background: rgba(255, 138, 178, 0.08);
+}
+
+.tag-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: #2bc978;
+}
+
+.tag-text {
+  font-size: 20rpx;
+  color: #5c6684;
+}
+
+.summary-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16rpx;
+  margin-top: 30rpx;
+  padding-bottom: 30rpx;
+  border-bottom: 1rpx solid #e9edf5;
+}
+
+.summary-item {
+  min-width: 0;
+  text-align: center;
+}
+
+.summary-value {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1d2338;
+}
+
+.summary-label {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #98a1b2;
+}
+
+.quick-panel {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18rpx;
   margin-top: 28rpx;
+  padding: 8rpx 4rpx 6rpx;
+}
+
+.quick-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 116rpx;
+}
+
+.quick-icon,
+.menu-icon {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 20rpx;
+  text-align: center;
+  line-height: 64rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.quick-icon-blue,
+.menu-icon-blue {
+  background: #e4ecff;
+  color: #4b72ff;
+}
+
+.quick-icon-pink,
+.menu-icon-pink {
+  background: #ffe4ef;
+  color: #ff5f98;
+}
+
+.quick-icon-gold,
+.menu-icon-gold {
+  background: #fff1cd;
+  color: #de9a00;
+}
+
+.quick-icon-green,
+.menu-icon-green {
+  background: #dff7eb;
+  color: #21b36d;
+}
+
+.quick-label {
+  margin-top: 12rpx;
+  font-size: 22rpx;
+  color: #55607a;
+}
+
+.group {
+  margin-top: 34rpx;
+}
+
+.group-title {
+  padding: 0 4rpx 16rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1d2338;
+}
+
+.menu-list {
+  background: #ffffff;
+  border-top: 1rpx solid #e9edf5;
+  border-bottom: 1rpx solid #e9edf5;
 }
 
 .menu-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 30rpx;
+  min-height: 110rpx;
+  padding: 0 24rpx;
+  box-sizing: border-box;
+}
+
+.menu-item + .menu-item {
+  border-top: 1rpx solid #edf1f6;
+}
+
+.menu-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  padding: 22rpx 0;
+}
+
+.menu-body {
+  flex: 1;
+  min-width: 0;
+  margin-left: 18rpx;
+}
+
+.menu-label {
   font-size: 28rpx;
-  color: #182230;
+  font-weight: 600;
+  color: #1e2440;
+}
+
+.menu-desc {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #8a93aa;
 }
 
 .arrow {
-  color: #98a1b2;
+  margin-left: 12rpx;
+  color: #a3acc0;
   font-size: 34rpx;
 }

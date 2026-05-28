@@ -3,13 +3,13 @@
     "pages/index/index",
     "pages/bill/bill",
     "pages/add/add",
+    "pages/budget/budget",
     "pages/stats/stats",
-    "pages/profile/profile",
-    "pages/logs/logs"
+    "pages/profile/profile"
   ],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "Bookkeeping Mini",
+    "navigationBarTitleText": "钱小迹",
     "navigationBarBackgroundColor": "#f7f8fc",
     "backgroundColor": "#f7f8fc"
   },
@@ -26,10 +26,6 @@
       {
         "pagePath": "pages/bill/bill",
         "text": "账单"
-      },
-      {
-        "pagePath": "pages/add/add",
-        "text": "添加"
       },
       {
         "pagePath": "pages/stats/stats",

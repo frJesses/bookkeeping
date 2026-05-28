@@ -1,19 +1,98 @@
 <view class="page">
-  <view class="panel">
-    <text class="title">快速新增</text>
-    <text class="desc">这里是中间异形 Tab 对应的新增页，可以继续接入表单、金额键盘和分类选择。</text>
-  </view>
+  <scroll-view scroll-y show-scrollbar="false" class="page-scroll">
+    <view class="page-content">
+      <view class="type-row">
+        <view class="type-tabs">
+          <view
+            class="type-tab {{activeType === 'expense' ? 'type-tab-active' : ''}}"
+            data-type="expense"
+            bindtap="selectType"
+          >
+            支出
+          </view>
+          <view
+            class="type-tab {{activeType === 'income' ? 'type-tab-active' : ''}}"
+            data-type="income"
+            bindtap="selectType"
+          >
+            收入
+          </view>
+          <view
+            class="type-tab {{activeType === 'other' ? 'type-tab-active' : ''}}"
+            data-type="other"
+            bindtap="selectType"
+          >
+            其他
+          </view>
+        </view>
 
-  <view class="action-list">
-    <view class="action-card expense">
-      <text class="action-icon">-</text>
-      <text class="action-title">新增支出</text>
-      <text class="action-desc">餐饮、交通、购物等</text>
+        <view class="time-pill">
+          <text class="time-pill-icon">◔</text>
+          <text class="time-pill-text">今天 11:26</text>
+        </view>
+      </view>
+
+      <view class="amount-panel">
+        <text class="amount-unit">¥</text>
+        <van-field
+          value="{{amount}}"
+          border="{{false}}"
+          custom-class="amount-field"
+          data-field="amount"
+        >
+          <input
+            slot="input"
+            class="amount-native-input"
+            type="digit"
+            value="{{amount}}"
+            placeholder="0.00"
+            placeholder-class="amount-native-placeholder"
+            cursor-spacing="12"
+            data-field="amount"
+            bindinput="onFieldInput"
+          />
+        </van-field>
+      </view>
+
+      <view class="divider"></view>
+
+      <scroll-view scroll-y show-scrollbar="false" class="category-scroll">
+        <view class="category-grid">
+          <block wx:for="{{categories}}" wx:key="name">
+            <view
+              class="category-item"
+              data-name="{{item.name}}"
+              bindtap="selectCategory"
+            >
+              <view class="category-icon-wrap {{activeCategory === item.name ? 'category-icon-wrap-active' : ''}} {{item.tone === 'add' ? 'category-icon-wrap-add' : ''}}">
+                <view class="category-icon {{activeCategory === item.name ? 'category-icon-active' : ''}} {{item.tone === 'add' ? 'category-icon-add' : ''}}">
+                  {{item.icon}}
+                </view>
+              </view>
+              <text class="category-name">{{item.name}}</text>
+            </view>
+          </block>
+        </view>
+      </scroll-view>
+
+      <van-cell-group custom-class="remark-group">
+        <van-field
+          label="备注"
+          value="{{remark}}"
+          border="{{false}}"
+          clearable
+          placeholder="点击添加备注"
+          custom-class="remark-field"
+          label-class="remark-field-label"
+          input-class="remark-field-input"
+          data-field="remark"
+          bind:input="onFieldInput"
+        />
+      </van-cell-group>
+
+      <view class="save-bar">
+        <view class="save-button" bindtap="saveRecord">保存</view>
+      </view>
     </view>
-    <view class="action-card income">
-      <text class="action-icon">+</text>
-      <text class="action-title">新增收入</text>
-      <text class="action-desc">工资、奖金、兼职等</text>
-    </view>
-  </view>
+  </scroll-view>
 </view>
