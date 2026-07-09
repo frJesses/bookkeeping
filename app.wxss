@@ -4,7 +4,6 @@ page {
   color: #182230;
   font-family: "PingFang SC", "Helvetica Neue", sans-serif;
 }
-
 .container {
   height: 100%;
   display: flex;

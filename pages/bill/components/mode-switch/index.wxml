@@ -1,0 +1,12 @@
+<view class="mode-switch">
+  <block wx:for="{{options}}" wx:key="value">
+    <view
+      class="mode-switch-item {{activeMode === item.value ? 'mode-switch-item-active' : ''}}"
+      data-mode="{{item.value}}"
+      bindtap="handleChange"
+    >
+      <text class="mode-switch-text {{activeMode === item.value ? 'mode-switch-text-active' : ''}}">{{item.label}}</text>
+      <view wx:if="{{activeMode === item.value}}" class="mode-switch-line"></view>
+    </view>
+  </block>
+</view>

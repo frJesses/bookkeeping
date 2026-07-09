@@ -2,10 +2,14 @@
   "pages": [
     "pages/index/index",
     "pages/bill/bill",
+    "pages/bill/record-detail/index",
+    "pages/bill/bill-month-detail/bill-month-detail",
+    "pages/bill/bill-ranking/index",
     "pages/add/add",
     "pages/budget/budget",
     "pages/stats/stats",
-    "pages/profile/profile"
+    "pages/profile/profile",
+    "pages/profile/about/index"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -16,7 +20,7 @@
   "tabBar": {
     "custom": true,
     "color": "#98a1b2",
-    "selectedColor": "#2f6bff",
+    "selectedColor": "#4e62ff",
     "backgroundColor": "#ffffff",
     "list": [
       {

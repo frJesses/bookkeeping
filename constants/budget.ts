@@ -3,7 +3,6 @@ export type BudgetMonthItem = {
   label: string
   value: string
 }
-
 export const BUDGET_MONTH_LABELS = [
   '1 月',
   '2 月',

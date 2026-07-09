@@ -14,10 +14,9 @@
       </view>
       <view class="page-inner">
         <view class="toolbar">
-          <view class="date-picker">
-            <view class="date-arrow">‹</view>
+          <view class="date-picker" bindtap="openPeriodPicker">
             <text class="date-value">{{dateRange}}</text>
-            <view class="date-arrow">›</view>
+            <text class="date-caret">▼</text>
           </view>
           <view class="flow-switch">
             <view class="flow-pill {{activeFlow === 'expense' ? 'flow-pill-active' : ''}}" data-flow="expense" bindtap="selectFlow">支出</view>
@@ -72,4 +71,27 @@
       </view>
     </scroll-view>
   </view>
+  <van-popup
+    show="{{showPeriodPicker}}"
+    position="bottom"
+    root-portal="{{true}}"
+    round
+    custom-class="period-popup"
+    bind:close="closePeriodPicker"
+    bind:after-leave="handlePeriodPickerAfterLeave"
+  >
+    <van-picker
+      show-toolbar
+      title="{{periodPickerTitle}}"
+      columns="{{periodOptions}}"
+      value-key="label"
+      default-index="{{selectedPeriodIndex}}"
+      cancel-button-text="取消"
+      confirm-button-text="确定"
+      visible-item-count="5"
+      item-height="48"
+      bind:cancel="closePeriodPicker"
+      bind:confirm="confirmPeriodPicker"
+    />
+  </van-popup>
 </view>

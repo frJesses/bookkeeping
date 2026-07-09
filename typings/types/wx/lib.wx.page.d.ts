@@ -1,16 +1,13 @@
 /*! *****************************************************************************
 Copyright (c) 2021 Tencent, Inc. All rights reserved.
-
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
 the Software without restriction, including without limitation the rights to
 use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
 of the Software, and to permit persons to whom the Software is furnished to do
 so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,7 +16,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ***************************************************************************** */
-
 declare namespace WechatMiniprogram.Page {
     type Instance<
         TData extends DataOption,
@@ -58,7 +54,6 @@ declare namespace WechatMiniprogram.Page {
      *
      * 页面初次渲染完成时触发。一个页面只会调用一次，代表页面已经准备妥当，可以和视图层进行交互。
      *
-
     * 注意：对界面内容进行设置的 API 如`wx.setNavigationBarTitle`，请在`onReady`之后进行。
     */
         onReady(): void | Promise<void>
@@ -107,7 +102,6 @@ declare namespace WechatMiniprogram.Page {
          * 基础库 2.11.3 开始支持，低版本需做兼容处理。
          */
         onShareTimeline(): ICustomTimelineContent | void
-
         /** 页面滚动触发事件的处理函数
          *
          * 监听用户滑动页面事件。
@@ -116,19 +110,16 @@ declare namespace WechatMiniprogram.Page {
             /** 页面滚动参数 */
             options: IPageScrollOption
         ): void | Promise<void>
-
         /** 当前是 tab 页时，点击 tab 时触发，最低基础库： `1.9.0` */
         onTabItemTap(
             /** tab 点击参数 */
             options: ITabItemTapOption
         ): void | Promise<void>
-
         /** 窗口尺寸改变时触发，最低基础库：`2.4.0` */
         onResize(
             /** 窗口尺寸参数 */
             options: IResizeOption
         ): void | Promise<void>
-
         /**
          * 监听用户点击右上角菜单“收藏”按钮的行为，并自定义收藏内容。
          * 基础库 2.10.3，安卓 7.0.15 版本起支持，iOS 暂不支持
@@ -138,19 +129,14 @@ declare namespace WechatMiniprogram.Page {
     interface InstanceProperties {
         /** 页面的文件路径 */
         is: string
-
         /** 到当前页面的路径 */
         route: string
-
         /** 打开当前页面路径中的参数 */
         options: Record<string, string | undefined>
     }
-
     type DataOption = Record<string, any>
     type CustomOption = Record<string, any>
-
     type InstanceMethods<D extends DataOption> = Component.InstanceMethods<D>
-
     interface Data<D extends DataOption> {
         /** 页面的初始数据
          *
@@ -162,7 +148,6 @@ declare namespace WechatMiniprogram.Page {
          */
         data: D
     }
-
     interface ICustomShareContent {
         /** 转发标题。默认值：当前小程序名称 */
         title?: string
@@ -171,7 +156,6 @@ declare namespace WechatMiniprogram.Page {
         /** 自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径。支持PNG及JPG。显示图片长宽比是 5:4，最低基础库： `1.5.0`。默认值：使用默认截图 */
         imageUrl?: string
     }
-
     interface ICustomTimelineContent {
         /** 自定义标题，即朋友圈列表页上显示的标题。默认值：当前小程序名称 */
         title?: string
@@ -180,12 +164,10 @@ declare namespace WechatMiniprogram.Page {
         /** 自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径。支持 PNG 及 JPG。显示图片长宽比是 1:1。默认值：默认使用小程序 Logo*/
         imageUrl?: string
     }
-
     interface IPageScrollOption {
         /** 页面在垂直方向已滚动的距离（单位px） */
         scrollTop: number
     }
-
     interface IShareAppMessageOption {
         /** 转发事件来源。
          *
@@ -206,7 +188,6 @@ declare namespace WechatMiniprogram.Page {
          */
         webViewUrl?: string
     }
-
     interface ITabItemTapOption {
         /** 被点击tabItem的序号，从0开始，最低基础库： `1.9.0` */
         index: string
@@ -215,7 +196,6 @@ declare namespace WechatMiniprogram.Page {
         /** 被点击tabItem的按钮文字，最低基础库： `1.9.0` */
         text: string
     }
-
     interface IResizeOption {
         size: {
             /** 变化后的窗口宽度，单位 px */
@@ -224,12 +204,10 @@ declare namespace WechatMiniprogram.Page {
             windowHeight: number
         }
     }
-
     interface IAddToFavoritesOption {
         /** 页面中包含web-view组件时，返回当前web-view的url */
         webviewUrl?: string
     }
-
     interface IAddToFavoritesContent {
         /** 自定义标题，默认值：页面标题或账号名称 */
         title?: string
@@ -238,21 +216,17 @@ declare namespace WechatMiniprogram.Page {
         /** 自定义query字段，默认值：当前页面的query */
         query?: string
     }
-
     interface GetCurrentPages {
         (): Array<Instance<IAnyObject, IAnyObject>>
     }
 }
-
 /**
  * 注册小程序中的一个页面。接受一个 `Object` 类型参数，其指定页面的初始数据、生命周期回调、事件处理函数等。
  */
 declare let Page: WechatMiniprogram.Page.Constructor
 /**
  * 获取当前页面栈。数组中第一个元素为首页，最后一个元素为当前页面。
-
  *  __注意：__
-
  *  - __不要尝试修改页面栈，会导致路由以及页面状态错误。__
  *  - 不要在 `App.onLaunch` 的时候调用 `getCurrentPages()`，此时 `page` 还没有生成。
  */

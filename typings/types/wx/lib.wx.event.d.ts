@@ -1,16 +1,13 @@
 /*! *****************************************************************************
 Copyright (c) 2021 Tencent, Inc. All rights reserved.
-
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
 the Software without restriction, including without limitation the rights to
 use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
 of the Software, and to permit persons to whom the Software is furnished to do
 so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,7 +16,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ***************************************************************************** */
-
 declare namespace WechatMiniprogram {
     interface Target<DataSet extends IAnyObject = IAnyObject> {
         /** 事件组件的 id */
@@ -33,7 +29,6 @@ declare namespace WechatMiniprogram {
         /** 距离页面左边的偏移量 */
         offsetLeft: number
     }
-
     /** 基础事件参数 */
     interface BaseEvent<
         Mark extends IAnyObject = IAnyObject,
@@ -51,7 +46,6 @@ declare namespace WechatMiniprogram {
         /** 事件绑定的当前组件 */
         currentTarget: Target<CurrentTargetDataset>
     }
-
     /** 自定义事件 */
     interface CustomEvent<
         Detail extends IAnyObject = IAnyObject,
@@ -62,7 +56,6 @@ declare namespace WechatMiniprogram {
         /** 额外的信息 */
         detail: Detail
     }
-
     /** Touch 对象 */
     interface TouchDetail {
         /** 距离页面可显示区域 (屏幕除去导航条) 左上角距离，横向为 X 轴 */
@@ -76,7 +69,6 @@ declare namespace WechatMiniprogram {
         /** 距离文档左上角的距离，文档的左上角为原点，纵向为 Y 轴 */
         pageY: number
     }
-
     /** canvas Touch 对象 */
     interface TouchCanvasDetail {
         /** 触摸点的标识符 */
@@ -86,7 +78,6 @@ declare namespace WechatMiniprogram {
         /** 距离 Canvas 左上角的距离，Canvas 的左上角为原点 纵向为Y轴 */
         y: number
     }
-
     /** 触摸事件 */
     interface Touch<
         Detail extends IAnyObject = IAnyObject,
@@ -100,7 +91,6 @@ declare namespace WechatMiniprogram {
         /** 触摸事件，当前变化的触摸点信息的数组 */
         changedTouches: T[]
     }
-
     /** 触摸事件响应 */
     type TouchEvent<
         Detail extends IAnyObject = IAnyObject,
@@ -108,7 +98,6 @@ declare namespace WechatMiniprogram {
         CurrentTargetDataset extends IAnyObject = IAnyObject,
         TargetDataset extends IAnyObject = CurrentTargetDataset
     > = Touch<Detail, TouchDetail, Mark, CurrentTargetDataset, TargetDataset>
-
     /** canvas 触摸事件响应 */
     interface TouchCanvas<
         Mark extends IAnyObject = IAnyObject,
@@ -117,7 +106,6 @@ declare namespace WechatMiniprogram {
         // canvas 中的触摸事件不可冒泡，所以没有 currentTarget。
         currentTarget: never
     }
-
     /**
      * 图片加载成功时触发
      *
@@ -136,14 +124,12 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 图片加载失败时触发
      *
      * 最低基础库: 2.1.0
      */
     type CoverImageError = CustomEvent<GeneralCallbackResult>
-
     /**
      * 拖动过程中触发的事件，event.detail = {x, y, source}
      *
@@ -175,7 +161,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 缩放过程中触发的事件
      *
@@ -199,7 +184,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 滑动开始事件 (同时开启 enhanced 属性后生效)
      *
@@ -218,7 +202,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 滑动事件 (同时开启 enhanced 属性后生效)
      *
@@ -237,7 +220,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 滑动结束事件 (同时开启 enhanced 属性后生效)
      *
@@ -256,7 +238,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /** 滚动到顶部/左边时触发 */
     type ScrollViewScrollToUpper<
         Mark extends IAnyObject = IAnyObject,
@@ -268,7 +249,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /** 滚动到底部/右边时触发 */
     type ScrollViewScrollToLower<
         Mark extends IAnyObject = IAnyObject,
@@ -280,7 +260,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 滚动时触发
      *
@@ -301,27 +280,22 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     type ScrollViewRefresherPulling<
         Mark extends IAnyObject = IAnyObject,
         TargetDataset extends IAnyObject = IAnyObject
     > = CustomEvent<never, Mark, TargetDataset>
-
     type ScrollViewRefresherRefresh<
         Mark extends IAnyObject = IAnyObject,
         TargetDataset extends IAnyObject = IAnyObject
     > = CustomEvent<never, Mark, TargetDataset>
-
     type ScrollViewRefresherRestore<
         Mark extends IAnyObject = IAnyObject,
         TargetDataset extends IAnyObject = IAnyObject
     > = CustomEvent<never, Mark, TargetDataset>
-
     type ScrollViewRefresherAbort<
         Mark extends IAnyObject = IAnyObject,
         TargetDataset extends IAnyObject = IAnyObject
     > = CustomEvent<never, Mark, TargetDataset>
-
     /**
      * current 改变时会触发 change 事件
      *
@@ -351,7 +325,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * swiper-item 的位置发生改变时会触发 transition 事件
      *
@@ -370,7 +343,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 动画结束时会触发 animationfinish 事件
      *
@@ -380,7 +352,6 @@ declare namespace WechatMiniprogram {
         Mark extends IAnyObject = IAnyObject,
         TargetDataset extends IAnyObject = IAnyObject
     > = SwiperChange<Mark, TargetDataset>
-
     /**
      * progress 动画完成事件
      *
@@ -396,7 +367,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 用户点击该按钮时，会返回获取到的用户信息，回调的 detail 数据与 `wx. getUserInfo` 返回的一致，`open-type="getUserInfo"` 时有效
      *
@@ -405,14 +375,12 @@ declare namespace WechatMiniprogram {
     type ButtonGetUserInfo = CustomEvent<
         GeneralCallbackResult & GetUserInfoSuccessCallbackResult
     >
-
     /**
      * 客服消息回调，`open-type="contact"` 时有效
      *
      * 最低基础库: 1.5.0
      */
     type ButtonContact = CustomEvent<GeneralCallbackResult>
-
     /**
      * 获取用户手机号回调，`open-type=getPhoneNumber` 时有效
      *
@@ -421,14 +389,12 @@ declare namespace WechatMiniprogram {
     type ButtonGetPhoneNumber = CustomEvent<
         GeneralCallbackResult & Partial<GetWeRunDataSuccessCallbackResult>
     >
-
     /**
      * 当使用开放能力时，发生错误的回调，`open-type=launchApp` 时有效
      *
      * 最低基础库: 1.9.5
      */
     type ButtonError = CustomEvent<GeneralCallbackResult>
-
     /**
      * 在打开授权设置页后回调，`open-type=openSetting` 时有效
      *
@@ -437,14 +403,12 @@ declare namespace WechatMiniprogram {
     type ButtonOpenSetting = CustomEvent<
         GeneralCallbackResult & OpenSettingSuccessCallbackResult
     >
-
     /**
      * 打开 APP 成功的回调，`open-type=launchApp` 时有效
      *
      * 最低基础库: 2.4.4
      */
     type ButtonLaunchApp = CustomEvent<GeneralCallbackResult>
-
     /**
      * checkbox-group 中选中项发生改变时触发 change 事件
      *
@@ -461,7 +425,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 编辑器初始化完成时触发
      *
@@ -471,7 +434,6 @@ declare namespace WechatMiniprogram {
         Mark extends IAnyObject = IAnyObject,
         TargetDataset extends IAnyObject = IAnyObject
     > = CustomEvent<never, Mark, TargetDataset>
-
     /**
      * 编辑器聚焦时触发
      *
@@ -492,7 +454,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 编辑器失去焦点时触发
      *
@@ -504,7 +465,6 @@ declare namespace WechatMiniprogram {
         Mark extends IAnyObject = IAnyObject,
         TargetDataset extends IAnyObject = IAnyObject
     > = EditorFocus<Mark, TargetDataset>
-
     /**
      * 编辑器内容改变时触发
      *
@@ -516,7 +476,6 @@ declare namespace WechatMiniprogram {
         Mark extends IAnyObject = IAnyObject,
         TargetDataset extends IAnyObject = IAnyObject
     > = EditorFocus<Mark, TargetDataset>
-
     /**
      * 通过 Context 方法改变编辑器内样式时触发，返回选区已设置的样式
      *
@@ -549,7 +508,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 携带 form 中的数据触发 submit 事件
      *
@@ -568,7 +526,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /** 表单重置时会触发 reset 事件 */
     type FormReset<
         Mark extends IAnyObject = IAnyObject,
@@ -580,7 +537,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /** 键盘输入时触发
      *
      * event.detail = {value, cursor, keyCode}
@@ -602,7 +558,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 输入框聚焦时触发
      *
@@ -621,7 +576,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 输入框失去焦点时触发
      *
@@ -638,7 +592,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 点击完成按钮时触发
      *
@@ -655,7 +608,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 键盘高度发生变化的时候触发此事件
      *
@@ -677,7 +629,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 取消选择时触发
      *
@@ -687,7 +638,6 @@ declare namespace WechatMiniprogram {
         Mark extends IAnyObject = IAnyObject,
         TargetDataset extends IAnyObject = IAnyObject
     > = CustomEvent<never, Mark, TargetDataset>
-
     /**
      * value 改变时触发 change 事件
      *
@@ -720,7 +670,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /** 列改变时触发 当 `mode = multiSelector` 时有效 */
     type PickerColumnChange<
         Mark extends IAnyObject = IAnyObject,
@@ -734,7 +683,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 滚动选择时触发 change 事件
      *
@@ -751,7 +699,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 当滚动选择开始时候触发事件
      *
@@ -761,7 +708,6 @@ declare namespace WechatMiniprogram {
         Mark extends IAnyObject = IAnyObject,
         TargetDataset extends IAnyObject = IAnyObject
     > = CustomEvent<never, Mark, TargetDataset>
-
     /**
      * 当滚动选择结束时候触发事件
      *
@@ -771,7 +717,6 @@ declare namespace WechatMiniprogram {
         Mark extends IAnyObject = IAnyObject,
         TargetDataset extends IAnyObject = IAnyObject
     > = CustomEvent<never, Mark, TargetDataset>
-
     /** radio-group 切换事件 */
     type RadioGroupChange<
         Mark extends IAnyObject = IAnyObject,
@@ -784,7 +729,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 完成一次拖动后触发的事件
      *
@@ -801,7 +745,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 拖动过程中触发的事件
      *
@@ -813,7 +756,6 @@ declare namespace WechatMiniprogram {
         Mark extends IAnyObject = IAnyObject,
         TargetDataset extends IAnyObject = IAnyObject
     > = SliderChange<Mark, TargetDataset>
-
     /**
      * checked 改变时触发 change 事件
      *
@@ -829,7 +771,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 输入框聚焦时触发
      *
@@ -841,7 +782,6 @@ declare namespace WechatMiniprogram {
         Mark extends IAnyObject = IAnyObject,
         TargetDataset extends IAnyObject = IAnyObject
     > = InputFocus<Mark, TargetDataset>
-
     /**
      * 输入框失去焦点时触发
      *
@@ -853,7 +793,6 @@ declare namespace WechatMiniprogram {
         Mark extends IAnyObject = IAnyObject,
         TargetDataset extends IAnyObject = IAnyObject
     > = InputBlur<Mark, TargetDataset>
-
     /**
      * 输入框行数变化时调用
      *
@@ -876,7 +815,6 @@ declare namespace WechatMiniprogram {
         Mark,
         TargetDataset
     >
-
     /**
      * 当键盘输入时，触发 input 事件
      *
@@ -890,7 +828,6 @@ declare namespace WechatMiniprogram {
         Mark extends IAnyObject = IAnyObject,
         TargetDataset extends IAnyObject = IAnyObject
     > = Input<Mark, TargetDataset>
-
     /**
      * 点击完成时， 触发 confirm 事件
      *
@@ -900,7 +837,6 @@ declare namespace WechatMiniprogram {
         Mark extends IAnyObject = IAnyObject,
         TargetDataset extends IAnyObject = IAnyObject
     > = InputConfirm<Mark, TargetDataset>
-
     /**
      * 键盘高度发生变化的时候触发此事件
      *
@@ -914,7 +850,6 @@ declare namespace WechatMiniprogram {
         Mark extends IAnyObject = IAnyObject,
         TargetDataset extends IAnyObject = IAnyObject
     > = InputKeyboardHeightChange<Mark, TargetDataset>
-
     /**
      * 功能页返回，且操作成功时触发， detail 格式与具体功能页相关
      *
@@ -923,7 +858,6 @@ declare namespace WechatMiniprogram {
     type FunctionalNavigatorSuccess<
         Detail extends IAnyObject = IAnyObject
     > = CustomEvent<Detail, never, never>
-
     /**
      * 功能页返回，且操作失败时触发， detail 格式与具体功能页相关
      *
@@ -932,7 +866,6 @@ declare namespace WechatMiniprogram {
     type FunctionalNavigatorFail<
         Detail extends IAnyObject = IAnyObject
     > = CustomEvent<Detail, never, never>
-
     /**
      * 当 `target="miniProgram"` 时有效，跳转小程序成功
      *
@@ -953,7 +886,6 @@ declare namespace WechatMiniprogram {
      * 最低基础库: 2.0.7
      */
     type NavigatorComplete = CustomEvent
-
     /**
      * 当发生错误时触发 error 事件
      *
@@ -970,13 +902,10 @@ declare namespace WechatMiniprogram {
          */
         errMsg: 1 | 2 | 3 | 4
     }>
-
     /** 当开始/继续播放时触发play事件 */
     type AudioPlay = CustomEvent
-
     /** 当暂停播放时触发 pause 事件 */
     type AudioPause = CustomEvent
-
     /**
      * 当播放进度改变时触发 timeupdate 事件
      *
@@ -986,35 +915,28 @@ declare namespace WechatMiniprogram {
         currentTime: number
         duration: number
     }>
-
     /** 当播放到末尾时触发 ended 事件 */
     type AudioEnded = CustomEvent
-
     /** 摄像头在非正常终止时触发，如退出后台等情况 */
     type CameraStop = CustomEvent
-
     /** 用户不允许使用摄像头时触发 */
     type CameraError = CustomEvent
-
     /**
      * 相机初始化完成时触发
      *
      * 最低基础库: 2.7.0
      */
     type CameraInitDone = CustomEvent
-
     /**
      * 在扫码识别成功时触发，仅在 mode="scanCode" 时生效
      *
      * 最低基础库: 2.1.0
      */
     type CameraScanCode = CustomEvent
-
     /** 当错误发生时触发，event.detail = {errMsg} */
     type ImageError = CoverImageError
     /** 当图片载入完毕时触发，event.detail = {height, width} */
     type ImageLoad = CoverImageLoad
-
     /**
      * 播放状态变化事件，detail = {code}
      *
@@ -1050,7 +972,6 @@ declare namespace WechatMiniprogram {
          */
         code: number
     }>
-
     /**
      * 全屏变化事件，detail = {direction, fullScreen}
      *
@@ -1060,7 +981,6 @@ declare namespace WechatMiniprogram {
         direction: 'vertical' | 'horizontal'
         fullScreen: boolean
     }>
-
     /**
      * 网络状态通知，detail = {info}
      *
@@ -1090,7 +1010,6 @@ declare namespace WechatMiniprogram {
             | 'videoWidth'
             | 'videoHeight'
     }>
-
     /**
      * 状态变化事件，detail = {code}
      *
@@ -1134,7 +1053,6 @@ declare namespace WechatMiniprogram {
          */
         code: number
     }>
-
     /**
      * 网络状态通知，detail = {info}
      *
@@ -1163,7 +1081,6 @@ declare namespace WechatMiniprogram {
             | 'videoWidth'
             | 'videoHeight'
     }>
-
     /**
      * 渲染错误事件，detail = {errMsg, errCode}
      *
@@ -1183,14 +1100,12 @@ declare namespace WechatMiniprogram {
          */
         errCode: number
     }>
-
     /**
      * 背景音开始播放时触发
      *
      * 最低基础库: 2.4.0
      */
     type LivePusherBgmStart = CustomEvent
-
     /**
      * 背景音进度变化时触发，detail = {progress, duration}
      *
@@ -1200,29 +1115,23 @@ declare namespace WechatMiniprogram {
         progress: number
         duration: number
     }>
-
     /**
      * 背景音播放完成时触发
      *
      * 最低基础库: 2.4.0
      */
     type LivePusherBgmComplete = CustomEvent
-
     /** 当开始/继续播放时触发play事件 */
     type VideoPlay = CustomEvent
-
     /** 当暂停播放时触发 pause 事件 */
     type VideoPause = CustomEvent
-
     /** 当播放到末尾时触发 ended 事件 */
     type VideoEnded = CustomEvent
-
     /** 播放进度变化时触发，event.detail = {currentTime, duration} 。触发频率 250ms 一次 */
     type VideoTimeUpdate = CustomEvent<{
         currentTime: number
         duration: number
     }>
-
     /**
      * 视频进入和退出全屏时触发，event.detail = {fullScreen, direction}
      *
@@ -1232,21 +1141,18 @@ declare namespace WechatMiniprogram {
         fullScreen: boolean
         direction: 'vertical' | 'horizontal'
     }>
-
     /**
      * 视频出现缓冲时触发
      *
      * 最低基础库: 1.7.0
      */
     type VideoWaiting = CustomEvent
-
     /**
      * 视频播放出错时触发
      *
      * 最低基础库: 1.7.0
      */
     type VideoError = CustomEvent
-
     /**
      * 加载进度变化时触发，只支持一段加载。
      *
@@ -1256,14 +1162,12 @@ declare namespace WechatMiniprogram {
         /** 百分比 */
         buffered: number
     }>
-
     /**
      * 加载进度变化时触发，只支持一段加载。
      *
      * 最低基础库: 2.4.0
      */
     type VoipRoomError = CustomEvent
-
     /**
      * 点击地图时触发
      *
@@ -1275,7 +1179,6 @@ declare namespace WechatMiniprogram {
         /** 纬度，最低基础库 2.9.0 */
         latitude: number
     }>
-
     /**
      * 点击标记点时触发
      *
@@ -1285,7 +1188,6 @@ declare namespace WechatMiniprogram {
         /** 标记点 ID */
         markerId: number
     }>
-
     /**
      * 点击 label 时触发
      *
@@ -1294,7 +1196,6 @@ declare namespace WechatMiniprogram {
      * 最低基础库: 2.9.0
      */
     type LabelTap = MarkerTap
-
     /**
      * 点击控件时触发
      *
@@ -1304,7 +1205,6 @@ declare namespace WechatMiniprogram {
         /** 控件 ID */
         controlId: number
     }>
-
     /**
      * 点击 label 时触发
      *
@@ -1313,14 +1213,12 @@ declare namespace WechatMiniprogram {
      * 最低基础库: 1.2.0
      */
     type CalloutTap = MarkerTap
-
     /**
      * 在地图渲染更新完成时触发
      *
      * 最低基础库: 1.6.0
      */
     type MapUpdated = CustomEvent
-
     /**
      * 在地图渲染更新完成时触发
      *
@@ -1365,14 +1263,12 @@ declare namespace WechatMiniprogram {
                   causedBy: 'drag' | 'scale' | 'update'
               }
         )
-
     /**
      * 广告加载成功的回调
      *
      * 最低基础库: 2.2.1
      */
     type AdLoad = CustomEvent
-
     /**
      * 广告加载失败的回调，event.detail = {errCode: 1002}
      *
@@ -1396,14 +1292,12 @@ declare namespace WechatMiniprogram {
          */
         errCode: number
     }>
-
     /**
      * 广告关闭的回调
      *
      * 最低基础库: 2.6.5
      */
     type AdClose = CustomEvent
-
     /**
      * 网页向小程序 postMessage 时，会在特定时机 (小程序后退、组件销毁、分享) 触发并收到消息。e.detail = { data }
      *
@@ -1414,7 +1308,6 @@ declare namespace WechatMiniprogram {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         data: any[]
     }>
-
     /**
      * 网页加载成功时候触发此事件。e.detail = { src }
      *
@@ -1423,7 +1316,6 @@ declare namespace WechatMiniprogram {
     type WebviewLoad = CustomEvent<{
         src: string
     }>
-
     /**
      * 网页加载失败的时候触发此事件。e.detail = { src }
      *

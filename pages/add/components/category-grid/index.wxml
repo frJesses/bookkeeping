@@ -1,0 +1,18 @@
+<view class="category-grid">
+  <block wx:for="{{categories}}" wx:key="id">
+    <view
+      class="category-card {{activeCategory === item.name ? 'category-card-active' : ''}}"
+      data-name="{{item.name}}"
+      bindtap="handleSelect"
+    >
+      <view
+        class="category-card-icon"
+        style="background: {{activeCategory === item.name ? 'rgba(78, 98, 255, 0.14)' : '#ffffff'}}; box-shadow: {{activeCategory === item.name ? '0 10rpx 20rpx rgba(78, 98, 255, 0.12)' : '0 8rpx 18rpx rgba(120, 133, 164, 0.08)'}};"
+      >
+        <image wx:if="{{item.icon}}" class="category-card-icon-image" src="{{item.icon}}" mode="aspectFit"></image>
+        <view wx:else class="category-card-icon-placeholder"></view>
+      </view>
+      <text class="category-card-name {{activeCategory === item.name ? 'category-card-name-active' : ''}}">{{item.name}}</text>
+    </view>
+  </block>
+</view>

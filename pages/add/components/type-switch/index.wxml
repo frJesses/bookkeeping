@@ -1,0 +1,12 @@
+<view class="type-switch">
+  <block wx:for="{{tabs}}" wx:key="type">
+    <view
+      class="type-pill {{activeType === item.type ? 'type-pill-active' : ''}}"
+      data-type="{{item.type}}"
+      bindtap="handleSelect"
+    >
+      <text class="type-pill-text">{{item.label}}</text>
+      <view wx:if="{{activeType === item.type}}" class="type-pill-line"></view>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,18 @@
+<view class="annual-list">
+  <view class="annual-list-head {{mode === 'year' ? 'year-mode' : ''}}">
+    <text class="annual-list-head-cell annual-list-head-cell-month">{{mode === 'year' ? '年份' : '月份'}}</text>
+    <text class="annual-list-head-cell">{{mode === 'year' ? '年收入' : '月收入'}}</text>
+    <text class="annual-list-head-cell">{{mode === 'year' ? '年支出' : '月支出'}}</text>
+    <text class="annual-list-head-cell">{{mode === 'year' ? '年结余' : '月结余'}}</text>
+    <text wx:if="{{mode !== 'year'}}" class="annual-list-head-cell annual-list-head-cell-arrow"></text>
+  </view>
+  <block wx:for="{{rows}}" wx:key="periodKey">
+    <view class="annual-row {{mode === 'year' ? 'year-mode' : ''}}" data-period-key="{{item.periodKey}}" bindtap="handleSelect">
+      <text class="annual-row-cell annual-row-cell-month">{{item.periodLabel}}</text>
+      <text class="annual-row-cell">{{item.incomeText}}</text>
+      <text class="annual-row-cell">{{item.expenseText}}</text>
+      <text class="annual-row-cell {{item.balanceClass}}">{{item.balanceText}}</text>
+      <text wx:if="{{mode !== 'year'}}" class="annual-row-arrow">›</text>
+    </view>
+  </block>
+</view>

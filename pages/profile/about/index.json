@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "关于钱小迹",
+  "navigationBarBackgroundColor": "#f7f8fc",
+  "navigationBarTextStyle": "black",
+  "renderer": "webview"
+}

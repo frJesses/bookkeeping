@@ -3,7 +3,6 @@
   height: 30px;
   position: relative;
 }
-
 .container.loading6 {
   -webkit-animation: rotation 1s infinite;
           animation: rotation 1s infinite;
@@ -36,13 +35,10 @@
   right: 0;
   background-color: #EE6666;
 }
-
-
 .loading6 .shape1 {
   -webkit-animation: animation6shape1 2s linear 0s infinite normal;
           animation: animation6shape1 2s linear 0s infinite normal;
 }
-
 @-webkit-keyframes animation6shape1 {
   0% {
     -webkit-transform: translate(0, 0);
@@ -61,7 +57,6 @@
             transform: translate(18px, 0);
   }
 }
-
 @keyframes animation6shape1 {
   0% {
     -webkit-transform: translate(0, 0);
@@ -84,7 +79,6 @@
   -webkit-animation: animation6shape2 2s linear 0s infinite normal;
           animation: animation6shape2 2s linear 0s infinite normal;
 }
-
 @-webkit-keyframes animation6shape2 {
   0% {
     -webkit-transform: translate(0, 0);
@@ -103,7 +97,6 @@
             transform: translate(0, 18px);
   }
 }
-
 @keyframes animation6shape2 {
   0% {
     -webkit-transform: translate(0, 0);
@@ -126,7 +119,6 @@
   -webkit-animation: animation6shape3 2s linear 0s infinite normal;
           animation: animation6shape3 2s linear 0s infinite normal;
 }
-
 @-webkit-keyframes animation6shape3 {
   0% {
     -webkit-transform: translate(0, 0);
@@ -145,7 +137,6 @@
             transform: translate(0, -18px);
   }
 }
-
 @keyframes animation6shape3 {
   0% {
     -webkit-transform: translate(0, 0);
@@ -168,7 +159,6 @@
   -webkit-animation: animation6shape4 2s linear 0s infinite normal;
           animation: animation6shape4 2s linear 0s infinite normal;
 }
-
 @-webkit-keyframes animation6shape4 {
   0% {
     -webkit-transform: translate(0, 0);
@@ -187,7 +177,6 @@
             transform: translate(-18px, 0);
   }
 }
-
 @keyframes animation6shape4 {
   0% {
     -webkit-transform: translate(0, 0);

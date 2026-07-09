@@ -1,0 +1,36 @@
+<view class="page">
+  <view wx:if="{{hasRecord}}" class="detail-card">
+    <view class="detail-main">
+      <view class="detail-icon">
+        <image wx:if="{{record.iconUrl}}" class="detail-icon-image" src="{{record.iconUrl}}" mode="aspectFit"></image>
+        <view wx:else class="detail-icon-placeholder"></view>
+      </view>
+      <view class="detail-copy">
+        <text class="detail-title">{{record.title}}</text>
+        <text class="detail-type">{{typeLabel}}</text>
+      </view>
+    </view>
+    <view class="detail-info">
+      <view class="detail-row">
+        <text class="detail-label">金额</text>
+        <text class="detail-value detail-value-amount {{amountClass}}">{{amountText}}</text>
+      </view>
+      <view class="detail-row">
+        <text class="detail-label">记录时间</text>
+        <text class="detail-value">{{occurredAtText}}</text>
+      </view>
+      <view class="detail-row">
+        <text class="detail-label">备注</text>
+        <text class="detail-value">{{remarkText}}</text>
+      </view>
+    </view>
+  </view>
+  <view wx:else class="empty-panel">
+    <text class="empty-title">暂无记录详情</text>
+    <text class="empty-desc">返回首页重新选择一条记录查看。</text>
+  </view>
+  <view class="footer-actions">
+    <button class="footer-button footer-button-secondary" bindtap="handleEdit">编辑</button>
+    <button class="footer-button footer-button-primary" bindtap="handleDelete">删除</button>
+  </view>
+</view>

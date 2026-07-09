@@ -1,0 +1,32 @@
+.mode-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 42rpx;
+}
+.mode-switch-item {
+  position: relative;
+  min-width: 108rpx;
+  padding: 10rpx 0 14rpx;
+  text-align: center;
+}
+.mode-switch-text {
+  display: block;
+  font-size: 28rpx;
+  line-height: 1;
+  color: #9ba2b3;
+  font-weight: 600;
+}
+.mode-switch-text-active {
+  color: #1f2433;
+}
+.mode-switch-line {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 54rpx;
+  height: 6rpx;
+  margin-left: -27rpx;
+  border-radius: 999rpx;
+  background: #1f2433;
+}

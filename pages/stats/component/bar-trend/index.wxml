@@ -15,7 +15,7 @@
         <view class="bar-column" data-index="{{index}}" bindtap="handleSelect">
           <view class="bar-wrapper">
             <view class="bar-fill {{item.active ? 'bar-fill-active' : ''}}" style="height: {{item.animatedHeight}}rpx;"></view>
-            <view wx:if="{{hasActivePoint && item.active}}" class="bar-tooltip">
+            <view wx:if="{{hasActivePoint && item.active}}" class="bar-tooltip bar-tooltip-{{item.tooltipPlacement}}">
               <text class="bar-tooltip-label">{{tooltipLabel}} {{activeFlow === 'expense' ? '支出' : '收入'}}</text>
               <text class="bar-tooltip-value">¥ {{item.value}}</text>
               <text class="bar-tooltip-date">{{dateRange}}</text>

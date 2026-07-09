@@ -1,7 +1,18 @@
 import { createTabBarBehavior, type TabBarBehaviorPageInstance } from '../../behaviors/tabbar'
 import { type BarPoint, type FlowType, type ReportType } from '../../constants/stats'
-import { createInitialStatsPageData, getStatsPageState, setActiveBarPoint } from '../../services/stats'
-
+import {
+  createInitialStatsPageData,
+  getStatsPageState,
+  selectStatsPeriod,
+  setActiveBarPoint,
+  type StatsPeriodOption,
+} from '../../services/stats'
+type PageWithCustomTabBar = WechatMiniprogram.Page.Instance<WechatMiniprogram.IAnyObject, WechatMiniprogram.IAnyObject> & {
+  getTabBar?: () => WechatMiniprogram.Component.TrivialInstance
+}
+type CustomTabBarInstance = WechatMiniprogram.Component.TrivialInstance & {
+  setData(data: WechatMiniprogram.IAnyObject, callback?: () => void): void
+}
 Page({
   behaviors: [createTabBarBehavior('/pages/stats/stats')],
   data: createInitialStatsPageData(),
@@ -11,10 +22,17 @@ Page({
   },
   onShow(this: TabBarBehaviorPageInstance) {
     this.syncTabBarState()
+    this.setCustomTabBarHidden(false)
+  },
+  onHide() {
+    this.setCustomTabBarHidden(false)
+  },
+  onUnload() {
+    this.setCustomTabBarHidden(false)
   },
   async loadPageData() {
     try {
-      const reportState = await getStatsPageState(this.data.activeReport, this.data.activeFlow)
+      const reportState = await getStatsPageState(this.data.activeReport, this.data.activeFlow, this.data.selectedPeriodValue)
       this.setData(reportState)
     } catch (error) {
       console.error('load stats page failed', error)
@@ -36,14 +54,47 @@ Page({
     if (!flow || flow === this.data.activeFlow) {
       return
     }
-    const reportState = await getStatsPageState(this.data.activeReport, flow)
+    const reportState = await getStatsPageState(this.data.activeReport, flow, this.data.selectedPeriodValue)
     this.setData({
       activeFlow: flow,
       ...reportState,
     })
   },
-  selectBarPoint(e: WechatMiniprogram.BaseEvent) {
-    const { index } = e.currentTarget.dataset as { index?: number | string }
+  openPeriodPicker() {
+    this.setCustomTabBarHidden(true, () => {
+      wx.nextTick(() => {
+        this.setData({
+          showPeriodPicker: true,
+        })
+      })
+    })
+  },
+  closePeriodPicker() {
+    this.setData({
+      showPeriodPicker: false,
+    })
+  },
+  async confirmPeriodPicker(e: WechatMiniprogram.CustomEvent<{ value?: StatsPeriodOption; index?: number }>) {
+    const selectedIndex = typeof e.detail.index === 'number' ? e.detail.index : 0
+    const reportState = await selectStatsPeriod(this.data.activeReport, this.data.activeFlow, this.data.periodOptions, selectedIndex)
+    this.setData(reportState)
+  },
+  handlePeriodPickerAfterLeave() {
+    this.setCustomTabBarHidden(false)
+  },
+  setCustomTabBarHidden(hidden: boolean, callback?: () => void) {
+    const page = this as unknown as PageWithCustomTabBar
+    const tabBar = typeof page.getTabBar === 'function' ? page.getTabBar() as CustomTabBarInstance : undefined
+    if (tabBar) {
+      tabBar.setData({ hidden }, callback)
+      return
+    }
+    if (callback) {
+      callback()
+    }
+  },
+  selectBarPoint(e: WechatMiniprogram.CustomEvent<{ index?: number | string }>) {
+    const { index } = e.detail || {}
     const pointIndex = Number(index)
     if (Number.isNaN(pointIndex)) {
       return

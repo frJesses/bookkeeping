@@ -1,0 +1,30 @@
+.type-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 44rpx;
+}
+.type-pill {
+  position: relative;
+  padding: 10rpx 0 14rpx;
+  text-align: center;
+}
+.type-pill-text {
+  display: block;
+  font-size: 32rpx;
+  line-height: 1;
+  color: #9ea5b8;
+  font-weight: 600;
+}
+.type-pill-active .type-pill-text {
+  color: #171d2f;
+}
+.type-pill-line {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 42rpx;
+  height: 6rpx;
+  margin-left: -21rpx;
+  border-radius: 999rpx;
+  background: #171d2f;
+}

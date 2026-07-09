@@ -15,9 +15,7 @@
  * http://ext.dcloud.net.cn/plugin?id=271
  * 
  */
-
 'use strict';
-
 var config = {
   version: 'v2.3.7-20220323',
   yAxisWidth: 15,
@@ -49,7 +47,6 @@ var config = {
   radarLabelTextMargin: 13,
   gaugeLabelTextMargin: 13
 };
-
 var assign = function(target, ...varArgs) {
   if (target == null) {
     throw new TypeError('[uCharts] Cannot convert undefined or null to object');
@@ -70,7 +67,6 @@ var assign = function(target, ...varArgs) {
   });
   return target;
 };
-
 var util = {
   toFixed: function toFixed(num, limit) {
     limit = limit || 2;
@@ -102,7 +98,6 @@ var util = {
     return !flag;
   }
 };
-
 //兼容H5点击事件
 function getH5Offset(e) {
   e.mp = {
@@ -114,7 +109,6 @@ function getH5Offset(e) {
   });
   return e;
 }
-
 // 经纬度转墨卡托
 function lonlat2mercator(longitude, latitude) {
   var mercator = Array(2);
@@ -125,7 +119,6 @@ function lonlat2mercator(longitude, latitude) {
   mercator[1] = y;
   return mercator;
 }
-
 // 墨卡托转经纬度
 function mercator2lonlat(longitude, latitude) {
   var lonlat = Array(2)
@@ -136,7 +129,6 @@ function mercator2lonlat(longitude, latitude) {
   lonlat[1] = y;
   return lonlat;
 }
-
 // hex 转 rgba
 function hexToRgb(hexValue, opc) {
   var rgx = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
@@ -149,7 +141,6 @@ function hexToRgb(hexValue, opc) {
   var b = parseInt(rgb[3], 16);
   return 'rgba(' + r + ',' + g + ',' + b + ',' + opc + ')';
 }
-
 function findRange(num, type, limit) {
   if (isNaN(num)) {
     throw new Error('[uCharts] series数据需为Number格式');
@@ -175,7 +166,6 @@ function findRange(num, type, limit) {
   }
   return num / multiple;
 }
-
 function calCandleMA(dayArr, nameArr, colorArr, kdata) {
   let seriesTemp = [];
   for (let k = 0; k < dayArr.length; k++) {
@@ -199,7 +189,6 @@ function calCandleMA(dayArr, nameArr, colorArr, kdata) {
   }
   return seriesTemp;
 }
-
 function calValidDistance(self, distance, chartData, config, opts) {
   var dataChartAreaWidth = opts.width - opts.area[1] - opts.area[3];
   var dataChartWidth = chartData.eachSpacing * (opts.chartData.xAxisData.xAxisPoints.length - 1);
@@ -220,7 +209,6 @@ function calValidDistance(self, distance, chartData, config, opts) {
   }
   return validDistance;
 }
-
 function isInAngleRange(angle, startAngle, endAngle) {
   function adjust(angle) {
     while (angle < 0) {
@@ -242,7 +230,6 @@ function isInAngleRange(angle, startAngle, endAngle) {
   }
   return angle >= startAngle && angle <= endAngle;
 }
-
 function calRotateTranslate(x, y, h) {
   var xv = x;
   var yv = h - y;
@@ -254,7 +241,6 @@ function calRotateTranslate(x, y, h) {
     transY: transY
   };
 }
-
 function createCurveControlPoints(points, i) {
   function isNotMiddlePoint(points, i) {
     if (points[i - 1] && points[i + 1]) {
@@ -285,7 +271,6 @@ function createCurveControlPoints(points, i) {
     pAx = points[i].x + (points[i + 1].x - points[i - 1].x) * a;
     pAy = points[i].y + (points[i + 1].y - points[i - 1].y) * a;
   }
-
   if (i > points.length - 3) {
     var last = points.length - 1;
     pBx = points[last].x - (points[last].x - points[last - 1].x) * b;
@@ -329,14 +314,12 @@ function createCurveControlPoints(points, i) {
     }
   };
 }
-
 function convertCoordinateOrigin(x, y, center) {
   return {
     x: center.x + x,
     y: center.y - y
   };
 }
-
 function avoidCollision(obj, target) {
   if (target) {
     // is collision test
@@ -356,7 +339,6 @@ function avoidCollision(obj, target) {
   }
   return obj;
 }
-
 function fixPieSeries(series, opts, config){
   let pieSeriesArr = [];
   if(series.length>0 && series[0].data.constructor.toString().indexOf('Array') > -1){
@@ -373,7 +355,6 @@ function fixPieSeries(series, opts, config){
   }
   return pieSeriesArr;
 }
-
 function fillSeries(series, opts, config) {
   var index = 0;
   for (var i = 0; i < series.length; i++) {
@@ -421,7 +402,6 @@ function fillSeries(series, opts, config) {
   }
   return series;
 }
-
 function fillCustomColor(linearType, customColor, series, config) {
   var newcolor = customColor || [];
   if (linearType == 'custom' && newcolor.length == 0 ) {
@@ -435,7 +415,6 @@ function fillCustomColor(linearType, customColor, series, config) {
   }
   return newcolor;
 }
-  
 function getDataRange(minData, maxData) {
   var limit = 0;
   var range = maxData - minData;
@@ -467,7 +446,6 @@ function getDataRange(minData, maxData) {
     maxRange: findRange(maxData, 'upper', limit)
   };
 }
-
 function measureText(text, fontSize, context) {
   var width = 0;
   text = String(text);
@@ -506,13 +484,11 @@ function measureText(text, fontSize, context) {
     return width * fontSize / 10;
   }
 }
-
 function dataCombine(series) {
   return series.reduce(function(a, b) {
     return (a.data ? a.data : a).concat(b.data);
   }, []);
 }
-
 function dataCombineStack(series, len) {
   var sum = new Array(len);
   for (var j = 0; j < sum.length; j++) {
@@ -527,7 +503,6 @@ function dataCombineStack(series, len) {
     return (a.data ? a.data : a).concat(b.data).concat(sum);
   }, []);
 }
-
 function getTouches(touches, opts, e) {
   let x, y;
   if (touches.clientX) {
@@ -552,7 +527,6 @@ function getTouches(touches, opts, e) {
     y: y
   }
 }
-
 function getSeriesDataItem(series, index, group) {
   var data = [];
   var newSeries = [];
@@ -588,14 +562,12 @@ function getSeriesDataItem(series, index, group) {
   }
   return data;
 }
-
 function getMaxTextListLength(list, fontSize, context) {
   var lengthList = list.map(function(item) {
     return measureText(item, fontSize, context);
   });
   return Math.max.apply(null, lengthList);
 }
-
 function getRadarCoordinateSeries(length) {
   var eachAngle = 2 * Math.PI / length;
   var CoordinateSeries = [];
@@ -606,7 +578,6 @@ function getRadarCoordinateSeries(length) {
     return -1 * item + Math.PI / 2;
   });
 }
-
 function getToolTipData(seriesData, opts, index, group, categories) {
   var option = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
   var calPoints = opts.chartData.calPoints?opts.chartData.calPoints:[];
@@ -639,7 +610,6 @@ function getToolTipData(seriesData, opts, index, group, categories) {
     offset: offset
   };
 }
-
 function getMixToolTipData(seriesData, opts, index, categories) {
   var option = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
   var points = opts.chartData.xAxisPoints[index] + opts.chartData.eachSpacing / 2;
@@ -664,7 +634,6 @@ function getMixToolTipData(seriesData, opts, index, categories) {
     offset: offset
   };
 }
-
 function getCandleToolTipData(series, seriesData, opts, index, categories, extra) {
   var option = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : {};
   var calPoints = opts.chartData.calPoints;
@@ -729,7 +698,6 @@ function getCandleToolTipData(series, seriesData, opts, index, categories, extra
     offset: offset
   };
 }
-
 function filterSeries(series) {
   let tempSeries = [];
   for (let i = 0; i < series.length; i++) {
@@ -739,7 +707,6 @@ function filterSeries(series) {
   }
   return tempSeries;
 }
-
 function findCurrentIndex(currentPoints, calPoints, opts, config) {
   var offset = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
   var current={ index:-1, group:[] };
@@ -790,7 +757,6 @@ function findCurrentIndex(currentPoints, calPoints, opts, config) {
   }
   return current;
 }
-
 function findBarChartCurrentIndex(currentPoints, calPoints, opts, config) {
   var offset = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
   var current={ index:-1, group:[] };
@@ -807,7 +773,6 @@ function findBarChartCurrentIndex(currentPoints, calPoints, opts, config) {
   }
   return current;
 }
-
 function findLegendIndex(currentPoints, legendData, opts) {
   let currentIndex = -1;
   let gap = 0;
@@ -829,15 +794,12 @@ function findLegendIndex(currentPoints, legendData, opts) {
   }
   return currentIndex;
 }
-
 function isInExactLegendArea(currentPoints, area) {
   return currentPoints.x > area.start.x && currentPoints.x < area.end.x && currentPoints.y > area.start.y && currentPoints.y < area.end.y;
 }
-
 function isInExactChartArea(currentPoints, opts, config) {
   return currentPoints.x <= opts.width - opts.area[1] + 10 && currentPoints.x >= opts.area[3] - 10 && currentPoints.y >= opts.area[0] && currentPoints.y <= opts.height - opts.area[2];
 }
-
 function findRadarChartCurrentIndex(currentPoints, radarData, count) {
   var eachAngleArea = 2 * Math.PI / count;
   var currentIndex = -1;
@@ -873,7 +835,6 @@ function findRadarChartCurrentIndex(currentPoints, radarData, count) {
   }
   return currentIndex;
 }
-
 function findFunnelChartCurrentIndex(currentPoints, funnelData) {
   var currentIndex = -1;
   for (var i = 0, len = funnelData.series.length; i < len; i++) {
@@ -885,7 +846,6 @@ function findFunnelChartCurrentIndex(currentPoints, funnelData) {
   }
   return currentIndex;
 }
-
 function findWordChartCurrentIndex(currentPoints, wordData) {
   var currentIndex = -1;
   for (var i = 0, len = wordData.length; i < len; i++) {
@@ -897,7 +857,6 @@ function findWordChartCurrentIndex(currentPoints, wordData) {
   }
   return currentIndex;
 }
-
 function findMapChartCurrentIndex(currentPoints, opts) {
   var currentIndex = -1;
   var cData = opts.chartData.mapData;
@@ -913,7 +872,6 @@ function findMapChartCurrentIndex(currentPoints, opts) {
   }
   return currentIndex;
 }
-
 function findRoseChartCurrentIndex(currentPoints, pieData, opts) {
   var currentIndex = -1;
   var series = getRoseDataPoints(opts._series_, opts.extra.rose.type, pieData.radius, pieData.radius);
@@ -932,7 +890,6 @@ function findRoseChartCurrentIndex(currentPoints, pieData, opts) {
   }
   return currentIndex;
 }
-
 function findPieChartCurrentIndex(currentPoints, pieData, opts) {
   var currentIndex = -1;
   var series = getPieDataPoints(pieData.series);
@@ -954,11 +911,9 @@ function findPieChartCurrentIndex(currentPoints, pieData, opts) {
   }
   return currentIndex;
 }
-
 function isInExactPieChartArea(currentPoints, center, radius) {
   return Math.pow(currentPoints.x - center.x, 2) + Math.pow(currentPoints.y - center.y, 2) <= Math.pow(radius, 2);
 }
-
 function splitPoints(points,eachSeries) {
   var newPoints = [];
   var items = [];
@@ -977,14 +932,12 @@ function splitPoints(points,eachSeries) {
         items = [];
       }
     }
-    
   });
   if (items.length) {
     newPoints.push(items);
   }
   return newPoints;
 }
-
 function calLegendData(series, opts, config, chartData, context) {
   let legendData = {
     area: {
@@ -1125,7 +1078,6 @@ function calLegendData(series, opts, config, chartData, context) {
   chartData.legendData = legendData;
   return legendData;
 }
-
 function calCategoriesData(categories, opts, config, eachSpacing, context) {
   var result = {
     angle: 0,
@@ -1135,14 +1087,12 @@ function calCategoriesData(categories, opts, config, eachSpacing, context) {
     return measureText(item, opts.xAxis.fontSize * opts.pix || config.fontSize, context);
   });
   var maxTextLength = Math.max.apply(this, categoriesTextLenth);
-
   if (opts.xAxis.rotateLabel == true && maxTextLength + 2 * config.xAxisTextPadding > eachSpacing) {
     result.angle = 45 * Math.PI / 180;
     result.xAxisHeight = 2 * config.xAxisTextPadding + maxTextLength * Math.sin(result.angle);
   }
   return result;
 }
-
 function getXAxisTextList(series, opts, config, stack) {
   var index = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : -1;
   var data;
@@ -1182,7 +1132,6 @@ function getXAxisTextList(series, opts, config, stack) {
       sorted.push(item);
     }
   })
-
   var minData = 0;
   var maxData = 0;
   if (sorted.length > 0) {
@@ -1219,7 +1168,6 @@ function getXAxisTextList(series, opts, config, stack) {
   }
   return range;
 }
-
 function calXAxisData(series, opts, config, context) {
   //堆叠图重算Y轴
   var columnstyle = assign({}, {
@@ -1260,7 +1208,6 @@ function calXAxisData(series, opts, config, context) {
   }
   return result;
 }
-
 function getRadarDataPoints(angleList, center, radius, series, opts) {
   var process = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 1;
   var radarOption = opts.extra.radar || {};
@@ -1286,7 +1233,6 @@ function getRadarDataPoints(angleList, center, radius, series, opts) {
   }
   return data;
 }
-
 function getPieDataPoints(series, radius) {
   var process = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
   var count = 0;
@@ -1313,7 +1259,6 @@ function getPieDataPoints(series, radius) {
   }
   return series;
 }
-
 function getFunnelDataPoints(series, radius, type, eachSpacing) {
   var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
   series = series.sort(function(a, b) {
@@ -1332,7 +1277,6 @@ function getFunnelDataPoints(series, radius, type, eachSpacing) {
   }
   return series;
 }
-
 function getRoseDataPoints(series, type, minRadius, radius) {
   var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
   var count = 0;
@@ -1370,7 +1314,6 @@ function getRoseDataPoints(series, type, minRadius, radius) {
   }
   return series;
 }
-
 function getArcbarDataPoints(series, arcbarOption) {
   var process = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
   if (process == 1) {
@@ -1396,7 +1339,6 @@ function getArcbarDataPoints(series, arcbarOption) {
   }
   return series;
 }
-
 function getGaugeAxisPoints(categories, startAngle, endAngle) {
   let totalAngle = startAngle - endAngle + 1;
   let tempStartAngle = startAngle;
@@ -1411,7 +1353,6 @@ function getGaugeAxisPoints(categories, startAngle, endAngle) {
   }
   return categories;
 }
-
 function getGaugeDataPoints(series, categories, gaugeOption) {
   let process = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1;
   for (let i = 0; i < series.length; i++) {
@@ -1444,7 +1385,6 @@ function getGaugeDataPoints(series, categories, gaugeOption) {
   }
   return series;
 }
-
 function getPieTextMaxLength(series, config, context, opts) {
   series = getPieDataPoints(series);
   let maxLength = 0;
@@ -1455,7 +1395,6 @@ function getPieTextMaxLength(series, config, context, opts) {
   }
   return maxLength;
 }
-
 function fixColumeData(points, eachSpacing, columnLen, index, config, opts) {
   return points.map(function(item) {
     if (item === null) {
@@ -1486,7 +1425,6 @@ function fixColumeData(points, eachSpacing, columnLen, index, config, opts) {
     return item;
   });
 }
-
 function fixBarData(points, eachSpacing, columnLen, index, config, opts) {
   return points.map(function(item) {
     if (item === null) {
@@ -1509,7 +1447,6 @@ function fixBarData(points, eachSpacing, columnLen, index, config, opts) {
     return item;
   });
 }
-
 function fixColumeMeterData(points, eachSpacing, columnLen, index, config, opts, border) {
   var categoryGap = opts.extra.column.categoryGap * opts.pix || 0;
   return points.map(function(item) {
@@ -1526,7 +1463,6 @@ function fixColumeMeterData(points, eachSpacing, columnLen, index, config, opts,
     return item;
   });
 }
-
 function fixColumeStackData(points, eachSpacing, columnLen, index, config, opts, series) {
   var categoryGap = opts.extra.column.categoryGap * opts.pix || 0;
   return points.map(function(item, indexn) {
@@ -1543,7 +1479,6 @@ function fixColumeStackData(points, eachSpacing, columnLen, index, config, opts,
     return item;
   });
 }
-
 function fixBarStackData(points, eachSpacing, columnLen, index, config, opts, series) {
   var categoryGap = opts.extra.bar.categoryGap * opts.pix || 0;
   return points.map(function(item, indexn) {
@@ -1560,7 +1495,6 @@ function fixBarStackData(points, eachSpacing, columnLen, index, config, opts, se
     return item;
   });
 }
-
 function getXAxisPoints(categories, opts, config) {
   var spacingValid = opts.width - opts.area[1] - opts.area[3];
   var dataCount = opts.enableScroll ? Math.min(opts.xAxis.itemCount, categories.length) : categories.length;
@@ -1588,7 +1522,6 @@ function getXAxisPoints(categories, opts, config) {
     eachSpacing: eachSpacing
   };
 }
-
 function getCandleDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config) {
   var process = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : 1;
   var points = [];
@@ -1612,7 +1545,6 @@ function getCandleDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing,
   });
   return points;
 }
-
 function getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config) {
   var process = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : 1;
   var boundaryGap = 'center';
@@ -1657,7 +1589,6 @@ function getDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts,
   });
   return points;
 }
-
 function getBarDataPoints(data, minRange, maxRange, yAxisPoints, eachSpacing, opts, config) {
   var process = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : 1;
   var points = [];
@@ -1684,7 +1615,6 @@ function getBarDataPoints(data, minRange, maxRange, yAxisPoints, eachSpacing, op
   });
   return points;
 }
-
 function getStackDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, opts, config, seriesIndex, stackSeries) {
   var process = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : 1;
   var points = [];
@@ -1696,7 +1626,6 @@ function getStackDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, 
       var point = {};
       point.color = item.color;
       point.x = xAxisPoints[index] + Math.round(eachSpacing / 2);
-
       if (seriesIndex > 0) {
         var value = 0;
         for (let i = 0; i <= seriesIndex; i++) {
@@ -1720,7 +1649,6 @@ function getStackDataPoints(data, minRange, maxRange, xAxisPoints, eachSpacing, 
   });
   return points;
 }
-
 function getBarStackDataPoints(data, minRange, maxRange, yAxisPoints, eachSpacing, opts, config, seriesIndex, stackSeries) {
   var process = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : 1;
   var points = [];
@@ -1756,7 +1684,6 @@ function getBarStackDataPoints(data, minRange, maxRange, yAxisPoints, eachSpacin
   });
   return points;
 }
-
 function getYAxisTextList(series, opts, config, stack, yData) {
   var index = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : -1;
   var data;
@@ -1832,7 +1759,6 @@ function getYAxisTextList(series, opts, config, stack, yData) {
   }
   return range.reverse();
 }
-
 function calYAxisData(series, opts, config, context) {
   //堆叠图重算Y轴
   var columnstyle = assign({}, {
@@ -1853,7 +1779,6 @@ function calYAxisData(series, opts, config, context) {
     var rangesArr = new Array(YLength);
     var rangesFormatArr = new Array(YLength);
     var yAxisWidthArr = new Array(YLength);
-
     for (let i = 0; i < YLength; i++) {
       let yData = opts.yAxis.data[i];
       //如果总开关不显示，强制每个Y轴为不显示
@@ -1942,7 +1867,6 @@ function calYAxisData(series, opts, config, context) {
     yAxisWidth: yAxisWidthArr
   };
 }
-
 function calTooltipYAxisData(point, series, opts, config, eachSpacing) {
   let ranges = [].concat(opts.chartData.yAxisData.ranges);
   let spacingValid = opts.height - opts.area[0] - opts.area[2];
@@ -1957,7 +1881,6 @@ function calTooltipYAxisData(point, series, opts, config, eachSpacing) {
   }
   return items;
 }
-
 function calMarkLineData(points, opts) {
   let minRange, maxRange;
   let spacingValid = opts.height - opts.area[0] - opts.area[2];
@@ -1971,7 +1894,6 @@ function calMarkLineData(points, opts) {
   }
   return points;
 }
-
 function contextRotate(context, opts) {
   if (opts.rotateLock !== true) {
     context.translate(opts.height, 0);
@@ -1982,7 +1904,6 @@ function contextRotate(context, opts) {
     opts._rotate_ = true;
   }
 }
-
 function drawPointShape(points, color, shape, context, opts) {
   context.beginPath();
   if (opts.dataPointShapeType == 'hollow') {
@@ -2034,7 +1955,6 @@ function drawPointShape(points, color, shape, context, opts) {
   context.fill();
   context.stroke();
 }
-
 function drawRingTitle(opts, config, context, center) {
   var titlefontSize = opts.title.fontSize || config.titleFontSize;
   var subtitlefontSize = opts.subtitle.fontSize || config.subtitleFontSize;
@@ -2074,7 +1994,6 @@ function drawRingTitle(opts, config, context, center) {
     context.stroke();
   }
 }
-
 function drawPointText(points, series, config, context, opts) {
   // 绘制数据文案
   var data = series.data;
@@ -2102,7 +2021,6 @@ function drawPointText(points, series, config, context, opts) {
     }
   });
 }
-
 function drawBarPointText(points, series, config, context, opts) {
   // 绘制数据文案
   var data = series.data;
@@ -2125,7 +2043,6 @@ function drawBarPointText(points, series, config, context, opts) {
     }
   });
 }
-
 function drawGaugeLabel(gaugeOption, radius, centerPosition, opts, config, context) {
   radius -= gaugeOption.width / 2 + gaugeOption.labelOffset * opts.pix;
   let totalAngle = gaugeOption.startAngle - gaugeOption.endAngle + 1;
@@ -2156,9 +2073,7 @@ function drawGaugeLabel(gaugeOption, radius, centerPosition, opts, config, conte
     }
     nowNumber += splitNumber;
   }
-
 }
-
 function drawRadarLabel(angleList, radius, centerPosition, opts, config, context) {
   var radarOption = opts.extra.radar || {};
   radius += config.radarLabelTextMargin * opts.pix;
@@ -2182,9 +2097,7 @@ function drawRadarLabel(angleList, radius, centerPosition, opts, config, context
     context.closePath();
     context.stroke();
   });
-
 }
-
 function drawPieText(series, opts, config, context, radius, center) {
   var lineRadius = config.pieChartLinePadding;
   var textObjectCollection = [];
@@ -2291,7 +2204,6 @@ function drawPieText(series, opts, config, context, radius, center) {
     context.closePath();
   }
 }
-
 function drawToolTipSplitLine(offsetX, opts, config, context) {
   var toolTipOption = opts.extra.tooltip || {};
   toolTipOption.gridType = toolTipOption.gridType == undefined ? 'solid' : toolTipOption.gridType;
@@ -2330,7 +2242,6 @@ function drawToolTipSplitLine(offsetX, opts, config, context) {
     context.stroke();
   }
 }
-
 function drawMarkLine(opts, config, context) {
   let markLineOption = assign({}, {
     type: 'solid',
@@ -2386,7 +2297,6 @@ function drawMarkLine(opts, config, context) {
     }
   }
 }
-
 function drawToolTipHorizentalLine(opts, config, context, eachSpacing, xAxisPoints) {
   var toolTipOption = assign({}, {
     gridType: 'solid',
@@ -2446,7 +2356,6 @@ function drawToolTipHorizentalLine(opts, config, context, eachSpacing, xAxisPoin
     }
   }
 }
-
 function drawToolTipSplitArea(offsetX, opts, config, context, eachSpacing) {
   var toolTipOption = assign({}, {
     activeBgColor: '#000000',
@@ -2461,7 +2370,6 @@ function drawToolTipSplitArea(offsetX, opts, config, context, eachSpacing) {
   context.fill();
   context.setFillStyle("#FFFFFF");
 }
-
 function drawBarToolTipSplitArea(offsetX, opts, config, context, eachSpacing) {
   var toolTipOption = assign({}, {
     activeBgColor: '#000000',
@@ -2476,7 +2384,6 @@ function drawBarToolTipSplitArea(offsetX, opts, config, context, eachSpacing) {
   context.fill();
   context.setFillStyle("#FFFFFF");
 }
-
 function drawToolTip(textList, offset, opts, config, context, eachSpacing, xAxisPoints) {
   var toolTipOption = assign({}, {
     showBox: true,
@@ -2593,7 +2500,6 @@ function drawToolTip(textList, offset, opts, config, context, eachSpacing, xAxis
     context.stroke();
   });
 }
-
 function drawColumnDataPoints(series, opts, config, context) {
   let process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
   let xAxisData = opts.chartData.xAxisData,
@@ -2808,7 +2714,6 @@ function drawColumnDataPoints(series, opts, config, context) {
         break;
     }
   });
-
   if (opts.dataLabel !== false && process === 1) {
     series.forEach(function(eachSeries, seriesIndex) {
       let ranges, minRange, maxRange;
@@ -2840,7 +2745,6 @@ function drawColumnDataPoints(series, opts, config, context) {
     eachSpacing: eachSpacing
   };
 }
-
 function drawBarDataPoints(series, opts, config, context) {
   let process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
   let yAxisPoints = [];
@@ -2924,7 +2828,6 @@ function drawBarDataPoints(series, opts, config, context) {
               r1 = r1 < 0 ? 0 : r1;
               r2 = r2 < 0 ? 0 : r2;
               r3 = r3 < 0 ? 0 : r3;
-              
               context.arc(left + r3, top + r3, r3, -Math.PI, -Math.PI / 2);
               context.arc(item.x - r0, top + r0, r0, -Math.PI / 2, 0);
               context.arc(item.x - r1, top + width - r1, r1, 0, Math.PI / 2);
@@ -2966,7 +2869,6 @@ function drawBarDataPoints(series, opts, config, context) {
         break;
     }
   });
-
   if (opts.dataLabel !== false && process === 1) {
     series.forEach(function(eachSeries, seriesIndex) {
       let ranges, minRange, maxRange;
@@ -2993,7 +2895,6 @@ function drawBarDataPoints(series, opts, config, context) {
     eachSpacing: eachSpacing
   };
 }
-
 function drawCandleDataPoints(series, seriesMA, opts, config, context) {
   var process = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 1;
   var candleOption = assign({}, {
@@ -3128,7 +3029,6 @@ function drawCandleDataPoints(series, seriesMA, opts, config, context) {
     eachSpacing: eachSpacing
   };
 }
-
 function drawAreaDataPoints(series, opts, config, context) {
   var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
   var areaOption = assign({}, {
@@ -3295,7 +3195,6 @@ function drawAreaDataPoints(series, opts, config, context) {
       drawPointShape(points, eachSeries.color, eachSeries.pointShape, context, opts);
     }
   });
-
   if (opts.dataLabel !== false && process === 1) {
     series.forEach(function(eachSeries, seriesIndex) {
       let ranges, minRange, maxRange;
@@ -3314,7 +3213,6 @@ function drawAreaDataPoints(series, opts, config, context) {
     eachSpacing: eachSpacing
   };
 }
-
 function drawScatterDataPoints(series, opts, config, context) {
   var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
   var scatterOption = assign({}, {
@@ -3402,7 +3300,6 @@ function drawScatterDataPoints(series, opts, config, context) {
     eachSpacing: eachSpacing
   };
 }
-
 function drawBubbleDataPoints(series, opts, config, context) {
   var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
   var bubbleOption = assign({}, {
@@ -3439,7 +3336,6 @@ function drawBubbleDataPoints(series, opts, config, context) {
     context.closePath();
     context.fill();
     context.stroke();
-    
     if (opts.dataLabel !== false && process === 1) {
       points.forEach(function(item, index) {
         context.beginPath();
@@ -3461,8 +3357,6 @@ function drawBubbleDataPoints(series, opts, config, context) {
     eachSpacing: eachSpacing
   };
 }
-
-
 function drawLineDataPoints(series, opts, config, context) {
   var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
   var lineOption = assign({}, {
@@ -3571,7 +3465,6 @@ function drawLineDataPoints(series, opts, config, context) {
     eachSpacing: eachSpacing
   };
 }
-
 function drawMixDataPoints(series, opts, config, context) {
   let process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
   let columnOption = assign({}, {
@@ -3816,7 +3709,6 @@ function drawMixDataPoints(series, opts, config, context) {
     eachSpacing: eachSpacing,
   }
 }
-
 function drawToolTipBridge(opts, config, context, process, eachSpacing, xAxisPoints) {
   var toolTipOption = opts.extra.tooltip || {};
   if (toolTipOption.horizentalLine && opts.tooltip && process === 1 && (opts.type == 'line' || opts.type == 'area' || opts.type == 'column' || opts.type == 'candle' || opts.type == 'mix')) {
@@ -3830,11 +3722,8 @@ function drawToolTipBridge(opts, config, context, process, eachSpacing, xAxisPoi
     drawToolTip(opts.tooltip.textList, opts.tooltip.offset, opts, config, context, eachSpacing, xAxisPoints);
   }
   context.restore();
-
 }
-
 function drawXAxis(categories, opts, config, context) {
-
   let xAxisData = opts.chartData.xAxisData,
     xAxisPoints = xAxisData.xAxisPoints,
     startX = xAxisData.startX,
@@ -3846,7 +3735,6 @@ function drawXAxis(categories, opts, config, context) {
   }
   var startY = opts.height - opts.area[2];
   var endY = opts.area[0];
-
   //绘制滚动条
   if (opts.enableScroll && opts.xAxis.scrollShow) {
     var scrollY = opts.height - opts.area[2] + config.xAxisHeight;
@@ -3928,9 +3816,7 @@ function drawXAxis(categories, opts, config, context) {
       }
       maxXAxisListLength -= 1;
     }
-
     let ratio = Math.ceil(categories.length / maxXAxisListLength);
-
     let newCategories = [];
     let cgLength = categories.length;
     for (let i = 0; i < cgLength; i++) {
@@ -3975,7 +3861,6 @@ function drawXAxis(categories, opts, config, context) {
         var _calRotateTranslate = calRotateTranslate(xAxisPoints[index] + eachSpacing / 2, startY + xAxisFontSize / 2 + 5, opts.height),
           transX = _calRotateTranslate.transX,
           transY = _calRotateTranslate.transY;
-
         context.rotate(-1 * config._xAxisTextAngle_);
         context.translate(transX, transY);
         context.fillText(String(xitem), xAxisPoints[index] + offset, startY + xAxisFontSize + 5);
@@ -3996,7 +3881,6 @@ function drawXAxis(categories, opts, config, context) {
     context.stroke();
   }
 }
-
 function drawYAxisGrid(categories, opts, config, context) {
   if (opts.yAxis.disableGrid === true) {
     return;
@@ -4034,7 +3918,6 @@ function drawYAxisGrid(categories, opts, config, context) {
   context.setLineDash([]);
   context.restore();
 }
-
 function drawYAxis(series, opts, config, context) {
   if (opts.yAxis.disabled === true) {
     return;
@@ -4062,7 +3945,6 @@ function drawYAxis(series, opts, config, context) {
   }
   context.closePath();
   context.stroke();
-  
   let tStartLeft = opts.area[3];
   let tStartRight = opts.width - opts.area[1];
   let tStartCenter = opts.area[3] + (opts.width - opts.area[1] - opts.area[3]) / 2;
@@ -4116,7 +3998,6 @@ function drawYAxis(series, opts, config, context) {
                 tmpstrat = tStartLeft - yAxisWidth.width / 2
             }
             context.fillText(String(item), tmpstrat, pos + yAxisFontSize / 2 - 3 * opts.pix);
-
           } else if (yAxisWidth.position == 'right') {
             //画刻度线
             if (yData.calibration == true) {
@@ -4207,9 +4088,7 @@ function drawYAxis(series, opts, config, context) {
       }
     }
   }
-
 }
-
 function drawLegend(series, opts, config, context, chartData) {
   if (opts.legend.show === false) {
     return;
@@ -4330,7 +4209,6 @@ function drawLegend(series, opts, config, context, chartData) {
     }
   });
 }
-
 function drawPieDataPoints(series, opts, config, context) {
   var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
   var pieOption = assign({}, {
@@ -4354,7 +4232,6 @@ function drawPieDataPoints(series, opts, config, context) {
   if (config.pieChartLinePadding == 0) {
     config.pieChartLinePadding = pieOption.activeRadius * opts.pix;
   }
-
   var radius = Math.min((opts.width - opts.area[1] - opts.area[3]) / 2 - config.pieChartLinePadding - config.pieChartTextPadding - config._pieTextMaxLength_, (opts.height - opts.area[0] - opts.area[2]) / 2 - config.pieChartLinePadding - config.pieChartTextPadding);
   if (pieOption.customRadius > 0) {
     radius = pieOption.customRadius * opts.pix;
@@ -4435,7 +4312,6 @@ function drawPieDataPoints(series, opts, config, context) {
     series: series
   };
 }
-
 function drawRoseDataPoints(series, opts, config, context) {
   var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
   var roseOption = assign({}, {
@@ -4502,7 +4378,6 @@ function drawRoseDataPoints(series, opts, config, context) {
       context.stroke();
     }
   });
-
   if (opts.dataLabel !== false && process === 1) {
     var valid = false;
     for (var i = 0, len = series.length; i < len; i++) {
@@ -4521,7 +4396,6 @@ function drawRoseDataPoints(series, opts, config, context) {
     series: series
   };
 }
-
 function drawArcbarDataPoints(series, opts, config, context) {
   var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
   var arcbarOption = assign({}, {
@@ -4555,7 +4429,6 @@ function drawArcbarDataPoints(series, opts, config, context) {
     radius -= arcbarOption.width / 2;
   }
   arcbarOption.customColor = fillCustomColor(arcbarOption.linearType, arcbarOption.customColor, series, config);
-  
   for (let i = 0; i < series.length; i++) {
     let eachSeries = series[i];
     //背景颜色
@@ -4591,7 +4464,6 @@ function drawArcbarDataPoints(series, opts, config, context) {
     series: series
   };
 }
-
 function drawGaugeDataPoints(categories, series, opts, config, context) {
   var process = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 1;
   var gaugeOption = assign({}, {
@@ -4793,7 +4665,6 @@ function drawGaugeDataPoints(categories, series, opts, config, context) {
     totalAngle: totalAngle
   };
 }
-
 function drawRadarDataPoints(series, opts, config, context) {
   var process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
   var radarOption = assign({}, {
@@ -4824,7 +4695,6 @@ function drawRadarDataPoints(series, opts, config, context) {
   });
   context.stroke();
   context.closePath();
-  
   // 画背景网格
   var _loop = function _loop(i) {
     var startPos = {};
@@ -4882,7 +4752,6 @@ function drawRadarDataPoints(series, opts, config, context) {
   });
   // draw label text
   drawRadarLabel(coordinateAngle, radius, centerPosition, opts, config, context);
-  
   // draw dataLabel
   if (opts.dataLabel !== false && process === 1) {
     radarDataPoints.forEach(function(eachSeries, seriesIndex) {
@@ -4917,14 +4786,12 @@ function drawRadarDataPoints(series, opts, config, context) {
     });
     context.setTextAlign('left');
   }
-  
   return {
     center: centerPosition,
     radius: radius,
     angleList: coordinateAngle
   };
 }
-
 function normalInt(min, max, iter) {
   iter = iter == 0 ? 1 : iter;
   var arr = [];
@@ -4935,7 +4802,6 @@ function normalInt(min, max, iter) {
     return i + j
   }) / iter * (max - min)) + min;
 };
-
 function collisionNew(area, points, width, height) {
   var isIn = false;
   for (let i = 0; i < points.length; i++) {
@@ -4955,7 +4821,6 @@ function collisionNew(area, points, width, height) {
   }
   return isIn;
 };
-
 function getBoundingBox(data) {
   var bounds = {},coords;
   bounds.xMin = 180;
@@ -4985,21 +4850,18 @@ function getBoundingBox(data) {
   }
   return bounds;
 }
-
 function coordinateToPoint(latitude, longitude, bounds, scale, xoffset, yoffset) {
   return {
     x: (longitude - bounds.xMin) * scale + xoffset,
     y: (bounds.yMax - latitude) * scale + yoffset
   };
 }
-
 function pointToCoordinate(pointY, pointX, bounds, scale, xoffset, yoffset) {
   return {
     x: (pointX - xoffset) / scale + bounds.xMin,
     y: bounds.yMax - (pointY - yoffset) / scale
   };
 }
-
 function isRayIntersectsSegment(poi, s_poi, e_poi) {
   if (s_poi[1] == e_poi[1]) {
     return false;
@@ -5026,7 +4888,6 @@ function isRayIntersectsSegment(poi, s_poi, e_poi) {
     return true;
   }
 }
-
 function isPoiWithinPoly(poi, poly, mercator) {
   let sinsc = 0;
   for (let i = 0; i < poly.length; i++) {
@@ -5052,8 +4913,6 @@ function isPoiWithinPoly(poi, poly, mercator) {
     return false;
   }
 }
-
-
 function drawMapDataPoints(series, opts, config, context) {
   var mapOption = assign({}, {
     border: true,
@@ -5146,7 +5005,6 @@ function drawMapDataPoints(series, opts, config, context) {
   drawToolTipBridge(opts, config, context, 1);
   context.draw();
 }
-
 function getWordCloudPoint(opts, type, context) {
   let points = opts.series;
   switch (type) {
@@ -5224,8 +5082,6 @@ function getWordCloudPoint(opts, type, context) {
   }
   return points;
 }
-
-
 function drawWordCloudDataPoints(series, opts, config, context) {
   let process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
   let wordOption = assign({}, {
@@ -5284,7 +5140,6 @@ function drawWordCloudDataPoints(series, opts, config, context) {
   }
   context.restore();
 }
-
 function drawFunnelDataPoints(series, opts, config, context) {
   let process = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
   let funnelOption = assign({}, {
@@ -5471,7 +5326,6 @@ function drawFunnelDataPoints(series, opts, config, context) {
       context.translate(0, -eachSpacing)
     }
   }
-  
   context.restore();
   if (opts.dataLabel !== false && process === 1) {
     drawFunnelText(series, opts, context, eachSpacing, funnelOption.labelAlign, activeWidth, centerPosition);
@@ -5482,7 +5336,6 @@ function drawFunnelDataPoints(series, opts, config, context) {
     series: series
   };
 }
-
 function drawFunnelText(series, opts, context, eachSpacing, labelAlign, activeWidth, centerPosition) {
   for (let i = 0; i < series.length; i++) {
     let item = series[i];
@@ -5563,14 +5416,11 @@ function drawFunnelText(series, opts, context, eachSpacing, labelAlign, activeWi
       context.stroke();
       context.closePath();
     }
-
   }
 }
-
 function drawCanvas(opts, context) {
   context.draw();
 }
-
 var Timing = {
   easeIn: function easeIn(pos) {
     return Math.pow(pos, 3);
@@ -5589,7 +5439,6 @@ var Timing = {
     return pos;
   }
 };
-
 function Animation(opts) {
   this.isStop = false;
   opts.duration = typeof opts.duration === 'undefined' ? 1000 : opts.duration;
@@ -5636,11 +5485,9 @@ function Animation(opts) {
   _step = _step.bind(this);
   animationFrame(_step, delay);
 }
-
 Animation.prototype.stop = function() {
   this.isStop = true;
 };
-
 function drawCharts(type, opts, config, context) {
   var _this = this;
   var series = opts.series;
@@ -5679,7 +5526,6 @@ function drawCharts(type, opts, config, context) {
   var _calLegendData = calLegendData(seriesMA, opts, config, opts.chartData, context),
     legendHeight = _calLegendData.area.wholeHeight,
     legendWidth = _calLegendData.area.wholeWidth;
-
   switch (opts.legend.position) {
     case 'top':
       opts.area[0] += legendHeight;
@@ -5694,7 +5540,6 @@ function drawCharts(type, opts, config, context) {
       opts.area[1] += legendWidth;
       break;
   }
-
   let _calYAxisData = {},
     yAxisWidth = 0;
   if (opts.type === 'line' || opts.type === 'column' || opts.type === 'area' || opts.type === 'mix' || opts.type === 'candle' || opts.type === 'scatter'  || opts.type === 'bubble' || opts.type === 'bar') {
@@ -5732,7 +5577,6 @@ function drawCharts(type, opts, config, context) {
     config.yAxisWidth = yAxisWidth;
   }
   opts.chartData.yAxisData = _calYAxisData;
-
   if (opts.categories && opts.categories.length && opts.type !== 'radar' && opts.type !== 'gauge' && opts.type !== 'bar') {
     opts.chartData.xAxisData = getXAxisPoints(opts.categories, opts, config);
     let _calCategoriesData = calCategoriesData(opts.categories, opts, config, opts.chartData.xAxisData.eachSpacing, context),
@@ -5777,7 +5621,6 @@ function drawCharts(type, opts, config, context) {
     };
     opts._scrollDistance_ = offsetLeft;
   }
-
   if (type === 'pie' || type === 'ring' || type === 'rose') {
     config._pieTextMaxLength_ = opts.dataLabel === false ? 0 : getPieTextMaxLength(seriesMA, config, context, opts);
   }
@@ -6168,20 +6011,16 @@ function drawCharts(type, opts, config, context) {
       break;
   }
 }
-
 function uChartsEvent() {
   this.events = {};
 }
-
 uChartsEvent.prototype.addEventListener = function(type, listener) {
   this.events[type] = this.events[type] || [];
   this.events[type].push(listener);
 };
-
 uChartsEvent.prototype.delEventListener = function(type) {
   this.events[type] = [];
 };
-
 uChartsEvent.prototype.trigger = function() {
   for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
     args[_key] = arguments[_key];
@@ -6198,7 +6037,6 @@ uChartsEvent.prototype.trigger = function() {
     });
   }
 };
-
 var uCharts = function uCharts(opts) {
   opts.pix = opts.pixelRatio ? opts.pixelRatio : 1;
   opts.fontSize = opts.fontSize ? opts.fontSize : 13;
@@ -6256,7 +6094,6 @@ var uCharts = function uCharts(opts) {
   opts.animation = opts.animation ? true : false;
   opts.rotate = opts.rotate ? true : false;
   opts.canvas2d = opts.canvas2d ? true : false;
-  
   let config$$1 = JSON.parse(JSON.stringify(config));
   config$$1.color = opts.color ? opts.color : config$$1.color;
   config$$1.yAxisTitleWidth = opts.yAxis.disabled !== true && opts.yAxis.title ? config$$1.yAxisTitleWidth : 0;
@@ -6271,7 +6108,6 @@ var uCharts = function uCharts(opts) {
   }
   config$$1.pieChartTextPadding = opts.dataLabel === false ? 0 : config$$1.pieChartTextPadding * opts.pix;
   config$$1.yAxisSplit = opts.yAxis.splitNumber ? opts.yAxis.splitNumber : config.yAxisSplit;
-
   //屏幕旋转
   config$$1.rotate = opts.rotate;
   if (opts.rotate) {
@@ -6280,7 +6116,6 @@ var uCharts = function uCharts(opts) {
     opts.width = tempHeight;
     opts.height = tempWidth;
   }
-
   //适配高分屏
   opts.padding = opts.padding ? opts.padding : config$$1.padding;
   config$$1.yAxisWidth = config.yAxisWidth * opts.pix;
@@ -6338,7 +6173,6 @@ var uCharts = function uCharts(opts) {
   this.config = config$$1;
   drawCharts.call(this, opts.type, opts, config$$1, this.context);
 };
-
 uCharts.prototype.updateData = function() {
   let data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   this.opts = assign({}, this.opts, data);
@@ -6379,7 +6213,6 @@ uCharts.prototype.updateData = function() {
   }
   drawCharts.call(this, this.opts.type, this.opts, this.config, this.context);
 };
-
 uCharts.prototype.zoom = function() {
   var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.opts.xAxis.itemCount;
   if (this.opts.enableScroll !== true) {
@@ -6420,8 +6253,6 @@ uCharts.prototype.zoom = function() {
   this.opts._scrollDistance_ = offsetLeft;
   drawCharts.call(this, this.opts.type, this.opts, this.config, this.context);
 };
-
-
 uCharts.prototype.dobuleZoom = function(e) {
   if (this.opts.enableScroll !== true) {
     console.log('[uCharts] 请启用滚动条后使用')
@@ -6463,7 +6294,6 @@ uCharts.prototype.dobuleZoom = function(e) {
   itemCount = itemCount >=  this.opts.categories.length ? this.opts.categories.length : itemCount;
   this.opts.animation = false;
   this.opts.xAxis.itemCount = itemCount;
-  
   // 重新计算滚动条偏移距离
   let offsetLeft = 0;
   let _getXAxisPoints0 = getXAxisPoints(this.opts.categories, this.opts, this.config),
@@ -6489,19 +6319,15 @@ uCharts.prototype.dobuleZoom = function(e) {
   this.opts._scrollDistance_ = offsetLeft;
   drawCharts.call(this, this.opts.type, this.opts, this.config, this.context);
 }
-
 uCharts.prototype.stopAnimation = function() {
   this.animationInstance && this.animationInstance.stop();
 };
-
 uCharts.prototype.addEventListener = function(type, listener) {
   this.uevent.addEventListener(type, listener);
 };
-
 uCharts.prototype.delEventListener = function(type) {
   this.uevent.delEventListener(type);
 };
-
 uCharts.prototype.getCurrentDataIndex = function(e) {
   var touches = null;
   if (e.changedTouches) {
@@ -6555,7 +6381,6 @@ uCharts.prototype.getCurrentDataIndex = function(e) {
   }
   return -1;
 };
-
 uCharts.prototype.getLegendDataIndex = function(e) {
   var touches = null;
   if (e.changedTouches) {
@@ -6572,7 +6397,6 @@ uCharts.prototype.getLegendDataIndex = function(e) {
   }
   return -1;
 };
-
 uCharts.prototype.touchLegend = function(e) {
   var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var touches = null;
@@ -6595,9 +6419,7 @@ uCharts.prototype.touchLegend = function(e) {
       drawCharts.call(this, this.opts.type, this.opts, this.config, this.context);
     }
   }
-
 };
-
 uCharts.prototype.showToolTip = function(e) {
   var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var touches = null;
@@ -6801,7 +6623,6 @@ uCharts.prototype.showToolTip = function(e) {
     drawCharts.call(this, opts.type, opts, this.config, this.context);
   }
 };
-
 uCharts.prototype.translate = function(distance) {
   this.scrollOption = {
     currentOffset: distance,
@@ -6815,7 +6636,6 @@ uCharts.prototype.translate = function(distance) {
   });
   drawCharts.call(this, this.opts.type, opts, this.config, this.context);
 };
-
 uCharts.prototype.scrollStart = function(e) {
   var touches = null;
   if (e.changedTouches) {
@@ -6828,7 +6648,6 @@ uCharts.prototype.scrollStart = function(e) {
     this.scrollOption.startTouchX = _touches$.x;
   }
 };
-
 uCharts.prototype.scroll = function(e) {
   if (this.scrollOption.lastMoveTime === 0) {
     this.scrollOption.lastMoveTime = Date.now();
@@ -6861,7 +6680,6 @@ uCharts.prototype.scroll = function(e) {
     return currentOffset + _distance;
   }
 };
-
 uCharts.prototype.scrollEnd = function(e) {
   if (this.opts.enableScroll === true) {
     var _scrollOption = this.scrollOption,
@@ -6873,5 +6691,4 @@ uCharts.prototype.scrollEnd = function(e) {
     this.scrollOption.moveCurrent = 0;
   }
 };
-
 module.exports = uCharts;

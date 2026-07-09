@@ -1,0 +1,147 @@
+<view class="page">
+  <view class="page-backdrop"></view>
+  <view class="top-grid-backdrop"></view>
+  <view class="custom-header {{headerSolid ? 'custom-header-solid' : ''}}" style="padding-top: {{statusBarHeight}}px;">
+    <view class="header-main" style="height: {{navBarHeight}}px;">
+      <view class="header-back" bindtap="goBack">‹</view>
+      <text class="header-title {{headerSolid ? 'header-title-visible' : ''}}">{{monthLabel}}</text>
+      <view
+        class="header-capsule-placeholder"
+        style="margin-top: {{capsuleTop - statusBarHeight}}px; height: {{capsuleHeight}}px; width: {{capsuleWidth}}px; margin-right: {{capsuleRight}}px;"
+      ></view>
+    </view>
+  </view>
+  <scroll-view scroll-y class="page-scroll" bindscroll="handlePageScroll">
+    <view class="page-content" style="padding-top: calc({{statusBarHeight + navBarHeight}}px + 18rpx);">
+      <view class="hero">
+        <view class="hero-glow hero-glow-left"></view>
+        <view class="hero-glow hero-glow-center"></view>
+        <view class="hero-copy">
+          <view class="hero-user">
+            <view class="hero-avatar">鱼</view>
+            <text class="hero-name">肥肥小崽子</text>
+          </view>
+          <text class="hero-title">{{monthLabel}}</text>
+          <text class="hero-desc">{{relationshipText}}</text>
+        </view>
+        <view class="hero-coin">
+          <image class="hero-coin-image" src="/assets/bill/month-hero-wallet.svg" mode="aspectFit"></image>
+        </view>
+      </view>
+      <view class="panel summary-panel">
+        <view class="balance-grid">
+          <view class="balance-item">
+            <text class="panel-label">本月结余</text>
+            <text class="panel-value">{{currentBalanceText}}</text>
+          </view>
+          <view class="balance-item balance-item-secondary">
+            <text class="panel-label">上月结余</text>
+            <text class="panel-value panel-value-muted">{{previousBalanceText}}</text>
+          </view>
+        </view>
+        <view class="ratio-row">
+          <text class="ratio-label">支出</text>
+          <view class="ratio-track">
+            <view class="ratio-fill" style="width: {{expenseTrackWidth}};"></view>
+          </view>
+          <text class="ratio-value">{{expenseAmountText}}</text>
+        </view>
+        <view class="ratio-row">
+          <text class="ratio-label">收入</text>
+          <view class="ratio-track">
+            <view class="ratio-fill ratio-fill-light" style="width: {{incomeTrackWidth}};"></view>
+          </view>
+          <text class="ratio-value">{{incomeAmountText}}</text>
+        </view>
+      </view>
+      <view class="panel">
+        <text class="section-title">支出类别</text>
+        <view class="category-panel">
+          <view class="category-ring">
+            <view class="category-ring-outer" style="background: {{categoryRingBackground}};"></view>
+            <view class="category-ring-inner"></view>
+          </view>
+          <view class="category-legend">
+            <block wx:for="{{categoryLegend}}" wx:key="name">
+              <view class="legend-item">
+                <view class="legend-label-group">
+                  <text class="legend-dot" style="background: {{item.color}};"></text>
+                  <text class="legend-name">{{item.name}}</text>
+                </view>
+                <text class="legend-ratio">{{item.ratioText}}</text>
+                <text class="legend-amount">{{item.amountText}}</text>
+              </view>
+            </block>
+          </view>
+        </view>
+        <view class="subhead">
+          <text class="subhead-title">支出排行</text>
+          <text class="subhead-link" bindtap="goToRanking">查看更多 ›</text>
+        </view>
+        <block wx:for="{{rankings}}" wx:key="rank">
+          <view class="ranking-item">
+            <text class="ranking-rank">{{item.rank}}</text>
+            <view class="ranking-icon">{{item.icon}}</view>
+            <view class="ranking-body">
+              <text class="ranking-name">{{item.name}}</text>
+              <text class="ranking-date">{{item.dateText}}</text>
+            </view>
+            <text class="ranking-amount">{{item.amount}}</text>
+          </view>
+        </block>
+      </view>
+      <view class="panel">
+        <text class="section-title">支出趋势</text>
+        <view class="metric-row">
+          <block wx:for="{{trendSummary}}" wx:key="label">
+            <view class="metric-item">
+              <text class="metric-label">{{item.label}}</text>
+              <text class="metric-value">{{item.value}}</text>
+              <text class="metric-note">{{item.note}}</text>
+            </view>
+          </block>
+        </view>
+        <view class="trend-chart-card">
+          <view class="trend-chart">
+            <qiun-data-charts
+              type="line"
+              canvas2d="{{true}}"
+              inScrollView="{{true}}"
+              chartData="{{lineChartData}}"
+              opts="{{lineChartOpts}}"
+            />
+          </view>
+        </view>
+      </view>
+      <view class="panel">
+        <text class="section-title">月支出对比</text>
+        <view class="compare-chart">
+          <view class="compare-grid"></view>
+          <block wx:for="{{compareItemsWithHeight}}" wx:key="monthLabel">
+            <view class="compare-item">
+              <view class="compare-bar-shell">
+                <text class="compare-top-value">{{item.valueText}}</text>
+                <view class="compare-bar {{item.active ? 'compare-bar-active' : ''}}" style="height: {{item.height}};"></view>
+              </view>
+              <text class="compare-month {{item.active ? 'compare-month-active' : ''}}">{{item.monthLabel}}</text>
+            </view>
+          </block>
+        </view>
+        <text class="section-subtitle">9月对比8月变化前三的类别</text>
+        <block wx:for="{{changeItems}}" wx:key="rank">
+          <view class="ranking-item change-item">
+            <text class="ranking-rank">{{item.rank}}</text>
+            <view class="ranking-icon">{{item.icon}}</view>
+            <view class="ranking-body">
+              <text class="ranking-name">{{item.name}}</text>
+            </view>
+            <view class="change-indicator {{item.trend === 'up' ? 'change-up' : 'change-down'}}">
+              <text class="change-icon">{{item.trend === 'up' ? '↑' : '↓'}}</text>
+              <text class="change-text {{item.trend === 'up' ? 'change-up' : 'change-down'}}">{{item.deltaText}}</text>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+  </scroll-view>
+</view>

@@ -1,16 +1,13 @@
 /*! *****************************************************************************
 Copyright (c) 2021 Tencent, Inc. All rights reserved.
-
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
 the Software without restriction, including without limitation the rights to
 use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
 of the Software, and to permit persons to whom the Software is furnished to do
 so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,7 +16,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ***************************************************************************** */
-
 declare namespace WechatMiniprogram {
     interface AccessFailCallbackResult {
         /** 错误信息
@@ -444,7 +440,6 @@ declare namespace WechatMiniprogram {
 *
 * ```js
 const backgroundAudioManager = wx.getBackgroundAudioManager()
-
 backgroundAudioManager.title = '此时此刻'
 backgroundAudioManager.epname = '此时此刻'
 backgroundAudioManager.singer = '许巍'
@@ -7157,12 +7152,10 @@ listener.start()
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 // Draw coordinates
 ctx.arc(100, 75, 50, 0, 2 * Math.PI)
 ctx.setFillStyle('#EEEEEE')
 ctx.fill()
-
 ctx.beginPath()
 ctx.moveTo(40, 75)
 ctx.lineTo(160, 75)
@@ -7170,36 +7163,30 @@ ctx.moveTo(100, 15)
 ctx.lineTo(100, 135)
 ctx.setStrokeStyle('#AAAAAA')
 ctx.stroke()
-
 ctx.setFontSize(12)
 ctx.setFillStyle('black')
 ctx.fillText('0', 165, 78)
 ctx.fillText('0.5*PI', 83, 145)
 ctx.fillText('1*PI', 15, 78)
 ctx.fillText('1.5*PI', 83, 10)
-
 // Draw points
 ctx.beginPath()
 ctx.arc(100, 75, 2, 0, 2 * Math.PI)
 ctx.setFillStyle('lightgreen')
 ctx.fill()
-
 ctx.beginPath()
 ctx.arc(100, 25, 2, 0, 2 * Math.PI)
 ctx.setFillStyle('blue')
 ctx.fill()
-
 ctx.beginPath()
 ctx.arc(150, 75, 2, 0, 2 * Math.PI)
 ctx.setFillStyle('red')
 ctx.fill()
-
 // Draw arc
 ctx.beginPath()
 ctx.arc(100, 75, 50, 0, 1.5 * Math.PI)
 ctx.setStrokeStyle('#333333')
 ctx.stroke()
-
 ctx.draw()
 ```
 *
@@ -7257,17 +7244,13 @@ const ctx = wx.createCanvasContext('myCanvas')
 ctx.rect(10, 10, 100, 30)
 ctx.setFillStyle('yellow')
 ctx.fill()
-
 // begin another path
 ctx.beginPath()
 ctx.rect(10, 40, 100, 30)
-
 // only fill this rect, not in current path
 ctx.setFillStyle('blue')
 ctx.fillRect(10, 70, 100, 30)
-
 ctx.rect(10, 100, 100, 30)
-
 // it will fill current path
 ctx.setFillStyle('red')
 ctx.fill()
@@ -7285,46 +7268,38 @@ ctx.draw()
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 // Draw points
 ctx.beginPath()
 ctx.arc(20, 20, 2, 0, 2 * Math.PI)
 ctx.setFillStyle('red')
 ctx.fill()
-
 ctx.beginPath()
 ctx.arc(200, 20, 2, 0, 2 * Math.PI)
 ctx.setFillStyle('lightgreen')
 ctx.fill()
-
 ctx.beginPath()
 ctx.arc(20, 100, 2, 0, 2 * Math.PI)
 ctx.arc(200, 100, 2, 0, 2 * Math.PI)
 ctx.setFillStyle('blue')
 ctx.fill()
-
 ctx.setFillStyle('black')
 ctx.setFontSize(12)
-
 // Draw guides
 ctx.beginPath()
 ctx.moveTo(20, 20)
 ctx.lineTo(20, 100)
 ctx.lineTo(150, 75)
-
 ctx.moveTo(200, 20)
 ctx.lineTo(200, 100)
 ctx.lineTo(70, 75)
 ctx.setStrokeStyle('#AAAAAA')
 ctx.stroke()
-
 // Draw quadratic curve
 ctx.beginPath()
 ctx.moveTo(20, 20)
 ctx.bezierCurveTo(20, 100, 200, 100, 200, 20)
 ctx.setStrokeStyle('black')
 ctx.stroke()
-
 ctx.draw()
 ```
 *
@@ -7389,7 +7364,6 @@ ctx.draw()
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 wx.downloadFile({
   url: 'http://is5.mzstatic.com/image/thumb/Purple128/v4/75/3b/90/753b907c-b7fb-5877-215a-759bd73691a4/source/50x50bb.jpg',
   success: function(res) {
@@ -7430,17 +7404,13 @@ const ctx = wx.createCanvasContext('myCanvas')
 // begin path
 ctx.rect(10, 10, 100, 30)
 ctx.closePath()
-
 // begin another path
 ctx.beginPath()
 ctx.rect(10, 40, 100, 30)
-
 // only fill this rect, not in current path
 ctx.setFillStyle('blue')
 ctx.fillRect(10, 70, 100, 30)
-
 ctx.rect(10, 100, 100, 30)
-
 // it will fill current path
 ctx.setFillStyle('red')
 ctx.fill()
@@ -7477,7 +7447,6 @@ ctx.draw()
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 ctx.setFillStyle('red')
 ctx.fillRect(10, 10, 150, 100)
 ctx.draw()
@@ -7493,7 +7462,6 @@ ctx.draw(true)
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 ctx.setFillStyle('red')
 ctx.fillRect(10, 10, 150, 100)
 ctx.draw()
@@ -7523,14 +7491,12 @@ ctx.draw()
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 wx.chooseImage({
   success: function(res){
     ctx.drawImage(res.tempFilePaths[0], 0, 0, 150, 100)
     ctx.draw()
   }
 })
-
 ```
 * ![](@program/dev/image/canvas/draw-image.png) */
         drawImage(
@@ -7557,14 +7523,12 @@ wx.chooseImage({
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 wx.chooseImage({
   success: function(res){
     ctx.drawImage(res.tempFilePaths[0], 0, 0, 150, 100)
     ctx.draw()
   }
 })
-
 ```
 * ![](@program/dev/image/canvas/draw-image.png) */
         drawImage(
@@ -7595,14 +7559,12 @@ wx.chooseImage({
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 wx.chooseImage({
   success: function(res){
     ctx.drawImage(res.tempFilePaths[0], 0, 0, 150, 100)
     ctx.draw()
   }
 })
-
 ```
 * ![](@program/dev/image/canvas/draw-image.png) */
         drawImage(
@@ -7654,17 +7616,13 @@ const ctx = wx.createCanvasContext('myCanvas')
 ctx.rect(10, 10, 100, 30)
 ctx.setFillStyle('yellow')
 ctx.fill()
-
 // begin another path
 ctx.beginPath()
 ctx.rect(10, 40, 100, 30)
-
 // only fill this rect, not in current path
 ctx.setFillStyle('blue')
 ctx.fillRect(10, 70, 100, 30)
-
 ctx.rect(10, 100, 100, 30)
-
 // it will fill current path
 ctx.setFillStyle('red')
 ctx.fill()
@@ -7706,11 +7664,9 @@ ctx.draw()
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 ctx.setFontSize(20)
 ctx.fillText('Hello', 20, 20)
 ctx.fillText('MINA', 100, 100)
-
 ctx.draw()
 ```
 * ![](@program/dev/image/canvas/text.png) */
@@ -7757,7 +7713,6 @@ ctx.draw()
 const ctx = wx.createCanvasContext('myCanvas')
 ctx.moveTo(10, 10)
 ctx.lineTo(100, 10)
-
 ctx.moveTo(10, 50)
 ctx.lineTo(100, 50)
 ctx.stroke()
@@ -7779,26 +7734,21 @@ ctx.draw()
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 // Draw points
 ctx.beginPath()
 ctx.arc(20, 20, 2, 0, 2 * Math.PI)
 ctx.setFillStyle('red')
 ctx.fill()
-
 ctx.beginPath()
 ctx.arc(200, 20, 2, 0, 2 * Math.PI)
 ctx.setFillStyle('lightgreen')
 ctx.fill()
-
 ctx.beginPath()
 ctx.arc(20, 100, 2, 0, 2 * Math.PI)
 ctx.setFillStyle('blue')
 ctx.fill()
-
 ctx.setFillStyle('black')
 ctx.setFontSize(12)
-
 // Draw guides
 ctx.beginPath()
 ctx.moveTo(20, 20)
@@ -7806,14 +7756,12 @@ ctx.lineTo(20, 100)
 ctx.lineTo(200, 20)
 ctx.setStrokeStyle('#AAAAAA')
 ctx.stroke()
-
 // Draw quadratic curve
 ctx.beginPath()
 ctx.moveTo(20, 20)
 ctx.quadraticCurveTo(20, 100, 200, 20)
 ctx.setStrokeStyle('black')
 ctx.stroke()
-
 ctx.draw()
 ```
 *
@@ -7868,16 +7816,13 @@ ctx.draw()
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 // save the default fill style
 ctx.save()
 ctx.setFillStyle('red')
 ctx.fillRect(10, 10, 150, 100)
-
 // restore to the previous saved state
 ctx.restore()
 ctx.fillRect(50, 50, 150, 100)
-
 ctx.draw()
 ```
 * ![](@program/dev/image/canvas/save-restore.png) */
@@ -7891,13 +7836,11 @@ ctx.draw()
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 ctx.strokeRect(100, 10, 150, 100)
 ctx.rotate(20 * Math.PI / 180)
 ctx.strokeRect(100, 10, 150, 100)
 ctx.rotate(20 * Math.PI / 180)
 ctx.strokeRect(100, 10, 150, 100)
-
 ctx.draw()
 ```
 * ![](@program/dev/image/canvas/rotate.png) */
@@ -7914,16 +7857,13 @@ ctx.draw()
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 // save the default fill style
 ctx.save()
 ctx.setFillStyle('red')
 ctx.fillRect(10, 10, 150, 100)
-
 // restore to the previous saved state
 ctx.restore()
 ctx.fillRect(50, 50, 150, 100)
-
 ctx.draw()
 ```
 * ![](@program/dev/image/canvas/save-restore.png) */
@@ -7937,13 +7877,11 @@ ctx.draw()
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 ctx.strokeRect(10, 10, 25, 15)
 ctx.scale(2, 2)
 ctx.strokeRect(10, 10, 25, 15)
 ctx.scale(2, 2)
 ctx.strokeRect(10, 10, 25, 15)
-
 ctx.draw()
 ```
 * ![](@program/dev/image/canvas/scale.png) */
@@ -7982,7 +7920,6 @@ ctx.draw()
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 ctx.setFontSize(20)
 ctx.fillText('20', 20, 20)
 ctx.setFontSize(30)
@@ -7991,7 +7928,6 @@ ctx.setFontSize(40)
 ctx.fillText('40', 60, 60)
 ctx.setFontSize(50)
 ctx.fillText('50', 90, 90)
-
 ctx.draw()
 ```
 * ![](@program/dev/image/canvas/font-size.png)
@@ -8010,7 +7946,6 @@ ctx.draw()
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 ctx.setFillStyle('red')
 ctx.fillRect(10, 10, 150, 100)
 ctx.setGlobalAlpha(0.2)
@@ -8018,7 +7953,6 @@ ctx.setFillStyle('blue')
 ctx.fillRect(50, 50, 150, 100)
 ctx.setFillStyle('yellow')
 ctx.fillRect(100, 100, 150, 100)
-
 ctx.draw()
 ```
 * ![](@program/dev/image/canvas/global-alpha.png)
@@ -8041,28 +7975,24 @@ ctx.beginPath()
 ctx.moveTo(10, 10)
 ctx.lineTo(150, 10)
 ctx.stroke()
-
 ctx.beginPath()
 ctx.setLineCap('butt')
 ctx.setLineWidth(10)
 ctx.moveTo(10, 30)
 ctx.lineTo(150, 30)
 ctx.stroke()
-
 ctx.beginPath()
 ctx.setLineCap('round')
 ctx.setLineWidth(10)
 ctx.moveTo(10, 50)
 ctx.lineTo(150, 50)
 ctx.stroke()
-
 ctx.beginPath()
 ctx.setLineCap('square')
 ctx.setLineWidth(10)
 ctx.moveTo(10, 70)
 ctx.lineTo(150, 70)
 ctx.stroke()
-
 ctx.draw()
 ```
 * ![](@program/dev/image/canvas/line-cap.png)
@@ -8086,14 +8016,11 @@ ctx.draw()
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 ctx.setLineDash([10, 20], 5);
-
 ctx.beginPath();
 ctx.moveTo(0,100);
 ctx.lineTo(400, 100);
 ctx.stroke();
-
 ctx.draw()
 ```
 * ![](@program/dev/image/canvas/set-line-dash.png)
@@ -8121,7 +8048,6 @@ ctx.moveTo(10, 10)
 ctx.lineTo(100, 50)
 ctx.lineTo(10, 90)
 ctx.stroke()
-
 ctx.beginPath()
 ctx.setLineJoin('bevel')
 ctx.setLineWidth(10)
@@ -8129,7 +8055,6 @@ ctx.moveTo(50, 10)
 ctx.lineTo(140, 50)
 ctx.lineTo(50, 90)
 ctx.stroke()
-
 ctx.beginPath()
 ctx.setLineJoin('round')
 ctx.setLineWidth(10)
@@ -8137,7 +8062,6 @@ ctx.moveTo(90, 10)
 ctx.lineTo(180, 50)
 ctx.lineTo(90, 90)
 ctx.stroke()
-
 ctx.beginPath()
 ctx.setLineJoin('miter')
 ctx.setLineWidth(10)
@@ -8145,7 +8069,6 @@ ctx.moveTo(130, 10)
 ctx.lineTo(220, 50)
 ctx.lineTo(130, 90)
 ctx.stroke()
-
 ctx.draw()
 ```
 * ![](@program/dev/image/canvas/line-join.png)
@@ -8173,25 +8096,21 @@ ctx.beginPath()
 ctx.moveTo(10, 10)
 ctx.lineTo(150, 10)
 ctx.stroke()
-
 ctx.beginPath()
 ctx.setLineWidth(5)
 ctx.moveTo(10, 30)
 ctx.lineTo(150, 30)
 ctx.stroke()
-
 ctx.beginPath()
 ctx.setLineWidth(10)
 ctx.moveTo(10, 50)
 ctx.lineTo(150, 50)
 ctx.stroke()
-
 ctx.beginPath()
 ctx.setLineWidth(15)
 ctx.moveTo(10, 70)
 ctx.lineTo(150, 70)
 ctx.stroke()
-
 ctx.draw()
 ```
 *
@@ -8219,7 +8138,6 @@ ctx.moveTo(10, 10)
 ctx.lineTo(100, 50)
 ctx.lineTo(10, 90)
 ctx.stroke()
-
 ctx.beginPath()
 ctx.setLineWidth(10)
 ctx.setLineJoin('miter')
@@ -8228,7 +8146,6 @@ ctx.moveTo(50, 10)
 ctx.lineTo(140, 50)
 ctx.lineTo(50, 90)
 ctx.stroke()
-
 ctx.beginPath()
 ctx.setLineWidth(10)
 ctx.setLineJoin('miter')
@@ -8237,7 +8154,6 @@ ctx.moveTo(90, 10)
 ctx.lineTo(180, 50)
 ctx.lineTo(90, 90)
 ctx.stroke()
-
 ctx.beginPath()
 ctx.setLineWidth(10)
 ctx.setLineJoin('miter')
@@ -8246,7 +8162,6 @@ ctx.moveTo(130, 10)
 ctx.lineTo(220, 50)
 ctx.lineTo(130, 90)
 ctx.stroke()
-
 ctx.draw()
 ```
 * ![](@program/dev/image/canvas/miter-limit.png)
@@ -8313,22 +8228,17 @@ ctx.draw()
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 ctx.setStrokeStyle('red')
 ctx.moveTo(150, 20)
 ctx.lineTo(150, 170)
 ctx.stroke()
-
 ctx.setFontSize(15)
 ctx.setTextAlign('left')
 ctx.fillText('textAlign=left', 150, 60)
-
 ctx.setTextAlign('center')
 ctx.fillText('textAlign=center', 150, 80)
-
 ctx.setTextAlign('right')
 ctx.fillText('textAlign=right', 150, 100)
-
 ctx.draw()
 ```
 *
@@ -8353,26 +8263,19 @@ ctx.draw()
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 ctx.setStrokeStyle('red')
 ctx.moveTo(5, 75)
 ctx.lineTo(295, 75)
 ctx.stroke()
-
 ctx.setFontSize(20)
-
 ctx.setTextBaseline('top')
 ctx.fillText('top', 5, 75)
-
 ctx.setTextBaseline('middle')
 ctx.fillText('middle', 50, 75)
-
 ctx.setTextBaseline('bottom')
 ctx.fillText('bottom', 120, 75)
-
 ctx.setTextBaseline('normal')
 ctx.fillText('normal', 200, 75)
-
 ctx.draw()
 ```
 * ![](@program/dev/image/canvas/set-text-baseline.png)
@@ -8432,17 +8335,13 @@ const ctx = wx.createCanvasContext('myCanvas')
 ctx.rect(10, 10, 100, 30)
 ctx.setStrokeStyle('yellow')
 ctx.stroke()
-
 // begin another path
 ctx.beginPath()
 ctx.rect(10, 40, 100, 30)
-
 // only stoke this rect, not in current path
 ctx.setStrokeStyle('blue')
 ctx.strokeRect(10, 70, 100, 30)
-
 ctx.rect(10, 100, 100, 30)
-
 // it will stroke current path
 ctx.setStrokeStyle('red')
 ctx.stroke()
@@ -8519,13 +8418,11 @@ ctx.draw()
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 ctx.strokeRect(10, 10, 150, 100)
 ctx.translate(20, 20)
 ctx.strokeRect(10, 10, 150, 100)
 ctx.translate(20, 20)
 ctx.strokeRect(10, 10, 150, 100)
-
 ctx.draw()
 ```
 *
@@ -8554,12 +8451,10 @@ ctx.draw()
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 // Create circular gradient
 const grd = ctx.createCircularGradient(75, 50, 50)
 grd.addColorStop(0, 'red')
 grd.addColorStop(1, 'white')
-
 // Fill with gradient
 ctx.setFillStyle(grd)
 ctx.fillRect(10, 10, 150, 80)
@@ -8583,12 +8478,10 @@ ctx.draw()
 *
 * ```javascript
 const ctx = wx.createCanvasContext('myCanvas')
-
 // Create linear gradient
 const grd = ctx.createLinearGradient(0, 0, 200, 0)
 grd.addColorStop(0, 'red')
 grd.addColorStop(1, 'white')
-
 // Fill with gradient
 ctx.setFillStyle(grd)
 ctx.fillRect(10, 10, 150, 80)
@@ -8616,7 +8509,6 @@ ctx.draw()
 *
 * ```js
 const ctx = wx.createCanvasContext('myCanvas')
-
 // Create circular gradient
 const grd = ctx.createLinearGradient(30, 10, 120, 10)
 grd.addColorStop(0, 'red')
@@ -8626,7 +8518,6 @@ grd.addColorStop(0.5, 'green')
 grd.addColorStop(0.66, 'cyan')
 grd.addColorStop(0.83, 'blue')
 grd.addColorStop(1, 'purple')
-
 // Fill with gradient
 ctx.setFillStyle(grd)
 ctx.fillRect(10, 10, 150, 80)
@@ -11519,7 +11410,6 @@ worker.postMessage({
 * 主线程中
 * ```js
 const worker = wx.createWorker('workers/request/index.js')
-
 worker.postMessage({
   msg: 'hello from main'
 })
@@ -11879,7 +11769,6 @@ logger.warn({str: 'hello world'}, 'warn log', 100, [1, 2, 3])
       videoDecoder.getFrameData() // 建议在 requestAnimationFrame 里获取每一帧视频数据
       console.log(res)
     })
-
     // 移除播放器音频来源
     mediaAudioPlaye.removeAudioSource(videoDecoder).then()
     // 停止播放器
@@ -12213,7 +12102,6 @@ wx.canIUse('console.log')
 wx.canIUse('CameraContext.onCameraFrame')
 wx.canIUse('CameraFrameListener.start')
 wx.canIUse('Image.src')
-
 // wx接口参数、回调或者返回值
 wx.canIUse('openBluetoothAdapter')
 wx.canIUse('getSystemInfoSync.return.safeArea.left')
@@ -12221,7 +12109,6 @@ wx.canIUse('getSystemInfo.success.screenWidth')
 wx.canIUse('showToast.object.image')
 wx.canIUse('onCompassChange.callback.direction')
 wx.canIUse('request.object.method.GET')
-
 // 组件的属性
 wx.canIUse('live-player')
 wx.canIUse('text.selectable')
@@ -12770,14 +12657,12 @@ wx.closeBluetoothAdapter({
 wx.connectSocket({
   url: 'test.php'
 })
-
 //注意这里有时序问题，
 //如果 wx.connectSocket 还没回调 wx.onSocketOpen，而先调用 wx.closeSocket，那么就做不到关闭 WebSocket 的目的。
 //必须在 WebSocket 打开期间调用 wx.closeSocket 才能关闭。
 wx.onSocketOpen(function() {
   wx.closeSocket()
 })
-
 wx.onSocketClose(function(res) {
   console.log('WebSocket 已关闭！')
 })
@@ -13204,7 +13089,6 @@ wx.getGroupEnterInfo({
     }
   },
   fail() {
-
   }
 })
 ```
@@ -13262,7 +13146,6 @@ wx.getImageInfo({
     console.log(res.height)
   }
 })
-
 wx.chooseImage({
   success (res) {
     wx.getImageInfo({
@@ -14102,11 +13985,9 @@ wx.navigateToMiniProgram({
 Component({
   doSth() {
     this.setData({ number: 1 }) // 直接在当前同步流程中执行
-
     wx.nextTick(() => {
       this.setData({ number: 3 }) // 在当前同步流程结束后，下一个时间片执行
     })
-
     this.setData({ number: 2 }) // 直接在当前同步流程中执行
   }
 })
@@ -15238,7 +15119,6 @@ wx.startRecord({
     wx.playVoice({
       filePath: tempFilePath
     })
-
     setTimeout(() => { wx.pauseVoice() }, 5000)
   }
 })
@@ -15361,7 +15241,6 @@ wx.reLaunch({
 wx.onBLECharacteristicValueChange(function(characteristic) {
   console.log('characteristic value comed:', characteristic)
 })
-
 wx.readBLECharacteristicValue({
   // 这里的 deviceId 需要已经通过 createBLEConnection 与对应设备建立链接
   deviceId,
@@ -15593,7 +15472,6 @@ const cloud = require('wx-server-sdk')
 cloud.init({
   env: cloud.DYNAMIC_CURRENT_ENV
 })
-
 exports.main = async (event, context) => {
   const res = await cloud.cloudPay.unifiedOrder({
     "body" : "小秋TIT店-超市",
@@ -15606,7 +15484,6 @@ exports.main = async (event, context) => {
   })
   return res
 }
-
 // 小程序代码
 wx.cloud.callFunction({
   name: '函数名',
@@ -15764,7 +15641,6 @@ wx.scanCode({
     console.log(res)
   }
 })
-
 // 只允许从相机扫码
 wx.scanCode({
   onlyFromCamera: true,
@@ -15806,7 +15682,6 @@ wx.seekBackgroundAudio({
 const buffer = new ArrayBuffer(1)
 const dataView = new DataView(buffer)
 dataView.setUint8(0, 0)
-
 wx.startHCE({
   success (res) {
     wx.onHCEMessage(function(res) {
@@ -15835,7 +15710,6 @@ let socketMsgQueue = []
 wx.connectSocket({
   url: 'test.php'
 })
-
 wx.onSocketOpen(function(res) {
   socketOpen = true
   for (let i = 0; i < socketMsgQueue.length; i++){
@@ -15843,7 +15717,6 @@ wx.onSocketOpen(function(res) {
   }
   socketMsgQueue = []
 })
-
 function sendSocketMessage(msg) {
   if (socketOpen) {
     wx.sendSocketMessage({
@@ -15878,7 +15751,6 @@ function sendSocketMessage(msg) {
 wx.setBackgroundColor({
   backgroundColor: '#ffffff', // 窗口的背景色为白色
 })
-
 wx.setBackgroundColor({
   backgroundColorTop: '#ffffff', // 顶部窗口的背景色为白色
   backgroundColorBottom: '#ffffff', // 底部窗口的背景色为白色
@@ -15958,7 +15830,6 @@ wx.setClipboardData({
 wx.setEnableDebug({
   enableDebug: true
 })
-
 // 关闭调试
 wx.setEnableDebug({
   enableDebug: false
@@ -16261,7 +16132,6 @@ wx.showActionSheet({
 wx.showLoading({
   title: '加载中',
 })
-
 setTimeout(function () {
   wx.hideLoading()
 }, 2000)
@@ -16874,7 +16744,6 @@ wx.startRecord({
     wx.playVoice({
       filePath: tempFilePath,
     })
-
     setTimeout(() => { wx.stopVoice() }, 5000)
   }
 })
@@ -17029,7 +16898,6 @@ wx.updateShareMenu({
 let buffer = new ArrayBuffer(1)
 let dataView = new DataView(buffer)
 dataView.setUint8(0, 0)
-
 wx.writeBLECharacteristicValue({
   // 这里的 deviceId 需要在 getBluetoothDevices 或 onBluetoothDeviceFound 接口中获取
   deviceId,
@@ -17052,7 +16920,6 @@ wx.writeBLECharacteristicValue({
             option: T
         ): PromisifySuccessResult<T, WriteBLECharacteristicValueOption>
     }
-
     /** 接口调用结束的回调函数（调用成功、失败都会执行） */
     type AccessCompleteCallback = (res: GeneralCallbackResult) => void
     /** 接口调用失败的回调函数 */
@@ -19632,7 +19499,6 @@ wx.writeBLECharacteristicValue({
     /** 接口调用成功的回调函数 */
     type WxStopRecordSuccessCallback = (res: GeneralCallbackResult) => void
 }
-
 /** [clearInterval(number intervalID)](https://developers.weixin.qq.com/miniprogram/dev/api/base/timer/clearInterval.html)
  *
  * 取消由 setInterval 设置的定时器。 */

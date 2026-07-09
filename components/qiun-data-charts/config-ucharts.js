@@ -15,10 +15,8 @@
  * http://ext.dcloud.net.cn/plugin?id=271
  * 
  */
-
 // 主题颜色配置：如每个图表类型需要不同主题，请在对应图表类型上更改color属性
 const color = ['#1890FF', '#91CB74', '#FAC858', '#EE6666', '#73C0DE', '#3CA272', '#FC8452', '#9A60B4', '#ea7ccc'];
-
 //事件转换函数，主要用作格式化x轴为时间轴，根据需求自行修改
 const formatDateTime = (timeStamp, returnType)=>{
   var date = new Date();
@@ -40,7 +38,6 @@ const formatDateTime = (timeStamp, returnType)=>{
   if(returnType == 'h:m:s'){return  h +':' + minute +':' + second;}
   return [y, m, d, h, minute, second];
 }
-
 const cfu = {
   //demotype为自定义图表类型，一般不需要自定义图表类型，只需要改根节点上对应的类型即可
 	"type":["pie","ring","rose","word","funnel","map","arcbar","line","column","bar","area","radar","gauge","candle","mix","tline","tarea","scatter","bubble","demotype"],
@@ -578,5 +575,4 @@ const cfu = {
     }
 	}
 }
-
 module.exports = cfu;

@@ -5,6 +5,8 @@
   "renderer": "webview",
   "usingComponents": {
     "qiun-data-charts": "/components/qiun-data-charts/index",
-    "bar-trend": "/pages/stats/component/bar-trend/index"
+    "bar-trend": "/pages/stats/component/bar-trend/index",
+    "van-popup": "/miniprogram_npm/@vant/weapp/popup/index",
+    "van-picker": "/miniprogram_npm/@vant/weapp/picker/index"
   }
 }

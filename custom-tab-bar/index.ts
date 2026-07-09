@@ -3,9 +3,9 @@ type CustomTabBarInstance = WechatMiniprogram.Component.TrivialInstance & {
     selectedPath: string
   }
 }
-
 Component({
   data: {
+    hidden: false,
     selectedPath: '/pages/index/index',
     tabs: [
       {
@@ -43,11 +43,11 @@ Component({
   },
   methods: {
     switchTab(this: CustomTabBarInstance, e: WechatMiniprogram.BaseEvent) {
-      const { path, special } = e.currentTarget.dataset as { path: string; special?: boolean }
+      const { path } = e.currentTarget.dataset as { path?: string }
       if (!path) {
         return
       }
-      if (special) {
+      if (path === '/pages/add/add') {
         wx.navigateTo({
           url: path,
         })

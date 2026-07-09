@@ -1,103 +1,101 @@
 <view class="page">
-  <scroll-view
-    scroll-y
-    class="page-scroll"
-    style="height: calc(100vh - {{tabBarSpacer + tabBarGap}}px);"
+  <view class="page-backdrop"></view>
+  <view
+    class="custom-header custom-header-solid"
+    style="padding-top: {{statusBarHeight}}px; height: {{statusBarHeight + navBarHeight + 8}}px;"
   >
-    <view class="page-content">
-      <view class="hero-panel">
-        <view class="hero-glow hero-glow-left"></view>
-        <view class="hero-glow hero-glow-right"></view>
-        <view class="hero-head">
-          <view>
-            <text class="eyebrow">Hi，{{nickname}}，今天也要把钱花得明明白白</text>
-            <text class="title">钱小迹</text>
-          </view>
-          <view class="hero-badge">
-            <text class="hero-badge-dot"></text>
-            <text class="hero-badge-text">{{statusText}}</text>
-          </view>
-        </view>
-
-        <view class="hero-balance">
-          <view class="hero-balance-main">
-            <text class="balance-caption">本月可支配</text>
-            <text class="balance-value">¥ {{disposableAmountText}}</text>
-          </view>
-          <view class="hero-balance-side">
-            <view class="mini-chip">
-              <text class="mini-chip-label">收入</text>
-              <text class="mini-chip-value">{{monthIncomeText}}</text>
-            </view>
-            <view class="mini-chip mini-chip-warm">
-              <text class="mini-chip-label">支出</text>
-              <text class="mini-chip-value">{{monthExpenseText}}</text>
-            </view>
-          </view>
-        </view>
-
-        <view class="trend-strip">
-          <view class="trend-pill">
-            <text class="trend-pill-icon">↗</text>
-            <text class="trend-pill-text">{{trendText}}</text>
-          </view>
-          <text class="trend-note">{{statusText}}</text>
-        </view>
+    <view class="header-inner" style="height: {{navBarHeight}}px;">
+      <view class="header-copy">
+        <text class="header-kicker">钱小迹</text>
+        <text class="header-title">{{statusText}}</text>
       </view>
-
-      <view class="section">
-        <view class="section-head">
-          <text class="section-title">今天做点什么</text>
+      <view
+        class="header-capsule-placeholder"
+        style="margin-top: {{capsuleTop - statusBarHeight}}px; height: {{capsuleHeight}}px; width: {{capsuleWidth}}px; margin-right: {{capsuleRight}}px;"
+      />
+    </view>
+  </view>
+  <view
+    class="page-content"
+    style="padding-top: {{statusBarHeight + navBarHeight + 16}}px; padding-bottom: calc({{tabBarSpacer + tabBarGap}}px + 15px);"
+  >
+    <view class="overview-card">
+      <picker
+        mode="selector"
+        range="{{monthOptions}}"
+        range-key="label"
+        value="{{selectedMonthIndex}}"
+        bindchange="handleMonthChange"
+        class="overview-month-picker"
+      >
+        <view class="overview-month-trigger">
+          <text class="overview-month-text">{{selectedMonthLabel}}</text>
+          <text class="overview-month-arrow">▼</text>
         </view>
-        <view class="shortcut-grid">
-          <view class="shortcut-item shortcut-item-pink" data-type="expense" bindtap="goToAdd">
-            <text class="shortcut-icon">￥</text>
-            <text class="shortcut-text">记一笔支出</text>
-            <text class="shortcut-desc">奶茶、晚饭、打车一秒记录</text>
-          </view>
-          <view class="shortcut-item shortcut-item-blue" data-type="income" bindtap="goToAdd">
-            <text class="shortcut-icon">↑</text>
-            <text class="shortcut-text">收一笔进账</text>
-            <text class="shortcut-desc">工资到账也值得好好庆祝</text>
-          </view>
-          <view class="shortcut-item shortcut-item-mint" data-action="budget" bindtap="goToShortcut">
-            <text class="shortcut-icon">◎</text>
-            <text class="shortcut-text">预算提醒</text>
-            <text class="shortcut-desc">别让月底又突然心虚</text>
-          </view>
-          <view class="shortcut-item shortcut-item-yellow" data-action="stats" bindtap="goToShortcut">
-            <text class="shortcut-icon">%</text>
-            <text class="shortcut-text">分类统计</text>
-            <text class="shortcut-desc">看看谁才是真正的吞金兽</text>
-          </view>
-        </view>
+      </picker>
+      <text class="overview-label">{{summaryLabel}}</text>
+      <view class="overview-amount-row">
+        <text class="overview-currency">¥</text>
+        <text class="overview-value">{{disposableAmountText}}</text>
       </view>
-
-      <view class="section">
-        <view class="section-head">
-          <view>
-            <text class="section-title">最近记录</text>
-            <text class="section-subtitle">你的消费轨迹，正在慢慢变清晰</text>
-          </view>
-          <text class="section-link" bindtap="goToBill">查看全部</text>
+      <view class="overview-stats">
+        <view class="overview-stat">
+          <text class="overview-stat-label">本月收入</text>
+          <text class="overview-stat-value">{{monthIncomeText}}</text>
         </view>
-
-        <view class="record-list">
-          <block wx:for="{{recentRecords}}" wx:key="id">
-            <view class="record-item">
-              <view class="record-avatar record-avatar-pink">{{item.avatarText}}</view>
-              <view class="record-body">
-                <text class="record-name">{{item.title}}</text>
-                <text class="record-time">{{item.timeText}}</text>
-              </view>
-              <view class="record-side">
-                <text class="record-amount {{item.amountClass}}">{{item.amountText}}</text>
-                <text class="record-tag">{{item.tagText}}</text>
-              </view>
-            </view>
-          </block>
+        <view class="overview-stat">
+          <text class="overview-stat-label">本月支出</text>
+          <text class="overview-stat-value">{{monthExpenseText}}</text>
         </view>
       </view>
     </view>
-  </scroll-view>
+    <view class="section">
+      <load-scroll
+        id="homeLoadScroll"
+        class="record-scroll"
+        height="100%"
+        delay="{{500}}"
+        empty-text="这个月还没有记录，去记一笔让首页热闹起来。"
+        empty-button-text="去记一笔"
+        bindloaded="handleRecentRecordsLoaded"
+        bindemptyaction="handleEmptyAction"
+      >
+        <view class="record-list">
+          <block wx:for="{{recentRecordGroups}}" wx:key="groupKey" wx:for-index="groupIndex">
+            <view class="record-group">
+              <view class="record-group-head">
+                <view class="record-group-date">
+                  <text class="record-group-day">{{item.dateLabel}}</text>
+                  <text class="record-group-week">{{item.weekLabel}}</text>
+                </view>
+                <view class="record-group-summary">
+                  <text class="record-group-expense">支出 {{item.expenseText}}</text>
+                  <text class="record-group-income">收入 {{item.incomeText}}</text>
+                </view>
+              </view>
+              <block wx:for="{{item.records}}" wx:key="recordKey" wx:for-item="record" wx:for-index="recordIndex">
+                <view class="record-item" bindtap="handleRecordTap" data-group-index="{{groupIndex}}" data-record-index="{{recordIndex}}">
+                  <view class="record-avatar">
+                    <image wx:if="{{record.iconUrl}}" class="record-avatar-image" src="{{record.iconUrl}}" mode="aspectFit"></image>
+                    <view wx:else class="record-avatar-placeholder"></view>
+                  </view>
+                  <view class="record-body">
+                    <text class="record-name">{{record.title}}</text>
+                    <text class="record-time">{{record.occurredTimeText}}</text>
+                  </view>
+                  <view class="record-side">
+                    <view class="record-amount {{record.amountClass}}">
+                      <text class="record-amount-sign">{{record.amountSign}}</text>
+                      <text class="record-amount-value">{{record.amountValue}}</text>
+                    </view>
+                    <text class="record-tag">{{record.tagText}}</text>
+                  </view>
+                </view>
+              </block>
+            </view>
+          </block>
+        </view>
+      </load-scroll>
+    </view>
+  </view>
 </view>

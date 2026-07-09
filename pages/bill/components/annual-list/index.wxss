@@ -1,0 +1,74 @@
+.annual-list {
+  margin-top: 26rpx;
+  border-radius: 30rpx;
+  background: rgba(255, 255, 255, 0.82);
+  overflow: hidden;
+  box-shadow: 0 12rpx 28rpx rgba(58, 66, 92, 0.06);
+}
+.annual-list-head,
+.annual-row {
+  display: flex;
+  align-items: center;
+}
+.annual-list-head {
+  padding: 0 10rpx;
+  height: 92rpx;
+  border-bottom: 1rpx solid rgba(226, 230, 238, 0.8);
+}
+.annual-list-head-cell,
+.annual-row-cell,
+.annual-row-arrow {
+  display: block;
+  text-align: center;
+}
+.annual-list-head-cell {
+  flex: 1;
+  font-size: 24rpx;
+  color: #9aa0af;
+}
+.annual-list-head-cell-month,
+.annual-row-cell-month {
+  flex: 0.9;
+  text-align: left;
+  padding-left: 18rpx;
+}
+.annual-list-head-cell-arrow {
+  flex: 0.3;
+}
+.annual-list-head.year-mode .annual-list-head-cell,
+.annual-row.year-mode .annual-row-cell {
+  flex: 1;
+}
+.annual-list-head.year-mode .annual-list-head-cell-month,
+.annual-row.year-mode .annual-row-cell-month {
+  flex: 1;
+}
+.annual-row {
+  min-height: 108rpx;
+  padding: 0 10rpx;
+  border-bottom: 1rpx solid rgba(235, 238, 244, 0.9);
+}
+.annual-row:last-child {
+  border-bottom: none;
+}
+.annual-row-cell {
+  flex: 1;
+  font-size: 26rpx;
+  color: #2d3448;
+}
+.annual-row-cell-month {
+  font-size: 28rpx;
+  color: #1f263c;
+  font-weight: 600;
+}
+.annual-row-cell.expense {
+  color: #da5268;
+}
+.annual-row-cell.income {
+  color: #2aa36b;
+}
+.annual-row-arrow {
+  flex: 0.3;
+  font-size: 34rpx;
+  color: #c2c8d6;
+}

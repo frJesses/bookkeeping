@@ -15,10 +15,8 @@
  * http://ext.dcloud.net.cn/plugin?id=271
  * 
  */
-
 const uCharts = require('./u-charts.js');
 const cfu = require('./config-ucharts.js');
-
 function deepCloneAssign(origin = {}, ...args) {
   for (let i in args) {
     for (let key in args[i]) {
@@ -29,7 +27,6 @@ function deepCloneAssign(origin = {}, ...args) {
   }
   return origin;
 }
-
 function formatterAssign(args,formatter) {
   for (let key in args) {
     if(args.hasOwnProperty(key) && args[key] !== null && typeof args[key] === 'object'){
@@ -40,7 +37,6 @@ function formatterAssign(args,formatter) {
   }
   return args;
 }
-
 function debounce(fn, wait) {
   let timer = false;
   return function() {
@@ -52,10 +48,8 @@ function debounce(fn, wait) {
     }, wait);
   };
 }
-
 var lastMoveTime = null;
 var moveLength = 0;
-
 Component({
   options: {
     pureDataPattern: /^_/

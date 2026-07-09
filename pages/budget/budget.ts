@@ -1,12 +1,9 @@
 import { type BudgetMonthItem } from '../../constants/budget'
 import { createBudgetPageState, getBudgetPageData, saveBudgetPageData, updateMonthlyBudget } from '../../services/budget'
-
 type BudgetFieldKey = 'yearBudget'
-
 type MiniProgramInputEvent = WechatMiniprogram.CustomEvent<WechatMiniprogram.IAnyObject> & {
   detail: string | { value?: string }
 }
-
 Page({
   data: createBudgetPageState(),
   onLoad() {
@@ -74,7 +71,6 @@ Page({
         yearBudget: this.data.yearBudget,
         monthlyBudgets: this.data.monthlyBudgets as BudgetMonthItem[],
       })
-
       this.setData({
         hasBudget: true,
         isEditing: false,

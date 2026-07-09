@@ -3,12 +3,10 @@
   height: 30px;
   position: relative;
 }
-
 .container.loading5 .shape {
   width: 15px;
   height: 15px;
 }
-
 .container .shape {
   position: absolute;
   width: 10px;
@@ -32,11 +30,9 @@
   right: 0;
   background-color: #EE6666;
 }
-
 .loading5 .shape1 {
   animation: animation5shape1 2s ease 0s infinite reverse;
 }
-
 @-webkit-keyframes animation5shape1 {
   0% {
     -webkit-transform: translate(0, 0);
@@ -55,7 +51,6 @@
             transform: translate(15px, 0);
   }
 }
-
 @keyframes animation5shape1 {
   0% {
     -webkit-transform: translate(0, 0);
@@ -77,7 +72,6 @@
 .loading5 .shape2 {
   animation: animation5shape2 2s ease 0s infinite reverse;
 }
-
 @-webkit-keyframes animation5shape2 {
   0% {
     -webkit-transform: translate(0, 0);
@@ -96,7 +90,6 @@
             transform: translate(0, 15px);
   }
 }
-
 @keyframes animation5shape2 {
   0% {
     -webkit-transform: translate(0, 0);
@@ -118,7 +111,6 @@
 .loading5 .shape3 {
   animation: animation5shape3 2s ease 0s infinite reverse;
 }
-
 @-webkit-keyframes animation5shape3 {
   0% {
     -webkit-transform: translate(0, 0);
@@ -137,7 +129,6 @@
             transform: translate(0, -15px);
   }
 }
-
 @keyframes animation5shape3 {
   0% {
     -webkit-transform: translate(0, 0);
@@ -159,7 +150,6 @@
 .loading5 .shape4 {
   animation: animation5shape4 2s ease 0s infinite reverse;
 }
-
 @-webkit-keyframes animation5shape4 {
   0% {
     -webkit-transform: translate(0, 0);
@@ -178,7 +168,6 @@
             transform: translate(-15px, 0);
   }
 }
-
 @keyframes animation5shape4 {
   0% {
     -webkit-transform: translate(0, 0);

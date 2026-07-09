@@ -17,7 +17,7 @@
     "strict": true,
     "strictPropertyInitialization": true,
     "lib": ["ES2020"],
-    "types": ["miniprogram-api-typings"],
+    "typeRoots": ["./typings/types"],
     "skipLibCheck": true
   },
   "include": [

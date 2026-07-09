@@ -1,0 +1,39 @@
+<view class="page">
+  <view class="page-orb page-orb-top"></view>
+  <view class="page-orb page-orb-bottom"></view>
+  <view class="hero">
+    <view class="hero-glow hero-glow-left"></view>
+    <view class="hero-glow hero-glow-right"></view>
+    <text class="hero-kicker">Daily Bookkeeping</text>
+    <image class="about-logo" src="/assets/profile/about-logo.svg" mode="aspectFit"></image>
+    <text class="about-name">{{appName}}</text>
+    <text class="about-slogan">{{tagline}}</text>
+    <view class="version-pill">
+      <text class="version-pill-label">当前版本</text>
+      <text class="version-pill-value">v{{version}}</text>
+    </view>
+  </view>
+
+  <view class="section-card">
+    <view class="section-head">
+      <text class="section-kicker">Product Highlights</text>
+      <text class="section-title">让记账成为能坚持的日常</text>
+    </view>
+    <view class="highlight-list">
+      <view wx:for="{{highlights}}" wx:key="title" class="highlight-item">
+        <view class="highlight-icon highlight-icon-{{item.tone}}">
+          <text class="highlight-icon-text">{{item.iconText}}</text>
+        </view>
+        <view class="highlight-body">
+          <text class="highlight-title">{{item.title}}</text>
+          <text class="highlight-desc">{{item.description}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="info-panel">
+    <text class="info-title">关于这款应用</text>
+    <text class="about-copy">专注轻量记账、收支统计和预算管理，帮你快速看清钱去了哪里，也看见生活正在怎样发生。</text>
+  </view>
+</view>

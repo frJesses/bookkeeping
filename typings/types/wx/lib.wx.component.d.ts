@@ -1,16 +1,13 @@
 /*! *****************************************************************************
 Copyright (c) 2021 Tencent, Inc. All rights reserved.
-
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
 the Software without restriction, including without limitation the rights to
 use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
 of the Software, and to permit persons to whom the Software is furnished to do
 so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,7 +16,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ***************************************************************************** */
-
 declare namespace WechatMiniprogram.Component {
     type Instance<
         TData extends DataOption,
@@ -84,7 +80,6 @@ declare namespace WechatMiniprogram.Component {
     type DataOption = Record<string, any>
     type PropertyOption = Record<string, AllProperty>
     type MethodOption = Record<string, Function>
-
     interface Data<D extends DataOption> {
         /** 组件的内部数据，和 `properties` 一同用于组件的模板渲染 */
         data?: D
@@ -155,7 +150,6 @@ declare namespace WechatMiniprogram.Component {
     type PropertyOptionToData<P extends PropertyOption> = {
         [name in keyof P]: PropertyToData<P[name]>
     }
-
     interface InstanceProperties {
         /** 组件的文件路径 */
         is: string
@@ -164,7 +158,6 @@ declare namespace WechatMiniprogram.Component {
         /** 节点dataset */
         dataset: Record<string, string>
     }
-
     interface InstanceMethods<D extends DataOption> {
         /** `setData` 函数用于将数据从逻辑层发送到视图层
          *（异步），同时改变对应的 `this.data` 的值（同步）。
@@ -187,7 +180,6 @@ declare namespace WechatMiniprogram.Component {
             /** setData引起的界面更新渲染完毕后的回调函数，最低基础库： `1.5.0` */
             callback?: () => void
         ): void
-
         /** 检查组件是否具有 `behavior` （检查时会递归检查被直接或间接引入的所有behavior） */
         hasBehavior(behavior: Behavior.BehaviorIdentifier): void
         /** 触发事件，参见组件事件 */
@@ -272,7 +264,6 @@ declare namespace WechatMiniprogram.Component {
         ): void
         getOpenerEventChannel(): EventChannel
     }
-
     interface ComponentOptions {
         /**
          * [启用多slot支持](https://developers.weixin.qq.com/miniprogram/dev/framework/custom-component/wxml-wxss.html#组件wxml的slot)
@@ -300,7 +291,6 @@ declare namespace WechatMiniprogram.Component {
          * [虚拟化组件节点](https://developers.weixin.qq.com/miniprogram/dev/framework/custom-component/wxml-wxss.html#%E8%99%9A%E6%8B%9F%E5%8C%96%E7%BB%84%E4%BB%B6%E8%8A%82%E7%82%B9) 使自定义组件内部的第一层节点由自定义组件本身完全决定。从小程序基础库版本 [`2.11.2`](https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html) 开始支持 */
         virtualHost?: boolean
     }
-
     interface TriggerEventOption {
         /** 事件是否冒泡
          *
@@ -318,7 +308,6 @@ declare namespace WechatMiniprogram.Component {
          */
         capturePhase?: boolean
     }
-
     interface RelationOption {
         /** 目标组件的相对关系 */
         type: 'parent' | 'child' | 'ancestor' | 'descendant'
@@ -331,7 +320,6 @@ declare namespace WechatMiniprogram.Component {
         /** 如果这一项被设置，则它表示关联的目标节点所应具有的behavior，所有拥有这一behavior的组件节点都会被关联 */
         target?: string
     }
-
     interface PageLifetimes {
         /** 页面生命周期回调—监听页面显示
          *
@@ -349,14 +337,12 @@ declare namespace WechatMiniprogram.Component {
          */
         resize(size: Page.IResizeOption): void
     }
-
     type DefinitionFilter = <T extends TrivialOption>(
         /** 使用该 behavior 的 component/behavior 的定义对象 */
         defFields: T,
         /** 该 behavior 所使用的 behavior 的 definitionFilter 函数列表 */
         definitionFilterArr?: DefinitionFilter[]
     ) => void
-
     interface Lifetimes {
         /** 组件生命周期声明对象，组件的生命周期：`created`、`attached`、`ready`、`moved`、`detached` 将收归到 `lifetimes` 字段内进行声明，原有声明方式仍旧有效，如同时存在两种声明方式，则 `lifetimes` 字段内声明方式优先级最高
          *
@@ -448,7 +434,6 @@ declare namespace WechatMiniprogram.Component {
          */
         error(err: Error): void
     }
-
     interface OtherOption {
         /** 类似于mixins和traits的组件间代码复用机制，参见 [behaviors](https://developers.weixin.qq.com/miniprogram/dev/framework/custom-component/behaviors.html) */
         behaviors: Behavior.BehaviorIdentifier[]
@@ -470,7 +455,6 @@ declare namespace WechatMiniprogram.Component {
         pageLifetimes?: Partial<PageLifetimes>
         /** 一些选项（文档中介绍相关特性时会涉及具体的选项设置，这里暂不列举） */
         options: ComponentOptions
-
         /** 定义段过滤器，用于自定义组件扩展，参见 [自定义组件扩展](https://developers.weixin.qq.com/miniprogram/dev/framework/custom-component/extend.html)
          *
          * 最低基础库版本： [`2.2.3`](https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html) */
@@ -480,7 +464,6 @@ declare namespace WechatMiniprogram.Component {
          * 最低基础库版本： [`2.2.3`](https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html) */
         export: () => IAnyObject
     }
-
     interface KeyFrame {
         /** 关键帧的偏移，范围[0-1] */
         offset?: number

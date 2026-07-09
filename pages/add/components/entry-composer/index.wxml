@@ -1,0 +1,51 @@
+<view class="composer">
+  <view class="composer-handle"></view>
+  <view class="composer-head">
+    <view class="composer-category">
+      <view class="composer-category-icon">
+        <image wx:if="{{categoryIcon}}" class="composer-category-icon-image" src="{{categoryIcon}}" mode="aspectFit"></image>
+        <view wx:else class="composer-category-icon-placeholder"></view>
+      </view>
+      <view class="composer-category-copy">
+        <text class="composer-category-caption">已选分类</text>
+        <text class="composer-category-name">{{categoryName}}</text>
+      </view>
+    </view>
+    <text class="composer-amount">{{amount}}</text>
+  </view>
+  <view class="composer-remark">
+    <text class="composer-remark-label">备注：</text>
+    <input
+      class="composer-remark-input"
+      type="text"
+      value="{{remark}}"
+      placeholder="点击填写备注"
+      placeholder-class="composer-remark-placeholder"
+      bindinput="handleRemarkInput"
+    />
+  </view>
+  <view class="keypad">
+    <block wx:for="{{keyboardRows}}" wx:for-item="row" wx:key="index">
+      <view class="keypad-row">
+        <block wx:for="{{row}}" wx:for-item="key" wx:key="id">
+          <view wx:if="{{key.action !== 'date'}}" class="keypad-key {{key.primary ? 'keypad-key-primary' : ''}}" data-action="{{key.action}}" data-value="{{key.value}}" bindtap="handleKeyTap">
+            <text class="keypad-key-label {{key.primary ? 'keypad-key-label-primary' : ''}} {{key.action === 'backspace' ? 'keypad-key-label-backspace' : ''}}">{{key.action === 'done' ? submitLabel : key.label}}</text>
+          </view>
+          <picker wx:else mode="date" value="{{dateValue}}" end="{{maxDate}}" bindchange="handleDateChange" class="keypad-key keypad-picker">
+            <view class="keypad-date {{!isRelativeDateLabel ? 'keypad-date-absolute' : ''}}">
+              <view wx:if="{{isRelativeDateLabel}}" class="keypad-date-icon">
+                <view class="keypad-date-ring keypad-date-ring-left"></view>
+                <view class="keypad-date-ring keypad-date-ring-right"></view>
+                <view class="keypad-date-line"></view>
+                <view class="keypad-date-dot keypad-date-dot-left"></view>
+                <view class="keypad-date-dot keypad-date-dot-center"></view>
+                <view class="keypad-date-dot keypad-date-dot-right"></view>
+              </view>
+              <text class="keypad-date-text {{!isRelativeDateLabel ? 'keypad-date-text-absolute' : ''}}">{{dateLabel}}</text>
+            </view>
+          </picker>
+        </block>
+      </view>
+    </block>
+  </view>
+</view>

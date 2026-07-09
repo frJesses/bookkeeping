@@ -1,98 +1,186 @@
 import { type RecordType } from '../../constants/add'
-import { createAddPageState, getCategoryOptions, submitTransaction } from '../../services/add'
-
-type InputFieldKey = 'amount' | 'remark'
-
-type MiniProgramInputEvent = WechatMiniprogram.CustomEvent<WechatMiniprogram.IAnyObject> & {
-  detail: string | { value?: string }
-}
-
+import {
+  applyEditingRecord,
+  applyAmountAction,
+  buildSubmitPayload,
+  createAddPageState,
+  formatDateLabel,
+  formatAmountDisplay,
+  getCategoryOptions,
+  getCategorySelection,
+  isRelativeDateLabel,
+  resolveSubmitAction,
+  submitTransaction,
+  updateTransaction,
+} from '../../services/add'
+import { clearEditingTransaction, getEditingTransaction } from '../../services/transaction-detail'
 Page({
-  data: createAddPageState(),
+  data: {
+    ...createAddPageState(),
+    statusBarHeight: 20,
+    navBarHeight: 44,
+    capsuleTop: 0,
+    capsuleHeight: 32,
+    capsuleWidth: 96,
+    capsuleRight: 16,
+  },
   async onLoad(options: Record<string, string | undefined>) {
     const initialState = createAddPageState(options.type)
+    const pageMode = options.mode === 'edit' ? 'edit' : 'create'
+    this.initCustomHeader()
     this.setData(initialState)
-    await this.loadCategories(initialState.activeType)
+    if (pageMode !== 'edit') {
+      clearEditingTransaction()
+    }
+    await this.loadCategories(initialState.activeType, pageMode)
   },
-  async loadCategories(type: RecordType) {
+  onUnload() {
+    clearEditingTransaction()
+  },
+  async loadCategories(type: RecordType, pageMode?: 'create' | 'edit') {
     try {
       const categories = await getCategoryOptions(type)
-      const firstCategory = categories.length > 0 ? categories[0] : null
-      this.setData({
+      const nextState: WechatMiniprogram.IAnyObject = {
         categories,
-        activeCategory: firstCategory ? firstCategory.name : '',
-      })
+        activeCategory: '',
+        activeCategoryIcon: '',
+      }
+      const mode = pageMode || this.data.pageMode
+      if (mode === 'edit') {
+        const editingRecord = getEditingTransaction()
+        if (editingRecord) {
+          Object.assign(nextState, applyEditingRecord(editingRecord, categories))
+        }
+      }
+      this.setData(nextState)
     } catch (error) {
       console.error('load categories failed', error)
     }
   },
-  async selectType(e: WechatMiniprogram.BaseEvent) {
-    const { type } = e.currentTarget.dataset as { type: RecordType }
+  async handleTypeChange(e: WechatMiniprogram.CustomEvent<{ type?: RecordType }>) {
+    const { type } = e.detail
     if (!type || type === this.data.activeType) {
       return
     }
     this.setData({
       activeType: type,
+      activeCategory: '',
+      activeCategoryIcon: '',
+      amount: '',
+      amountDisplay: '0',
+      submitLabel: '完成',
     })
     await this.loadCategories(type)
   },
-  selectCategory(e: WechatMiniprogram.BaseEvent) {
-    const { name } = e.currentTarget.dataset as { name: string }
-    if (!name || name === this.data.activeCategory) {
+  handleCategorySelect(e: WechatMiniprogram.CustomEvent<{ name?: string }>) {
+    const { name } = e.detail
+    if (!name) {
+      return
+    }
+    this.setData(getCategorySelection(name, this.data.categories))
+  },
+  handleKeyTap(e: WechatMiniprogram.CustomEvent<{ action?: 'digit' | 'operator' | 'backspace'; value?: string }>) {
+    const { action, value } = e.detail
+    if (!action) {
       return
     }
     this.setData({
-      activeCategory: name,
+      ...applyAmountAction(this.data.amount, action, value),
     })
   },
-  onFieldInput(e: MiniProgramInputEvent) {
-    const { field } = e.currentTarget.dataset as { field?: InputFieldKey }
-    const value = typeof e.detail === 'string' ? e.detail : e.detail.value || ''
-    if (!field) {
+  handleRemarkChange(e: WechatMiniprogram.CustomEvent<{ value?: string }>) {
+    this.setData({
+      remark: e.detail.value || '',
+    })
+  },
+  handleDateChange(e: WechatMiniprogram.CustomEvent<{ value?: string }>) {
+    const selectedDate = e.detail.value || this.data.selectedDate
+    this.setData({
+      selectedDate,
+      dateLabel: formatDateLabel(selectedDate),
+      isRelativeDateLabel: isRelativeDateLabel(selectedDate),
+    })
+  },
+  goBack() {
+    if (getCurrentPages().length > 1) {
+      wx.navigateBack()
       return
     }
-    this.setData({
-      [field]: value,
+    wx.switchTab({
+      url: '/pages/index/index',
     })
   },
   async saveRecord() {
-    const categories = this.data.categories as Array<{ id: number; name: string }>
-    const activeCategory = categories.find((item) => item.name === this.data.activeCategory)
-
-    if (!activeCategory) {
+    const submitAction = resolveSubmitAction(this.data.amount)
+    if (submitAction.mode === 'calculate') {
+      const resolvedAmount = formatAmountDisplay(submitAction.rawAmount)
+      this.setData({
+        amount: resolvedAmount,
+        amountDisplay: resolvedAmount,
+        submitLabel: '完成',
+      })
+      return
+    }
+    const result = buildSubmitPayload({
+      pageMode: this.data.pageMode,
+      originalOccurredAt: this.data.originalOccurredAt,
+      activeCategory: this.data.activeCategory,
+      activeType: this.data.activeType,
+      amount: this.data.amount,
+      remark: this.data.remark,
+      selectedDate: this.data.selectedDate,
+      categories: this.data.categories,
+    })
+    if (!result.ok) {
       wx.showToast({
-        title: '请选择分类',
+        title: result.message,
         icon: 'none',
       })
       return
     }
-
-    if (!this.data.amount || Number(this.data.amount) <= 0) {
-      wx.showToast({
-        title: '请输入正确金额',
-        icon: 'none',
-      })
-      return
-    }
-
     try {
-      await submitTransaction({
-        categoryId: activeCategory.id,
-        type: this.data.activeType,
-        amount: this.data.amount,
-        remark: this.data.remark,
-      })
-
+      if (this.data.pageMode === 'edit' && this.data.editingRecordId) {
+        await updateTransaction({
+          id: this.data.editingRecordId,
+          ...result.payload,
+        })
+      } else {
+        await submitTransaction(result.payload)
+      }
+      clearEditingTransaction()
       wx.showToast({
-        title: '保存成功',
+        title: this.data.pageMode === 'edit' ? '修改成功' : '保存成功',
         icon: 'success',
       })
-
       setTimeout(() => {
+        if (this.data.pageMode === 'edit') {
+          wx.navigateBack({
+            delta: 2,
+          })
+          return
+        }
         wx.navigateBack()
       }, 500)
     } catch (error) {
       console.error('save transaction failed', error)
+      wx.showToast({
+        title: this.data.pageMode === 'edit' ? '修改失败' : '保存失败',
+        icon: 'none',
+      })
     }
+  },
+  initCustomHeader() {
+    const systemInfo = wx.getSystemInfoSync()
+    const menuButton = wx.getMenuButtonBoundingClientRect()
+    const statusBarHeight = systemInfo.statusBarHeight || 20
+    const navBarHeight = (menuButton.top - statusBarHeight) * 2 + menuButton.height
+    this.setData({
+      statusBarHeight,
+      navBarHeight,
+      capsuleTop: menuButton.top,
+      capsuleHeight: menuButton.height,
+      capsuleWidth: menuButton.width,
+      capsuleRight: systemInfo.windowWidth - menuButton.right,
+    })
   },
 })

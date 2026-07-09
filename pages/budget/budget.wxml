@@ -4,7 +4,6 @@
       <text class="hero-title">预算提醒</text>
       <text class="hero-desc">先定下年度目标，再把预算拆到每个月，月底就不会突然慌张。</text>
     </view>
-
     <view wx:if="{{!hasBudget && !isEditing}}" class="empty-panel">
       <empty-state
         image="search"
@@ -14,13 +13,11 @@
         bind:action="startEdit"
       />
     </view>
-
     <view wx:else class="budget-panel">
       <view class="section-head">
         <text class="section-title">年度预算</text>
         <text class="section-tip">金额单位：元</text>
       </view>
-
       <van-cell-group custom-class="budget-group">
         <van-field
           label="年预算"
@@ -34,12 +31,10 @@
           bind:input="onFieldInput"
         />
       </van-cell-group>
-
       <view class="section-head section-head-gap">
         <text class="section-title">月度预算</text>
         <text class="section-tip">可分别设置每个月的预算</text>
       </view>
-
       <view class="month-grid">
         <block wx:for="{{monthlyBudgets}}" wx:key="key">
           <view class="month-card">
@@ -57,7 +52,6 @@
           </view>
         </block>
       </view>
-
       <view class="save-bar">
         <van-button round block color="linear-gradient(135deg, #2f6bff 0%, #5d8dff 100%)" custom-class="save-button" bindtap="saveBudget">
           保存预算

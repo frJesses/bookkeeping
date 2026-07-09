@@ -3,7 +3,6 @@
   height: 30px;
   position: relative;
 }
-
  .container.loading3 {
   -webkit-animation: rotation 1s infinite;
           animation: rotation 1s infinite;
@@ -20,7 +19,6 @@
 .container.loading3 .shape4 {
   border-bottom-right-radius: 10px;
 }
-
 .container .shape {
   position: absolute;
   width: 10px;
@@ -44,12 +42,10 @@
   right: 0;
   background-color: #EE6666;
 }
-
 .loading3 .shape1 {
   -webkit-animation: animation3shape1 0.5s ease 0s infinite alternate;
           animation: animation3shape1 0.5s ease 0s infinite alternate;
 }
-
 @-webkit-keyframes animation3shape1 {
   from {
     -webkit-transform: translate(0, 0);
@@ -60,7 +56,6 @@
             transform: translate(5px, 5px);
   }
 }
-
 @keyframes animation3shape1 {
   from {
     -webkit-transform: translate(0, 0);
@@ -75,7 +70,6 @@
   -webkit-animation: animation3shape2 0.5s ease 0s infinite alternate;
           animation: animation3shape2 0.5s ease 0s infinite alternate;
 }
-
 @-webkit-keyframes animation3shape2 {
   from {
     -webkit-transform: translate(0, 0);
@@ -86,7 +80,6 @@
             transform: translate(-5px, 5px);
   }
 }
-
 @keyframes animation3shape2 {
   from {
     -webkit-transform: translate(0, 0);
@@ -101,7 +94,6 @@
   -webkit-animation: animation3shape3 0.5s ease 0s infinite alternate;
           animation: animation3shape3 0.5s ease 0s infinite alternate;
 }
-
 @-webkit-keyframes animation3shape3 {
   from {
     -webkit-transform: translate(0, 0);
@@ -112,7 +104,6 @@
             transform: translate(5px, -5px);
   }
 }
-
 @keyframes animation3shape3 {
   from {
     -webkit-transform: translate(0, 0);
@@ -127,7 +118,6 @@
   -webkit-animation: animation3shape4 0.5s ease 0s infinite alternate;
           animation: animation3shape4 0.5s ease 0s infinite alternate;
 }
-
 @-webkit-keyframes animation3shape4 {
   from {
     -webkit-transform: translate(0, 0);
@@ -138,7 +128,6 @@
             transform: translate(-5px, -5px);
   }
 }
-
 @keyframes animation3shape4 {
   from {
     -webkit-transform: translate(0, 0);

@@ -1,3 +1,8 @@
+type AnimatedPoint = Record<string, unknown> & {
+  height: number
+  animatedHeight: number
+}
+
 Component({
   properties: {
     axisLabels: {
@@ -26,20 +31,25 @@ Component({
     },
   },
   data: {
-    animatedPoints: [],
+    animatedPoints: [] as AnimatedPoint[],
   },
   observers: {
     points(val: Array<{ height: number }>) {
-      const basePoints = Array.isArray(val) ? val.map((item) => ({ ...item, animatedHeight: 0 })) : []
+      const basePoints: AnimatedPoint[] = Array.isArray(val)
+        ? val.map((item) => ({ ...item, animatedHeight: 0 }))
+        : []
       this.setData({ animatedPoints: basePoints })
       if (basePoints.length === 0) {
         return
       }
       setTimeout(() => {
-        const nextPoints = (Array.isArray(this.data.points) ? this.data.points : []).map((item: Record<string, unknown>) => ({
-          ...item,
-          animatedHeight: item.height,
-        }))
+        const nextPoints: AnimatedPoint[] = (Array.isArray(this.data.points) ? this.data.points : []).map((item) => {
+          const point = item as Record<string, unknown> & { height: number }
+          return {
+            ...point,
+            animatedHeight: point.height,
+          }
+        })
         this.setData({ animatedPoints: nextPoints })
       }, 40)
     },
