@@ -37,10 +37,13 @@ function getAvatarText(name: string) {
 }
 
 function mapProfileSummaryItems(data: ProfileUserInfoDTO | null) {
+  const consecutiveCheckInDays = data ? data.consecutiveCheckInDays : 0
+  const totalBookkeepingDays = data ? data.totalBookkeepingDays : 0
+  const totalBookkeepingCount = data ? data.totalBookkeepingCount : 0
   return [
-    { label: '已连续打卡', value: String(data?.consecutiveCheckInDays ?? 0) },
-    { label: '总记账天数', value: String(data?.totalBookkeepingDays ?? 0) },
-    { label: '总记账笔数', value: String(data?.totalBookkeepingCount ?? 0) },
+    { label: '已连续打卡', value: String(consecutiveCheckInDays) },
+    { label: '总记账天数', value: String(totalBookkeepingDays) },
+    { label: '总记账笔数', value: String(totalBookkeepingCount) },
   ]
 }
 

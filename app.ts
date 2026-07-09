@@ -8,8 +8,7 @@ App<IAppOption>({
   },
   onLaunch() {
     configureRequest({
-      // baseURL: 'https://wwlblog.top/api',
-      baseURL: 'http://172.25.11.236:3005/v1',
+      baseURL: 'https://wwlblog.top/api',
     })
     const systemInfo = wx.getSystemInfoSync()
     this.globalData.customTabBarHeight = calculateCustomTabBarHeight(systemInfo)
