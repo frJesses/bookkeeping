@@ -1,7 +1,7 @@
 <view class="page">
   <view class="page-backdrop"></view>
   <view
-    class="custom-header custom-header-solid"
+    class="custom-header"
     style="padding-top: {{statusBarHeight}}px; height: {{statusBarHeight + navBarHeight + 8}}px;"
   >
     <view class="header-inner" style="height: {{navBarHeight}}px;">
@@ -20,32 +20,48 @@
     style="padding-top: {{statusBarHeight + navBarHeight + 16}}px; padding-bottom: calc({{tabBarSpacer + tabBarGap}}px + 15px);"
   >
     <view class="overview-card">
-      <picker
-        mode="selector"
-        range="{{monthOptions}}"
-        range-key="label"
-        value="{{selectedMonthIndex}}"
-        bindchange="handleMonthChange"
-        class="overview-month-picker"
-      >
-        <view class="overview-month-trigger">
-          <text class="overview-month-text">{{selectedMonthLabel}}</text>
-          <text class="overview-month-arrow">▼</text>
+      <image
+        class="overview-card-background"
+        src="/assets/common/banner.png"
+        mode="aspectFill"
+      />
+      <view class="overview-head">
+        <view class="overview-label-row">
+          <text class="overview-label">{{summaryLabel}}</text>
+          <view class="overview-visibility-button" bindtap="toggleOverviewAmounts">
+            <image
+              class="overview-visibility-icon"
+              src="{{showOverviewAmounts ? '/assets/bill/eye-open.svg' : '/assets/bill/eye-close.svg'}}"
+              mode="aspectFit"
+            />
+          </view>
         </view>
-      </picker>
-      <text class="overview-label">{{summaryLabel}}</text>
+        <picker
+          mode="selector"
+          range="{{monthOptions}}"
+          range-key="label"
+          value="{{selectedMonthIndex}}"
+          bindchange="handleMonthChange"
+          class="overview-month-picker"
+        >
+          <view class="overview-month-trigger">
+            <text class="overview-month-text">{{selectedMonthLabel}}</text>
+            <text class="overview-month-arrow">▼</text>
+          </view>
+        </picker>
+      </view>
       <view class="overview-amount-row">
         <text class="overview-currency">¥</text>
-        <text class="overview-value">{{disposableAmountText}}</text>
+        <text class="overview-value {{showOverviewAmounts ? '' : 'overview-value-masked'}}">{{showOverviewAmounts ? disposableAmountText : '******'}}</text>
       </view>
       <view class="overview-stats">
         <view class="overview-stat">
           <text class="overview-stat-label">本月收入</text>
-          <text class="overview-stat-value">{{monthIncomeText}}</text>
+          <text class="overview-stat-value {{showOverviewAmounts ? '' : 'overview-stat-value-masked'}}">{{showOverviewAmounts ? monthIncomeText : '******'}}</text>
         </view>
         <view class="overview-stat">
           <text class="overview-stat-label">本月支出</text>
-          <text class="overview-stat-value">{{monthExpenseText}}</text>
+          <text class="overview-stat-value {{showOverviewAmounts ? '' : 'overview-stat-value-masked'}}">{{showOverviewAmounts ? monthExpenseText : '******'}}</text>
         </view>
       </view>
     </view>

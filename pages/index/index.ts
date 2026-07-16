@@ -15,6 +15,16 @@ type LoadScrollInstance = WechatMiniprogram.Component.TrivialInstance & {
 type HomePageInstance = TabBarBehaviorPageInstance & {
   homeInitialized: boolean
   loadPageDataTask: Promise<void> | null
+  data: ReturnType<typeof createHomePageState> & {
+    statusBarHeight: number
+    navBarHeight: number
+    capsuleTop: number
+    capsuleHeight: number
+    capsuleWidth: number
+    capsuleRight: number
+    headerSolid: boolean
+    showOverviewAmounts: boolean
+  }
 }
 Page({
   behaviors: [createTabBarBehavior('/pages/index/index')],
@@ -27,6 +37,7 @@ Page({
     capsuleWidth: 96,
     capsuleRight: 16,
     headerSolid: false,
+    showOverviewAmounts: true,
   },
   onLoad(this: HomePageInstance) {
     this.initTabBarLayout()
@@ -137,6 +148,11 @@ Page({
       recentRecordGroups: [],
     })
     await this.loadPageData()
+  },
+  toggleOverviewAmounts(this: HomePageInstance) {
+    this.setData({
+      showOverviewAmounts: !this.data.showOverviewAmounts,
+    })
   },
   goToAdd(e: WechatMiniprogram.BaseEvent) {
     const { type } = e.currentTarget.dataset as { type?: EntryType }

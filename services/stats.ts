@@ -57,6 +57,15 @@ type ExpenseTrendDTO = {
   currentTrend?: ExpenseTrendBlockDTO
   trend?: ExpenseTrendBlockDTO
 }
+const METRIC_ICONS = {
+  total: '/assets/common/icon_total_expense.png',
+  average: '/assets/common/icon_daily_expense.png',
+  compare: '/assets/common/icon_weekly_expense.png',
+  balance: '/assets/common/icon_balance.png',
+} as const
+function getFlowTrendColor(flow: FlowType) {
+  return flow === 'expense' ? '#2f6bff' : '#33b18a'
+}
 function formatCurrency(value: number) {
   return `¥ ${value.toFixed(2)}`
 }
@@ -65,6 +74,12 @@ function formatCompactCurrency(value: number) {
     return `¥ ${(value / 10000).toFixed(1)}万`
   }
   return `¥ ${Math.round(value)}`
+}
+function formatCompactAmount(value: number) {
+  if (value >= 10000) {
+    return `${(value / 10000).toFixed(1)}万`
+  }
+  return `${Math.round(value)}`
 }
 function parseAmount(value: string) {
   const amount = Number(value || 0)
@@ -87,10 +102,10 @@ function createMetricsFromTrend(data: ExpenseTrendDTO | undefined, report: Repor
   const flowText = flow === 'expense' ? '支出' : '收入'
   const compareLabel = data && data.compareLabel ? data.compareLabel : report === 'week' ? '比上周' : report === 'year' ? '比去年' : '比上月'
   return [
-    { label: `总${flowText}`, value: formatCurrency(total), accent: 'blue' },
-    { label: report === 'year' ? `月均${flowText}` : `日均${flowText}`, value: formatCurrency(average), accent: 'orange' },
-    { label: `${compareLabel}${flowText}(元)`, value: formatCurrency(compareAmount), accent: 'blue' },
-    { label: '收支结余(元)', value: formatCurrency(previousAmount), accent: 'orange' },
+    { label: `总${flowText}`, value: formatCurrency(total), accent: 'blue', icon: METRIC_ICONS.total },
+    { label: report === 'year' ? `月均${flowText}` : `日均${flowText}`, value: formatCurrency(average), accent: 'orange', icon: METRIC_ICONS.average },
+    { label: `${compareLabel}${flowText}(元)`, value: formatCurrency(compareAmount), accent: 'blue', icon: METRIC_ICONS.compare },
+    { label: '收支结余(元)', value: formatCurrency(previousAmount), accent: 'orange', icon: METRIC_ICONS.balance },
   ]
 }
 function createLineChartDataFromBlock(block: ExpenseTrendBlockDTO | undefined, report: ReportType, flow: FlowType): LineChartData {
@@ -101,7 +116,7 @@ function createLineChartDataFromBlock(block: ExpenseTrendBlockDTO | undefined, r
       {
         name: flow === 'expense' ? '支出' : '收入',
         data: list.map((item) => parseAmount(item.amount)),
-        color: flow === 'expense' ? '#3a78ff' : '#33b18a',
+        color: getFlowTrendColor(flow),
       },
     ],
   }
@@ -124,15 +139,15 @@ function createBarAxisLabelsFromBlock(block: ExpenseTrendBlockDTO | undefined) {
   const list = block && Array.isArray(block.list) ? block.list : []
   const values = list.map((item) => parseAmount(item.amount))
   const max = Math.max(...values, 1)
-  return [formatCompactCurrency(max), formatCompactCurrency(max / 2), '¥ 0']
+  return [formatCompactAmount(max), formatCompactAmount(max / 2), '0']
 }
 function createEmptyStatsData(flow: FlowType) {
   return {
     metrics: [
-      { label: flow === 'expense' ? '总支出' : '总收入', value: '¥ 0.00', accent: 'blue' as const },
-      { label: flow === 'expense' ? '日均支出' : '日均收入', value: '¥ 0.00', accent: 'orange' as const },
-      { label: flow === 'expense' ? '比上周支出(元)' : '比上周收入(元)', value: '¥ 0.00', accent: 'blue' as const },
-      { label: '收支结余(元)', value: '0项', accent: 'orange' as const },
+      { label: flow === 'expense' ? '总支出' : '总收入', value: '¥ 0.00', accent: 'blue' as const, icon: METRIC_ICONS.total },
+      { label: flow === 'expense' ? '日均支出' : '日均收入', value: '¥ 0.00', accent: 'orange' as const, icon: METRIC_ICONS.average },
+      { label: flow === 'expense' ? '比上周支出(元)' : '比上周收入(元)', value: '¥ 0.00', accent: 'blue' as const, icon: METRIC_ICONS.compare },
+      { label: '收支结余(元)', value: '0项', accent: 'orange' as const, icon: METRIC_ICONS.balance },
     ],
     lineChartData: {
       categories: [],
@@ -140,7 +155,7 @@ function createEmptyStatsData(flow: FlowType) {
         {
           name: flow === 'expense' ? '支出' : '收入',
           data: [],
-          color: flow === 'expense' ? '#3a78ff' : '#33b18a',
+          color: getFlowTrendColor(flow),
         },
       ],
     },
@@ -148,7 +163,7 @@ function createEmptyStatsData(flow: FlowType) {
     hasActiveBarPoint: false,
     barTooltipLabel: '',
     lineAxisLabels: [],
-    barAxisLabels: ['¥ 0', '¥ 0', '¥ 0'],
+    barAxisLabels: ['0', '0', '0'],
   }
 }
 function createStatsDataFromTrend(report: ReportType, flow: FlowType, data: ExpenseTrendDTO | undefined) {
@@ -166,7 +181,7 @@ function createStatsDataFromTrend(report: ReportType, flow: FlowType, data: Expe
   }
 }
 function buildLineChartOpts(flow: FlowType) {
-  const lineColor = flow === 'expense' ? '#3a78ff' : '#33b18a'
+  const lineColor = getFlowTrendColor(flow)
   return {
     color: [lineColor],
     padding: [18, 12, 6, 6],
@@ -179,21 +194,31 @@ function buildLineChartOpts(flow: FlowType) {
     legend: { show: false },
     xAxis: {
       disableGrid: true,
-      fontColor: '#98a1b2',
+      fontColor: '#8f9db4',
       fontSize: 10,
       marginTop: 8,
     },
     yAxis: {
-      gridColor: '#a1a9ba;',
+      gridType: 'dash',
+      dashLength: 2,
+      gridColor: '#e4eaf4',
+      splitNumber: 4,
       data: [
         {
           min: 0,
-          fontColor: '#b0b7c5',
+          fontColor: '#8f9db4',
           fontSize: 9,
           axisLine: false,
           labelGap: 8,
         },
       ],
+    },
+    extra: {
+      line: {
+        type: 'straight',
+        width: 2,
+        activeType: 'hollow',
+      },
     },
   }
 }

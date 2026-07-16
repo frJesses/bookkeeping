@@ -4,6 +4,9 @@ export type MetricsItem = {
   label: string
   value: string
   accent?: 'blue' | 'orange'
+  icon?: string
+  badgeText?: string
+  badgeTone?: 'green' | 'purple'
 }
 export type BarPoint = {
   label: string

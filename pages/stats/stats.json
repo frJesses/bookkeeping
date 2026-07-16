@@ -1,7 +1,5 @@
 {
-  "navigationBarTitleText": "收支报表",
-  "navigationBarBackgroundColor": "#ffffff",
-  "navigationBarTextStyle": "black",
+  "navigationStyle": "custom",
   "renderer": "webview",
   "usingComponents": {
     "qiun-data-charts": "/components/qiun-data-charts/index",

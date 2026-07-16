@@ -40,12 +40,21 @@ Page({
   async performLoadPageData(this: BillPageInstance) {
     try {
       this.billInitialized = true
+      this.setData({
+        billLoading: true,
+      })
       const data = await getBillPageData({
         year: this.data.selectedYear,
         mode: this.data.activeMode,
       })
-      this.setData(data)
+      this.setData({
+        ...data,
+        billLoading: false,
+      })
     } catch (error) {
+      this.setData({
+        billLoading: false,
+      })
       console.error('load bill page failed', error)
     }
   },

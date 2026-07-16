@@ -1,11 +1,30 @@
 <view class="page">
-  <view class="page-content" style="height: calc(100vh - {{tabBarSpacer + tabBarGap}}px);">
+  <view
+    class="custom-header"
+    style="padding-top: {{statusBarHeight}}px; height: {{statusBarHeight + navBarHeight + 10}}px;"
+  >
+    <view class="header-inner" style="height: {{navBarHeight}}px;">
+      <view class="header-copy">
+        <view class="header-title-row">
+          <text class="header-title">收支报表</text>
+          <view class="header-title-mark"></view>
+        </view>
+      </view>
+      <view
+        class="header-capsule-placeholder"
+        style="margin-top: {{capsuleTop - statusBarHeight}}px; height: {{capsuleHeight}}px; width: {{capsuleWidth}}px; margin-right: {{capsuleRight}}px;"
+      />
+    </view>
+  </view>
+  <view class="page-content" style="height: calc(100vh - {{tabBarSpacer + tabBarGap}}px); padding-top: {{statusBarHeight + navBarHeight + 8}}px;">
     <view class="page-top">
       <view class="report-switch">
         <block wx:for="{{reportOptions}}" wx:key="key" wx:for-index="index">
           <view class="report-segment">
             <view class="report-item {{activeReport === item.key ? 'report-item-active' : ''}}" data-report="{{item.key}}" bindtap="selectReport">
-              <image class="report-icon" src="{{item.icon}}" mode="aspectFit"></image>
+              <view class="report-icon-wrap">
+                <image class="report-icon" src="{{item.icon}}" mode="aspectFit"></image>
+              </view>
               <text class="report-label">{{item.label}}</text>
             </view>
             <view wx:if="{{index !== reportOptions.length - 1}}" class="report-divider"></view>
@@ -15,6 +34,7 @@
       <view class="page-inner">
         <view class="toolbar">
           <view class="date-picker" bindtap="openPeriodPicker">
+            <image class="date-icon" src="/assets/stats/report-month.svg" mode="aspectFit"></image>
             <text class="date-value">{{dateRange}}</text>
             <text class="date-caret">▼</text>
           </view>
@@ -30,13 +50,20 @@
         <view class="report-body">
           <view class="summary-card">
             <view class="metric-grid">
-              <block wx:for="{{metrics}}" wx:key="label">
-                <view class="metric-item">
-                  <view class="metric-label-row">
-                    <view class="metric-dot"></view>
-                    <text class="metric-label">{{item.label}}</text>
+              <block wx:for="{{metrics}}" wx:key="label" wx:for-index="index">
+                <view class="metric-item metric-item-{{index}}">
+                  <view class="metric-icon-shell metric-icon-shell-{{index}}">
+                    <image wx:if="{{item.icon}}" class="metric-icon" src="{{item.icon}}" mode="aspectFit"></image>
                   </view>
-                  <text class="metric-value {{item.accent === 'orange' ? 'metric-value-warm' : ''}}">{{item.value}}</text>
+                  <view class="metric-content">
+                    <view class="metric-label-row">
+                      <text class="metric-label">{{item.label}}</text>
+                    </view>
+                    <view class="metric-value-row">
+                      <text class="metric-value {{item.accent === 'orange' ? 'metric-value-warm' : ''}}">{{item.value}}</text>
+                      <text wx:if="{{item.badgeText}}" class="metric-badge {{item.badgeTone === 'purple' ? 'metric-badge-purple' : 'metric-badge-green'}}">{{item.badgeText}}</text>
+                    </view>
+                  </view>
                 </view>
               </block>
             </view>

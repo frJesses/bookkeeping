@@ -83,6 +83,89 @@
   transform: translateY(-50%);
   flex-shrink: 0;
 }
+.bill-content {
+  animation: billContentIn 260ms ease-out both;
+}
+.bill-skeleton {
+  animation: billContentIn 180ms ease-out both;
+}
+.skeleton-card,
+.skeleton-list {
+  position: relative;
+  overflow: hidden;
+  background: #f5f7fb;
+}
+.skeleton-card::after,
+.skeleton-list::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -45%;
+  width: 45%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.76) 50%, rgba(255, 255, 255, 0) 100%);
+  animation: skeletonShimmer 1.15s ease-in-out infinite;
+}
+.skeleton-summary {
+  margin-top: 8rpx;
+  padding: 32rpx 30rpx 30rpx;
+  border-radius: 34rpx;
+  background: linear-gradient(135deg, #f2f5fb 0%, #e9edf7 100%);
+}
+.skeleton-line,
+.skeleton-chip,
+.skeleton-list-head {
+  border-radius: 999rpx;
+  background: #e2e7f1;
+}
+.skeleton-label {
+  width: 144rpx;
+  height: 28rpx;
+}
+.skeleton-amount {
+  width: 320rpx;
+  height: 72rpx;
+  margin-top: 22rpx;
+}
+.skeleton-chip-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 42rpx;
+}
+.skeleton-chip {
+  width: 220rpx;
+  height: 72rpx;
+}
+.skeleton-list {
+  margin-top: 26rpx;
+  border-radius: 30rpx;
+  box-shadow: 0 12rpx 28rpx rgba(58, 66, 92, 0.04);
+}
+.skeleton-list-head {
+  height: 92rpx;
+  border-radius: 0;
+  background: #f1f4f9;
+}
+.skeleton-row {
+  display: flex;
+  align-items: center;
+  min-height: 108rpx;
+  padding: 0 28rpx;
+  border-bottom: 1rpx solid rgba(235, 238, 244, 0.9);
+  box-sizing: border-box;
+}
+.skeleton-row:last-child {
+  border-bottom: none;
+}
+.skeleton-cell {
+  flex: 1;
+  height: 28rpx;
+  margin-left: 28rpx;
+}
+.skeleton-cell-month {
+  flex: 0.9;
+  margin-left: 0;
+}
 .summary-card {
   position: relative;
   overflow: hidden;
@@ -274,4 +357,22 @@
   color: #ffffff;
   font-size: 26rpx;
   font-weight: 700;
+}
+@keyframes billContentIn {
+  from {
+    opacity: 0;
+    transform: translateY(12rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes skeletonShimmer {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(320%);
+  }
 }

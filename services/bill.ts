@@ -8,6 +8,7 @@ import {
 import { get } from './request'
 import { ensureOpenId } from './auth'
 export type BillPageState = {
+  billLoading: boolean
   activeMode: BillMode
   selectedYear: number
   currentYear: number
@@ -107,6 +108,7 @@ function mapYearBillToSummary(data: YearBillDTO): AnnualSummary {
 function createEmptyBillPageData(input: { year: number; mode: BillMode }, yearOptions: BillYearOption[]) {
   const currentYear = new Date().getFullYear()
   return {
+    billLoading: false,
     activeMode: input.mode,
     selectedYear: input.year,
     currentYear,
@@ -127,6 +129,7 @@ function createBillPageDataFromSummary(input: { year: number; mode: BillMode }, 
   const currentYear = new Date().getFullYear()
   const hasAnnualBill = summary.months.some((item) => item.income > 0 || item.expense > 0) || summary.totalIncome > 0 || summary.totalExpense > 0
   return {
+    billLoading: false,
     activeMode: input.mode,
     selectedYear: input.year,
     currentYear,
@@ -150,6 +153,7 @@ export function createBillPageState(): BillPageState {
   const yearOptions = createBillYearOptions()
   const selectedYear = yearOptions[0].value
   return {
+    billLoading: true,
     activeMode: 'year',
     selectedYear,
     currentYear: new Date().getFullYear(),

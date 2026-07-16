@@ -13,11 +13,32 @@ type PageWithCustomTabBar = WechatMiniprogram.Page.Instance<WechatMiniprogram.IA
 type CustomTabBarInstance = WechatMiniprogram.Component.TrivialInstance & {
   setData(data: WechatMiniprogram.IAnyObject, callback?: () => void): void
 }
+type StatsPageInstance = TabBarBehaviorPageInstance & {
+  data: ReturnType<typeof createInitialStatsPageData> & {
+    statusBarHeight: number
+    navBarHeight: number
+    capsuleTop: number
+    capsuleHeight: number
+    capsuleWidth: number
+    capsuleRight: number
+  }
+  loadPageData(): Promise<void>
+  initCustomHeader(): void
+}
 Page({
   behaviors: [createTabBarBehavior('/pages/stats/stats')],
-  data: createInitialStatsPageData(),
-  onLoad(this: TabBarBehaviorPageInstance) {
+  data: {
+    ...createInitialStatsPageData(),
+    statusBarHeight: 20,
+    navBarHeight: 88,
+    capsuleTop: 0,
+    capsuleHeight: 32,
+    capsuleWidth: 96,
+    capsuleRight: 16,
+  },
+  onLoad(this: StatsPageInstance) {
     this.initTabBarLayout()
+    this.initCustomHeader()
     void this.loadPageData()
   },
   onShow(this: TabBarBehaviorPageInstance) {
@@ -101,6 +122,20 @@ Page({
     }
     this.setData({
       ...setActiveBarPoint(this.data.barPoints as BarPoint[], pointIndex),
+    })
+  },
+  initCustomHeader() {
+    const systemInfo = wx.getSystemInfoSync()
+    const menuButton = wx.getMenuButtonBoundingClientRect()
+    const statusBarHeight = systemInfo.statusBarHeight || 20
+    const navBarHeight = (menuButton.top - statusBarHeight) * 2 + menuButton.height
+    this.setData({
+      statusBarHeight,
+      navBarHeight,
+      capsuleTop: menuButton.top,
+      capsuleHeight: menuButton.height,
+      capsuleWidth: menuButton.width,
+      capsuleRight: systemInfo.windowWidth - menuButton.right,
     })
   },
 })

@@ -28,48 +28,71 @@
   </view>
   <scroll-view scroll-y class="page-scroll" style="height: calc(100vh - {{tabBarSpacer + tabBarGap}}px);">
     <view class="page-content" style="padding-top: calc({{statusBarHeight + navBarHeight}}px + 30rpx);">
-      <view wx:if="{{hasAnnualBill}}" class="summary-card">
-        <view class="summary-card-symbol">¥</view>
-        <view class="summary-card-glow summary-card-glow-left"></view>
-        <view class="summary-card-glow summary-card-glow-right"></view>
-        <view class="summary-main">
-          <text class="summary-label">{{summaryTitle}}</text>
-          <text class="summary-value">{{amountVisible ? summaryBalanceText : '****'}}</text>
-        </view>
-        <view class="summary-side">
-          <view class="mini-chip">
-            <text class="mini-chip-label">年收入</text>
-            <text class="mini-chip-value">{{amountVisible ? summaryIncomeText : '****'}}</text>
-          </view>
-          <view class="mini-chip">
-            <text class="mini-chip-label">年支出</text>
-            <text class="mini-chip-value">{{amountVisible ? summaryExpenseText : '****'}}</text>
+      <view wx:if="{{billLoading}}" class="bill-skeleton">
+        <view class="skeleton-card skeleton-summary">
+          <view class="skeleton-line skeleton-label"></view>
+          <view class="skeleton-line skeleton-amount"></view>
+          <view class="skeleton-chip-row">
+            <view class="skeleton-chip"></view>
+            <view class="skeleton-chip"></view>
           </view>
         </view>
-      </view>
-      <view wx:if="{{hasAnnualBill && showAnnualCover}}" class="annual-cover">
-        <view class="annual-cover-decor annual-cover-decor-left"></view>
-        <view class="annual-cover-decor annual-cover-decor-right"></view>
-        <view class="annual-cover-pattern annual-cover-pattern-top"></view>
-        <view class="annual-cover-pattern annual-cover-pattern-bottom"></view>
-        <view>
-          <text class="annual-cover-kicker">✦ 我的年度留影 ✦</text>
-          <text class="annual-cover-title">{{selectedYear}} 年度账单</text>
+        <view class="skeleton-list">
+          <view class="skeleton-list-head"></view>
+          <block wx:for="{{[1, 2, 3, 4]}}" wx:key="*this">
+            <view class="skeleton-row">
+              <view class="skeleton-line skeleton-cell skeleton-cell-month"></view>
+              <view class="skeleton-line skeleton-cell"></view>
+              <view class="skeleton-line skeleton-cell"></view>
+              <view class="skeleton-line skeleton-cell"></view>
+            </view>
+          </block>
         </view>
-        <view class="annual-cover-action">{{coverActionText}}</view>
       </view>
-      <bill-annual-list wx:if="{{hasAnnualBill}}" rows="{{annualRows}}" mode="{{activeMode}}" bind:select="goToMonthDetail" />
-      <view wx:if="{{!hasAnnualBill}}" class="empty-wrap">
-        <view class="empty-panel">
-          <text class="empty-year">{{selectedYear}} 年</text>
-          <text class="empty-title">这一年还没有账单</text>
-          <text class="empty-desc">先记几笔收支，回来这里就能查看年度汇总了。</text>
-          <view class="empty-action" bindtap="handleEmptyAction">去记一笔</view>
+      <view wx:else class="bill-content">
+        <view wx:if="{{hasAnnualBill}}" class="summary-card">
+          <view class="summary-card-symbol">¥</view>
+          <view class="summary-card-glow summary-card-glow-left"></view>
+          <view class="summary-card-glow summary-card-glow-right"></view>
+          <view class="summary-main">
+            <text class="summary-label">{{summaryTitle}}</text>
+            <text class="summary-value">{{amountVisible ? summaryBalanceText : '****'}}</text>
+          </view>
+          <view class="summary-side">
+            <view class="mini-chip">
+              <text class="mini-chip-label">年收入</text>
+              <text class="mini-chip-value">{{amountVisible ? summaryIncomeText : '****'}}</text>
+            </view>
+            <view class="mini-chip">
+              <text class="mini-chip-label">年支出</text>
+              <text class="mini-chip-value">{{amountVisible ? summaryExpenseText : '****'}}</text>
+            </view>
+          </view>
         </view>
-        <empty-state
-          image="search"
-          description="切换其他年份试试，或者从今年开始记录。"
-        />
+        <view wx:if="{{hasAnnualBill && showAnnualCover}}" class="annual-cover">
+          <view class="annual-cover-decor annual-cover-decor-left"></view>
+          <view class="annual-cover-decor annual-cover-decor-right"></view>
+          <view class="annual-cover-pattern annual-cover-pattern-top"></view>
+          <view class="annual-cover-pattern annual-cover-pattern-bottom"></view>
+          <view>
+            <text class="annual-cover-kicker">✦ 我的年度留影 ✦</text>
+            <text class="annual-cover-title">{{selectedYear}} 年度账单</text>
+          </view>
+          <view class="annual-cover-action">{{coverActionText}}</view>
+        </view>
+        <bill-annual-list wx:if="{{hasAnnualBill}}" rows="{{annualRows}}" mode="{{activeMode}}" bind:select="goToMonthDetail" />
+        <view wx:if="{{!hasAnnualBill}}" class="empty-wrap">
+          <view class="empty-panel">
+            <text class="empty-year">{{selectedYear}} 年</text>
+            <text class="empty-title">这一年还没有账单</text>
+            <text class="empty-desc">先记几笔收支，回来这里就能查看年度汇总了。</text>
+            <view class="empty-action" bindtap="handleEmptyAction">去记一笔</view>
+          </view>
+          <empty-state
+            image="search"
+            description="切换其他年份试试，或者从今年开始记录。"
+          />
+        </view>
       </view>
     </view>
   </scroll-view>
