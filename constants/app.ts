@@ -1,5 +1,5 @@
 export const APP_NAME = '钱小迹'
-export const APP_VERSION = '1.0.1'
+export const APP_VERSION = '1.0.3'
 export const APP_TAGLINE = '把每一笔日常，都记成清楚的小轨迹'
 
 export type AboutHighlightItem = {
