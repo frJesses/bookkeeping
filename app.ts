@@ -1,6 +1,7 @@
 import { calculateCustomTabBarHeight } from './utils/tabbar'
 import { ensureOpenId } from './services/auth'
 import { configureRequest } from './services/request'
+import { getApiBaseURL } from './config/index'
 App<IAppOption>({
   globalData: {
     customTabBarHeight: 0,
@@ -8,7 +9,7 @@ App<IAppOption>({
   },
   onLaunch() {
     configureRequest({
-      baseURL: 'https://wwlblog.top/api',
+      baseURL: getApiBaseURL(),
     })
     const systemInfo = wx.getSystemInfoSync()
     this.globalData.customTabBarHeight = calculateCustomTabBarHeight(systemInfo)

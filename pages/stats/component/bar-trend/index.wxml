@@ -1,4 +1,4 @@
-<view class="bar-chart">
+<view class="bar-chart bar-chart-{{activeFlow}}">
   <view class="y-axis bar-axis">
     <block wx:for="{{axisLabels}}" wx:key="*this">
       <text class="axis-label">{{item}}</text>

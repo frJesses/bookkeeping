@@ -2,7 +2,9 @@
   "name": "miniprogram-ts-quickstart",
   "version": "1.0.2",
   "description": "",
-  "scripts": {},
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
   "keywords": [],
   "author": "",
   "license": "",

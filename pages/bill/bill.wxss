@@ -376,3 +376,34 @@
     transform: translateX(320%);
   }
 }
+.state-panel {
+  margin-top: 80rpx;
+  padding: 56rpx 36rpx;
+  text-align: center;
+}
+.state-title,
+.state-desc {
+  display: block;
+}
+.state-title {
+  font-size: 32rpx;
+  color: #202536;
+  font-weight: 600;
+}
+.state-desc {
+  margin-top: 16rpx;
+  font-size: 24rpx;
+  color: #8992a7;
+}
+.state-action {
+  width: 220rpx;
+  margin-top: 32rpx;
+  border: 0;
+  border-radius: 8rpx;
+  background: #526dff;
+  color: #ffffff;
+  font-size: 26rpx;
+}
+.state-action::after {
+  border: 0;
+}

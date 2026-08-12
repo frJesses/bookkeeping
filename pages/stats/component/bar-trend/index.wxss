@@ -1,16 +1,16 @@
 .bar-chart {
-  margin-top: 24rpx;
+  margin-top: 16rpx;
   display: flex;
   align-items: stretch;
 }
 .y-axis {
-  width: 78rpx;
-  color: #b0b7c5;
+  width: 70rpx;
+  color: #9aa2ad;
   font-size: 18rpx;
 }
 .bar-axis {
-  padding-top: 26rpx;
-  padding-bottom: 48rpx;
+  padding-top: 18rpx;
+  padding-bottom: 42rpx;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -21,58 +21,63 @@
 .bar-chart-main {
   flex: 1;
   position: relative;
-  height: 308rpx;
+  height: 286rpx;
 }
 .bar-grid-lines {
   position: absolute;
-  inset: 18rpx 0 52rpx;
+  inset: 12rpx 0 46rpx;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 .grid-line {
-  border-top: 2rpx dashed #e4eaf4;
+  border-top: 1rpx dashed #dfe4e9;
 }
 .bar-columns {
   position: absolute;
-  inset: 18rpx 0 0;
+  inset: 12rpx 0 0;
   display: flex;
   align-items: flex-end;
   justify-content: space-around;
 }
 .bar-column {
-  width: 106rpx;
+  width: 96rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 24rpx;
+  padding-top: 18rpx;
 }
 .bar-wrapper {
   position: relative;
-  width: 58rpx;
-  height: 208rpx;
+  width: 48rpx;
+  height: 198rpx;
   display: flex;
   align-items: flex-end;
   justify-content: center;
 }
 .bar-fill {
-  width: 58rpx;
-  border-radius: 18rpx 18rpx 10rpx 10rpx;
-  background: linear-gradient(180deg, rgba(47, 107, 255, 0.28) 0%, rgba(47, 107, 255, 0.72) 100%);
+  width: 42rpx;
+  border-radius: 6rpx 6rpx 2rpx 2rpx;
+  background: #a9bff5;
   transition: height 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .bar-fill-active {
-  background: linear-gradient(180deg, #6f9bff 0%, #2f6bff 100%);
-  box-shadow: 0 18rpx 32rpx rgba(47, 107, 255, 0.28);
+  background: #4e62ff;
+}
+.bar-chart-income .bar-fill {
+  background: #a8d8c8;
+}
+.bar-chart-income .bar-fill-active {
+  background: #278c6c;
 }
 .bar-tooltip {
   position: absolute;
-  bottom: 92rpx;
+  bottom: 84rpx;
   min-width: 190rpx;
   padding: 14rpx 16rpx;
-  border-radius: 20rpx;
-  background: #2f6bff;
-  box-shadow: 0 16rpx 34rpx rgba(47, 107, 255, 0.3);
+  border-radius: 8rpx;
+  background: #202631;
+  box-shadow: 0 10rpx 24rpx rgba(32, 38, 49, 0.18);
   z-index: 2;
   box-sizing: border-box;
 }
@@ -107,7 +112,7 @@
   font-size: 20rpx;
 }
 .bar-label {
-  margin-top: 16rpx;
+  margin-top: 12rpx;
   font-size: 20rpx;
-  color: #98a1b2;
+  color: #8f98a4;
 }

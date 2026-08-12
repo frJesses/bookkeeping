@@ -3,7 +3,7 @@ Component({
   properties: {
     activeMode: {
       type: String,
-      value: 'year',
+      value: 'month',
     },
   },
   data: {

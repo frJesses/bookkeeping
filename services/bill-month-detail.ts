@@ -1,51 +1,44 @@
-import { BILL_MONTH_DETAIL_MAP, type BillMonthDetailData } from '../constants/bill-month-detail'
-import { get } from './request'
 import { ensureOpenId } from './auth'
-export type BillMonthDetailState = BillMonthDetailData & {
-  statusBarHeight: number
-  navBarHeight: number
-  capsuleTop: number
-  capsuleHeight: number
-  capsuleWidth: number
-  capsuleRight: number
-  categoryRingBackground: string
-  categoryLegend: Array<{ name: string; ratioText: string; amountText: string; color: string }>
-  expenseTrackWidth: string
-  incomeTrackWidth: string
-  lineChartData: {
-    categories: string[]
-    series: Array<{ name: string; data: number[]; color: string }>
-  }
-  lineChartOpts: Record<string, unknown>
-  compareMax: number
-  compareItemsWithHeight: Array<{ monthLabel: string; value: number; active?: boolean; height: string; valueText: string }>
-}
-type MonthBillDayDTO = {
-  date: string
-  expense: string
-  income: string
-  balance: string
-}
-type MonthBillDTO = {
+import { get } from './request'
+
+type MonthDetailDTO = {
   month: string
   totalExpense: string
   totalIncome: string
   totalBalance: string
-  days: MonthBillDayDTO[]
+  previousBalance: string
+  days: Array<{ date: string; expense: string; income: string; balance: string }>
+  categories: Array<{
+    categoryId: string
+    name: string
+    icon: string | null
+    iconText: string
+    color: string | null
+    amount: string
+    ratio: number
+  }>
+  rankings: Array<{
+    id: string
+    categoryId: string
+    categoryName: string
+    categoryIcon: string | null
+    categoryIconText: string | null
+    categoryIconColor: string | null
+    title: string
+    remark: string | null
+    amount: string
+    occurredAt: string
+  }>
+  comparisons: Array<{ month: string; expense: string }>
 }
-type YearBillMonthDTO = {
-  month: string
-  expense: string
-  income: string
-  balance: string
+
+const CATEGORY_COLORS = ['#526dff', '#14a878', '#f1a624', '#e65e73', '#39a6c8', '#7b61a8']
+
+function getCurrentMonthKey() {
+  const now = new Date()
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
 }
-type YearBillDTO = {
-  year: string
-  totalExpense: string
-  totalIncome: string
-  totalBalance: string
-  months: YearBillMonthDTO[]
-}
+
 function createHeaderLayout() {
   const systemInfo = wx.getSystemInfoSync()
   const menuButton = wx.getMenuButtonBoundingClientRect()
@@ -60,224 +53,197 @@ function createHeaderLayout() {
     capsuleRight: systemInfo.windowWidth - menuButton.right,
   }
 }
-function buildRingBackground(data: BillMonthDetailData) {
-  const segments = data.categories
-    .map((item, index) => {
-      const ratio = Number(item.ratioText.replace('%', '')) / 100
-      return {
-        color: item.color,
-        ratio,
-        index,
-      }
-    })
-    .reduce(
-      (accumulator, item) => {
-        const start = accumulator.current
-        const end = start + item.ratio * 360
-        accumulator.current = end
-        accumulator.parts.push(`${item.color} ${start}deg ${end}deg`)
-        return accumulator
-      },
-      { current: 0, parts: [] as string[] }
-    )
-  return `conic-gradient(${segments.parts.join(', ')})`
+
+function toAmount(value: string | number) {
+  const amount = Number(value || 0)
+  return Number.isFinite(amount) ? amount : 0
 }
-function buildLineChartData(data: BillMonthDetailData) {
-  return {
-    categories: data.trendPoints.map((item) => item.day),
-    series: [
-      {
-        name: '支出',
-        data: data.trendPoints.map((item) => item.value),
-        color: '#f3b018',
-      },
-    ],
-  }
+
+function formatMoney(value: string | number) {
+  return toAmount(value).toFixed(2)
 }
-function buildLineChartOpts() {
+
+function formatSignedMoney(value: string | number) {
+  const amount = toAmount(value)
+  return amount < 0 ? `-¥${Math.abs(amount).toFixed(2)}` : `¥${amount.toFixed(2)}`
+}
+
+function buildChartOptions() {
   return {
-    color: ['#f3b018'],
+    color: ['#f0ad1d'],
     padding: [18, 12, 8, 6],
     enableScroll: false,
     animation: true,
-    fontSize: 11,
     dataLabel: false,
-    dataPointShape: true,
-    dataPointShapeType: 'hollow',
     legend: { show: false },
-    xAxis: {
-      disableGrid: true,
-      fontColor: '#b4bbca',
-      fontSize: 10,
-      marginTop: 8,
-    },
+    xAxis: { disableGrid: true, fontColor: '#8b94a8', fontSize: 10 },
     yAxis: {
-      gridColor: '#eceff5',
-      splitNumber: 4,
-      data: [
-        {
-          min: 0,
-          fontColor: '#c2c8d4',
-          fontSize: 9,
-          axisLine: false,
-          labelGap: 8,
-        },
-      ],
+      gridType: 'dash',
+      dashLength: 3,
+      gridColor: '#e8ebf2',
+      data: [{ min: 0, fontColor: '#a0a8b8', fontSize: 9, axisLine: false }],
     },
-    extra: {
-      line: {
-        type: 'curve',
-        width: 2,
-        activeType: 'hollow',
-      },
+    extra: { line: { type: 'curve', width: 2, activeType: 'hollow' } },
+  }
+}
+
+function buildCategoryRingBackground(categories: Array<{ ratio: number; color: string }>) {
+  let current = 0
+  const segments = categories.map((item) => {
+    const start = current
+    current += toAmount(item.ratio) * 3.6
+    return `${item.color} ${start}deg ${current}deg`
+  })
+  return segments.length ? `conic-gradient(${segments.join(', ')})` : '#e9edf3'
+}
+
+function buildDisplayCategories(categories: Array<{
+  categoryId: string
+  name: string
+  icon: string | null
+  iconText: string
+  color: string
+  amount: string
+  ratio: number
+}>) {
+  if (categories.length <= 6) return categories
+  const visible = categories.slice(0, 5)
+  const remainder = categories.slice(5)
+  const remainderAmount = remainder.reduce((total, item) => total + toAmount(item.amount), 0)
+  const remainderRatio = remainder.reduce((total, item) => total + toAmount(item.ratio), 0)
+  return [
+    ...visible,
+    {
+      categoryId: 'other-categories',
+      name: '其他',
+      icon: null,
+      iconText: '其',
+      color: CATEGORY_COLORS[5],
+      amount: remainderAmount.toFixed(2),
+      ratio: Number(remainderRatio.toFixed(2)),
     },
-  }
+  ]
 }
-function parseAmount(value: string) {
-  const amount = Number(value || 0)
-  return Number.isNaN(amount) ? 0 : amount
-}
-function parseMonthNumber(value: string) {
-  const matched = value.match(/^\d{4}-(\d{2})$/)
-  if (!matched) {
-    return 0
-  }
-  return Number(matched[1]) || 0
-}
-function formatAmountText(value: number) {
-  const absolute = Math.abs(value)
-  return value < 0 ? `-${absolute.toFixed(2)}` : absolute.toFixed(2)
-}
-function buildCompareItems(yearBill: YearBillDTO | null, currentMonth: string) {
-  if (!yearBill || !Array.isArray(yearBill.months)) {
-    return []
-  }
-  const currentMonthValue = parseMonthNumber(currentMonth)
-  const filtered = yearBill.months
-    .map((item) => ({
-      monthLabel: `${parseMonthNumber(item.month)}月`,
-      value: parseAmount(item.expense),
-      active: item.month === currentMonth,
-      monthValue: parseMonthNumber(item.month),
-    }))
-    .filter((item) => item.monthValue > 0 && item.monthValue <= currentMonthValue)
-    .slice(-6)
-  return filtered.map((item) => ({
-    monthLabel: item.monthLabel,
-    value: item.value,
-    active: item.active,
-  }))
-}
-function mapMonthBillToDetail(baseData: BillMonthDetailData, monthBill: MonthBillDTO, yearBill: YearBillDTO | null): BillMonthDetailData {
-  const days = Array.isArray(monthBill.days) ? monthBill.days : []
-  const totalExpense = parseAmount(monthBill.totalExpense)
-  const totalIncome = parseAmount(monthBill.totalIncome)
-  const totalBalance = parseAmount(monthBill.totalBalance)
-  const previousMonthData = yearBill && Array.isArray(yearBill.months)
-    ? yearBill.months.find((item) => {
-        const currentMonthNumber = parseMonthNumber(monthBill.month)
-        return parseMonthNumber(item.month) === currentMonthNumber - 1
-      })
-    : null
-  const previousBalance = previousMonthData ? parseAmount(previousMonthData.balance) : 0
-  const dailyExpenseValues = days.map((item) => parseAmount(item.expense))
-  const highestExpense = dailyExpenseValues.length ? Math.max(...dailyExpenseValues) : 0
-  const expenseDayIndex = dailyExpenseValues.findIndex((item) => item === highestExpense)
-  const trendPoints = days.map((item) => ({
-    day: (item.date.split('-')[2] || '').padStart(2, '0'),
-    value: parseAmount(item.expense),
-  }))
-  const compareItems = buildCompareItems(yearBill, monthBill.month)
+
+export function createBillMonthDetailState(monthKey = getCurrentMonthKey()) {
+  const [yearText, monthText] = monthKey.split('-')
+  const month = Number(monthText) || new Date().getMonth() + 1
   return {
-    ...baseData,
-    year: Number(monthBill.month.split('-')[0] || baseData.year),
-    month: parseMonthNumber(monthBill.month) || baseData.month,
-    monthLabel: `${parseMonthNumber(monthBill.month) || baseData.month}月账单`,
-    currentBalanceText: formatAmountText(totalBalance),
-    previousBalanceText: formatAmountText(previousBalance),
-    expenseAmountText: totalExpense.toFixed(2),
-    incomeAmountText: totalIncome.toFixed(2),
-    expenseRatio: totalExpense + totalIncome > 0 ? Number(((totalExpense / (totalExpense + totalIncome)) * 100).toFixed(2)) : 0,
-    incomeRatio: totalExpense + totalIncome > 0 ? Number(((totalIncome / (totalExpense + totalIncome)) * 100).toFixed(2)) : 0,
-    trendSummary: [
+    ...createHeaderLayout(),
+    monthKey,
+    year: Number(yearText) || new Date().getFullYear(),
+    month,
+    monthLabel: `${month}月账单`,
+    detailLoading: true,
+    detailError: '',
+    isEmpty: false,
+    totalBalanceText: '0.00',
+    previousBalanceText: '0.00',
+    expenseAmountText: '0.00',
+    incomeAmountText: '0.00',
+    expenseRatioText: '0%',
+    incomeRatioText: '0%',
+    expenseBarWidth: '0%',
+    incomeBarWidth: '0%',
+    dataUpdatedText: '',
+    flowRingBackground: '#e9edf3',
+    categoryRingBackground: '#e9edf3',
+    categories: [] as Array<Record<string, unknown>>,
+    rankings: [] as Array<Record<string, unknown>>,
+    trendMetrics: [] as Array<Record<string, unknown>>,
+    chartData: { categories: [] as string[], series: [{ name: '支出', data: [] as number[], color: '#526dff' }] },
+    chartOpts: buildChartOptions(),
+    comparisons: [] as Array<Record<string, unknown>>,
+  }
+}
+
+function mapMonthDetail(data: MonthDetailDTO) {
+  const totalExpense = toAmount(data.totalExpense)
+  const totalIncome = toAmount(data.totalIncome)
+  const flowTotal = totalExpense + totalIncome
+  const days = Array.isArray(data.days) ? data.days : []
+  const rawCategories = (Array.isArray(data.categories) ? data.categories : []).map((item, index) => ({
+    ...item,
+    iconText: item.iconText || item.name.slice(0, 1),
+    color: item.color || CATEGORY_COLORS[index % CATEGORY_COLORS.length],
+  }))
+  const categories = buildDisplayCategories(rawCategories).map((item) => ({
+    ...item,
+    amountText: `¥${formatMoney(item.amount)}`,
+    ratioText: `${toAmount(item.ratio).toFixed(1)}%`,
+  }))
+  const rankingRows = Array.isArray(data.rankings) ? data.rankings : []
+  const rankings = rankingRows.slice(0, 3).map((item, index) => ({
+    ...item,
+    rank: index + 1,
+    iconText: item.categoryIconText || (item.categoryName || '其').slice(0, 1),
+    amountText: `-¥${formatMoney(item.amount)}`,
+    dateText: item.occurredAt ? item.occurredAt.slice(5, 16).replace('-', '/') : '',
+  }))
+  const comparisonRows = Array.isArray(data.comparisons) ? data.comparisons : []
+  const maxComparison = Math.max(...comparisonRows.map((item) => toAmount(item.expense)), 1)
+  const comparisons = comparisonRows.map((item) => ({
+    month: item.month,
+    label: `${Number(item.month.split('-')[1])}月`,
+    amountText: formatMoney(item.expense),
+    height: `${Math.max((toAmount(item.expense) / maxComparison) * 160, toAmount(item.expense) > 0 ? 8 : 2)}rpx`,
+    active: item.month === data.month,
+  }))
+  const expenseRatio = flowTotal ? (totalExpense / flowTotal) * 100 : 0
+  const incomeRatio = flowTotal ? (totalIncome / flowTotal) * 100 : 0
+  const highestDay = days.reduce<{ date: string; expense: string } | null>((highest, item) => {
+    if (!highest || toAmount(item.expense) > toAmount(highest.expense)) return item
+    return highest
+  }, null)
+  const lastDataDay = days.length ? days[days.length - 1].date : data.month
+  const dayCount = Math.max(days.length, 1)
+  return {
+    monthKey: data.month,
+    year: Number(data.month.split('-')[0]),
+    month: Number(data.month.split('-')[1]),
+    monthLabel: `${Number(data.month.split('-')[1])}月账单`,
+    detailLoading: false,
+    detailError: '',
+    isEmpty: totalExpense === 0 && totalIncome === 0,
+    totalBalanceText: formatSignedMoney(data.totalBalance),
+    previousBalanceText: formatSignedMoney(data.previousBalance),
+    expenseAmountText: formatMoney(totalExpense),
+    incomeAmountText: formatMoney(totalIncome),
+    expenseRatioText: `${expenseRatio.toFixed(1)}%`,
+    incomeRatioText: `${incomeRatio.toFixed(1)}%`,
+    expenseBarWidth: `${Math.max(expenseRatio, totalExpense > 0 ? 1.5 : 0)}%`,
+    incomeBarWidth: `${Math.max(incomeRatio, totalIncome > 0 ? 1.5 : 0)}%`,
+    dataUpdatedText: `数据更新至${Number(lastDataDay.slice(5, 7))}月${Number(lastDataDay.slice(-2))}日`,
+    flowRingBackground: flowTotal
+      ? `conic-gradient(#ef6370 0deg ${expenseRatio * 3.6}deg, #2db487 ${expenseRatio * 3.6}deg 360deg)`
+      : '#e9edf3',
+    categoryRingBackground: buildCategoryRingBackground(categories),
+    categories,
+    rankings,
+    trendMetrics: [
       {
         label: '单日支出最高',
-        value: highestExpense.toFixed(2),
-        note: expenseDayIndex >= 0 && days[expenseDayIndex] ? `${parseMonthNumber(monthBill.month)}月${Number(days[expenseDayIndex].date.split('-')[2] || 0)}日` : '',
+        value: formatMoney(highestDay ? highestDay.expense : 0),
+        note: highestDay && toAmount(highestDay.expense) > 0 ? `${Number(highestDay.date.slice(-2))}日` : '--',
       },
-      {
-        label: '日均支出',
-        value: days.length ? (totalExpense / days.length).toFixed(2) : '0.00',
-        note: '',
-      },
-      {
-        label: '本月支出',
-        value: totalExpense.toFixed(2),
-        note: '',
-      },
+      { label: '日均支出', value: formatMoney(totalExpense / dayCount), note: `${days.length}天` },
+      { label: '本月支出', value: formatMoney(totalExpense), note: `${rankingRows.length}笔` },
     ],
-    trendPoints: trendPoints.length ? trendPoints : baseData.trendPoints,
-    compareItems: compareItems.length ? compareItems : baseData.compareItems,
+    chartData: {
+      categories: days.map((item) => String(Number(item.date.slice(-2)))),
+      series: [{ name: '支出', data: days.map((item) => toAmount(item.expense)), color: '#f0ad1d' }],
+    },
+    chartOpts: buildChartOptions(),
+    comparisons,
   }
 }
-function createBillMonthDetailStateFromData(data: BillMonthDetailData): BillMonthDetailState {
-  const compareMax = Math.max(...data.compareItems.map((item) => item.value), 1)
-  const expenseTrackWidth = data.expenseRatio > 0 ? `${data.expenseRatio}%` : '3px'
-  const incomeTrackWidth = data.incomeRatio > 0 ? `${data.incomeRatio}%` : '3px'
-  return {
-    ...data,
-    ...createHeaderLayout(),
-    categoryRingBackground: buildRingBackground(data),
-    categoryLegend: data.categories.map((item) => ({
-      name: item.name,
-      ratioText: item.ratioText,
-      amountText: `${item.amount}`,
-      color: item.color,
-    })),
-    expenseTrackWidth,
-    incomeTrackWidth,
-    lineChartData: buildLineChartData(data),
-    lineChartOpts: buildLineChartOpts(),
-    compareMax,
-    compareItemsWithHeight: data.compareItems.map((item) => ({
-      ...item,
-      height: `${Math.max((item.value / compareMax) * 180, item.value > 0 ? 10 : 0)}rpx`,
-      valueText: `${item.value}`,
-    })),
-  }
-}
-export function createBillMonthDetailState(key = '2025-09'): BillMonthDetailState {
-  const data = BILL_MONTH_DETAIL_MAP[key] || BILL_MONTH_DETAIL_MAP['2025-09']
-  return createBillMonthDetailStateFromData(data)
-}
-export async function getBillMonthDetailState(key = '2025-09') {
-  const fallback = BILL_MONTH_DETAIL_MAP[key] || BILL_MONTH_DETAIL_MAP['2025-09']
-  try {
-    const openId = await ensureOpenId()
-    const monthBill = await get<MonthBillDTO>('/frontend/bookkeeping/transaction/month-bill', {
-      openId,
-      month: key,
-    }, {
-      skipToken: true,
-    })
-    const year = key.split('-')[0] || `${fallback.year}`
-    let yearBill: YearBillDTO | null = null
-    try {
-      yearBill = await get<YearBillDTO>('/frontend/bookkeeping/transaction/year-bill', {
-        openId,
-        year,
-      }, {
-        skipToken: true,
-      })
-    } catch (yearError) {
-      console.error('get year bill for compare failed', yearError)
-    }
-    if (!monthBill || !Array.isArray(monthBill.days)) {
-      return createBillMonthDetailStateFromData(fallback)
-    }
-    return createBillMonthDetailStateFromData(mapMonthBillToDetail(fallback, monthBill, yearBill))
-  } catch (error) {
-    console.error('get month bill failed', error)
-    return createBillMonthDetailStateFromData(fallback)
-  }
+
+export async function getBillMonthDetailState(monthKey: string) {
+  const openId = await ensureOpenId()
+  const data = await get<MonthDetailDTO>('/frontend/bookkeeping/transaction/month-bill/detail', {
+    openId,
+    month: monthKey,
+  }, { skipToken: true })
+  if (!data || !data.month) throw new Error('月度账单数据为空')
+  return mapMonthDetail(data)
 }

@@ -49,6 +49,11 @@
           </block>
         </view>
       </view>
+      <view wx:elif="{{billError}}" class="state-panel state-panel-error">
+        <text class="state-title">账单加载失败</text>
+        <text class="state-desc">{{billError}}</text>
+        <button class="state-action" bindtap="handleRetry">重新加载</button>
+      </view>
       <view wx:else class="bill-content">
         <view wx:if="{{hasAnnualBill}}" class="summary-card">
           <view class="summary-card-symbol">¥</view>

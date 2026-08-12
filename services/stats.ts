@@ -19,6 +19,8 @@ export type StatsPageState = {
   periodPickerTitle: string
   showPeriodPicker: boolean
   metrics: MetricsItem[]
+  primaryMetric: MetricsItem
+  secondaryMetrics: MetricsItem[]
   lineChartData: LineChartData
   lineChartOpts: Record<string, unknown>
   barPoints: BarPoint[]
@@ -28,6 +30,8 @@ export type StatsPageState = {
   barAxisLabels: string[]
   trendTitle: string
   lineCardTitle: string
+  statsLoading: boolean
+  statsError: string
 }
 export type StatsPeriodOption = {
   label: string
@@ -64,16 +68,10 @@ const METRIC_ICONS = {
   balance: '/assets/common/icon_balance.png',
 } as const
 function getFlowTrendColor(flow: FlowType) {
-  return flow === 'expense' ? '#2f6bff' : '#33b18a'
+  return flow === 'expense' ? '#4e62ff' : '#278c6c'
 }
 function formatCurrency(value: number) {
   return `¥ ${value.toFixed(2)}`
-}
-function formatCompactCurrency(value: number) {
-  if (value >= 10000) {
-    return `¥ ${(value / 10000).toFixed(1)}万`
-  }
-  return `¥ ${Math.round(value)}`
 }
 function formatCompactAmount(value: number) {
   if (value >= 10000) {
@@ -104,9 +102,17 @@ function createMetricsFromTrend(data: ExpenseTrendDTO | undefined, report: Repor
   return [
     { label: `总${flowText}`, value: formatCurrency(total), accent: 'blue', icon: METRIC_ICONS.total },
     { label: report === 'year' ? `月均${flowText}` : `日均${flowText}`, value: formatCurrency(average), accent: 'orange', icon: METRIC_ICONS.average },
-    { label: `${compareLabel}${flowText}(元)`, value: formatCurrency(compareAmount), accent: 'blue', icon: METRIC_ICONS.compare },
-    { label: '收支结余(元)', value: formatCurrency(previousAmount), accent: 'orange', icon: METRIC_ICONS.balance },
+    { label: `${compareLabel}${flowText}`, value: formatCurrency(compareAmount), accent: 'blue', icon: METRIC_ICONS.compare },
+    { label: '收支结余', value: formatCurrency(previousAmount), accent: 'orange', icon: METRIC_ICONS.balance },
   ]
+}
+function createMetricPresentation(metrics: MetricsItem[]) {
+  const fallbackMetric: MetricsItem = { label: '总支出', value: '¥ 0.00', accent: 'blue' }
+  return {
+    metrics,
+    primaryMetric: metrics[0] || fallbackMetric,
+    secondaryMetrics: metrics.slice(1),
+  }
 }
 function createLineChartDataFromBlock(block: ExpenseTrendBlockDTO | undefined, report: ReportType, flow: FlowType): LineChartData {
   const list = block && Array.isArray(block.list) ? block.list : []
@@ -142,13 +148,14 @@ function createBarAxisLabelsFromBlock(block: ExpenseTrendBlockDTO | undefined) {
   return [formatCompactAmount(max), formatCompactAmount(max / 2), '0']
 }
 function createEmptyStatsData(flow: FlowType) {
+  const metrics: MetricsItem[] = [
+    { label: flow === 'expense' ? '总支出' : '总收入', value: '¥ 0.00', accent: 'blue', icon: METRIC_ICONS.total },
+    { label: flow === 'expense' ? '日均支出' : '日均收入', value: '¥ 0.00', accent: 'orange', icon: METRIC_ICONS.average },
+    { label: flow === 'expense' ? '比上周支出' : '比上周收入', value: '¥ 0.00', accent: 'blue', icon: METRIC_ICONS.compare },
+    { label: '收支结余', value: '¥ 0.00', accent: 'orange', icon: METRIC_ICONS.balance },
+  ]
   return {
-    metrics: [
-      { label: flow === 'expense' ? '总支出' : '总收入', value: '¥ 0.00', accent: 'blue' as const, icon: METRIC_ICONS.total },
-      { label: flow === 'expense' ? '日均支出' : '日均收入', value: '¥ 0.00', accent: 'orange' as const, icon: METRIC_ICONS.average },
-      { label: flow === 'expense' ? '比上周支出(元)' : '比上周收入(元)', value: '¥ 0.00', accent: 'blue' as const, icon: METRIC_ICONS.compare },
-      { label: '收支结余(元)', value: '0项', accent: 'orange' as const, icon: METRIC_ICONS.balance },
-    ],
+    ...createMetricPresentation(metrics),
     lineChartData: {
       categories: [],
       series: [
@@ -170,8 +177,9 @@ function createStatsDataFromTrend(report: ReportType, flow: FlowType, data: Expe
   const lineBlock = data ? data.currentTrend : undefined
   const barBlock = data ? data.trend : undefined
   const barPoints = createBarPointsFromBlock(barBlock)
+  const metrics = data ? createMetricsFromTrend(data, report, flow) : createEmptyStatsData(flow).metrics
   return {
-    metrics: data ? createMetricsFromTrend(data, report, flow) : createEmptyStatsData(flow).metrics,
+    ...createMetricPresentation(metrics),
     lineChartData: createLineChartDataFromBlock(lineBlock, report, flow),
     barPoints,
     hasActiveBarPoint: false,
@@ -184,7 +192,7 @@ function buildLineChartOpts(flow: FlowType) {
   const lineColor = getFlowTrendColor(flow)
   return {
     color: [lineColor],
-    padding: [18, 12, 6, 6],
+    padding: [16, 12, 6, 6],
     enableScroll: false,
     animation: true,
     fontSize: 11,
@@ -194,19 +202,19 @@ function buildLineChartOpts(flow: FlowType) {
     legend: { show: false },
     xAxis: {
       disableGrid: true,
-      fontColor: '#8f9db4',
+      fontColor: '#8f98a4',
       fontSize: 10,
       marginTop: 8,
     },
     yAxis: {
       gridType: 'dash',
       dashLength: 2,
-      gridColor: '#e4eaf4',
+      gridColor: '#dfe4e9',
       splitNumber: 4,
       data: [
         {
           min: 0,
-          fontColor: '#8f9db4',
+          fontColor: '#8f98a4',
           fontSize: 9,
           axisLine: false,
           labelGap: 8,
@@ -215,7 +223,7 @@ function buildLineChartOpts(flow: FlowType) {
     },
     extra: {
       line: {
-        type: 'straight',
+        type: 'curve',
         width: 2,
         activeType: 'hollow',
       },
@@ -399,12 +407,7 @@ export async function getStatsPageState(
   selectedPeriodValue = ''
 ): Promise<Omit<StatsPageState, 'reportOptions' | 'activeReport' | 'activeFlow'>> {
   const periodState = resolveSelectedPeriod(report, selectedPeriodValue)
-  let trendData: ExpenseTrendDTO | undefined
-  try {
-    trendData = await fetchExpenseTrend(report, flow, periodState.selectedPeriodValue)
-  } catch (error) {
-    console.error('get expense trend failed', error)
-  }
+  const trendData = await fetchExpenseTrend(report, flow, periodState.selectedPeriodValue)
   const statsData = createStatsDataFromTrend(report, flow, trendData)
   return {
     ...periodState,
@@ -414,6 +417,8 @@ export async function getStatsPageState(
     lineChartOpts: buildLineChartOpts(flow),
     trendTitle: flow === 'expense' ? '支出趋势' : '收入趋势',
     lineCardTitle: report === 'week' ? '本周趋势' : report === 'month' ? '本月趋势' : '本年趋势',
+    statsLoading: false,
+    statsError: '',
   }
 }
 export function createInitialStatsPageData(): StatsPageState {
@@ -431,18 +436,15 @@ export function createInitialStatsPageData(): StatsPageState {
     lineChartOpts: buildLineChartOpts(activeFlow),
     trendTitle: '支出趋势',
     lineCardTitle: '本周趋势',
+    statsLoading: true,
+    statsError: '',
   }
 }
 export async function selectStatsPeriod(report: ReportType, flow: FlowType, periodOptions: StatsPeriodOption[], selectedIndex: number) {
   const selectedPeriodIndex = selectedIndex >= 0 && selectedIndex < periodOptions.length ? selectedIndex : 0
   const selectedPeriod = periodOptions[selectedPeriodIndex]
   const selectedPeriodValue = selectedPeriod ? selectedPeriod.value : ''
-  let trendData: ExpenseTrendDTO | undefined
-  try {
-    trendData = await fetchExpenseTrend(report, flow, selectedPeriodValue)
-  } catch (error) {
-    console.error('get expense trend failed', error)
-  }
+  const trendData = await fetchExpenseTrend(report, flow, selectedPeriodValue)
   return {
     selectedPeriodIndex,
     selectedPeriodValue,
@@ -450,6 +452,8 @@ export async function selectStatsPeriod(report: ReportType, flow: FlowType, peri
     ...createStatsDataFromTrend(report, flow, trendData),
     lineChartOpts: buildLineChartOpts(flow),
     showPeriodPicker: false,
+    statsLoading: false,
+    statsError: '',
   }
 }
 export function setActiveBarPoint(points: BarPoint[], pointIndex: number) {

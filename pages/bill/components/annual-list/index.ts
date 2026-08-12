@@ -11,7 +11,6 @@ Component({
   },
   methods: {
     handleSelect(e: WechatMiniprogram.BaseEvent) {
-      return
       const { periodKey } = e.currentTarget.dataset as { periodKey?: string }
       if (!periodKey) {
         return

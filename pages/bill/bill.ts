@@ -42,6 +42,7 @@ Page({
       this.billInitialized = true
       this.setData({
         billLoading: true,
+        billError: '',
       })
       const data = await getBillPageData({
         year: this.data.selectedYear,
@@ -54,6 +55,7 @@ Page({
     } catch (error) {
       this.setData({
         billLoading: false,
+        billError: error instanceof Error ? error.message : '账单加载失败，请稍后重试',
       })
       console.error('load bill page failed', error)
     }
@@ -100,6 +102,9 @@ Page({
       title: '先去记一笔吧',
       icon: 'none',
     })
+  },
+  handleRetry(this: BillPageInstance) {
+    void this.loadPageData()
   },
   billInitialized: false,
   loadPageDataTask: null,

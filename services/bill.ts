@@ -1,5 +1,4 @@
 import {
-  BILL_ANNUAL_DATA,
   createBillYearOptions,
   type AnnualSummary,
   type BillMode,
@@ -9,6 +8,7 @@ import { get } from './request'
 import { ensureOpenId } from './auth'
 export type BillPageState = {
   billLoading: boolean
+  billError: string
   activeMode: BillMode
   selectedYear: number
   currentYear: number
@@ -109,6 +109,7 @@ function createEmptyBillPageData(input: { year: number; mode: BillMode }, yearOp
   const currentYear = new Date().getFullYear()
   return {
     billLoading: false,
+    billError: '',
     activeMode: input.mode,
     selectedYear: input.year,
     currentYear,
@@ -130,6 +131,7 @@ function createBillPageDataFromSummary(input: { year: number; mode: BillMode }, 
   const hasAnnualBill = summary.months.some((item) => item.income > 0 || item.expense > 0) || summary.totalIncome > 0 || summary.totalExpense > 0
   return {
     billLoading: false,
+    billError: '',
     activeMode: input.mode,
     selectedYear: input.year,
     currentYear,
@@ -154,7 +156,8 @@ export function createBillPageState(): BillPageState {
   const selectedYear = yearOptions[0].value
   return {
     billLoading: true,
-    activeMode: 'year',
+    billError: '',
+    activeMode: 'month',
     selectedYear,
     currentYear: new Date().getFullYear(),
     selectedYearIndex: 0,
@@ -193,25 +196,15 @@ export function createBillHeaderLayout() {
 }
 export async function getBillPageData(input: { year: number; mode: BillMode }) {
   const yearOptions = createBillYearOptions()
-  try {
-    const openId = await ensureOpenId()
-    const data = await get<YearBillDTO>('/frontend/bookkeeping/transaction/year-bill', {
-      openId,
-      year: `${input.year}`,
-    }, {
-      skipToken: true,
-    })
-    if (!data || !Array.isArray(data.months)) {
-      return createEmptyBillPageData(input, yearOptions)
-    }
-    const summary = mapYearBillToSummary(data)
-    return createBillPageDataFromSummary(input, yearOptions, summary)
-  } catch (error) {
-    console.error('get year bill failed', error)
-    const summary = BILL_ANNUAL_DATA[input.year]
-    if (!summary) {
-      return createEmptyBillPageData(input, yearOptions)
-    }
-    return createBillPageDataFromSummary(input, yearOptions, summary)
+  const openId = await ensureOpenId()
+  const data = await get<YearBillDTO>('/frontend/bookkeeping/transaction/year-bill', {
+    openId,
+    year: `${input.year}`,
+  }, {
+    skipToken: true,
+  })
+  if (!data || !Array.isArray(data.months)) {
+    return createEmptyBillPageData(input, yearOptions)
   }
+  return createBillPageDataFromSummary(input, yearOptions, mapYearBillToSummary(data))
 }

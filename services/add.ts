@@ -1,5 +1,4 @@
 import {
-  ADD_CATEGORY_MAP,
   ADD_KEYPAD_ROWS,
   DEFAULT_CATEGORY_NAME,
   DEFAULT_RECORD_TYPE,
@@ -125,7 +124,7 @@ export function createAddPageState(type?: string): AddPageState {
     dateLabel: formatDateLabel(selectedDate),
     isRelativeDateLabel: true,
     maxDate: selectedDate,
-    categories: ADD_CATEGORY_MAP[activeType],
+    categories: [],
     keyboardRows: ADD_KEYPAD_ROWS,
   }
 }
@@ -217,21 +216,13 @@ function mapCategoryOptions(items: FrontendCategoryDTO[]): AddCategoryItem[] {
   })
 }
 export async function getCategoryOptions(type: RecordType): Promise<AddCategoryItem[]> {
-  try {
-    const categories = await get<FrontendCategoryDTO[]>('/frontend/bookkeeping/category/list', {
-      type,
-      isEnabled: true,
-    }, {
-      skipToken: true,
-    })
-    if (!Array.isArray(categories)) {
-      return ADD_CATEGORY_MAP[type]
-    }
-    return mapCategoryOptions(categories)
-  } catch (error) {
-    console.error('get category options failed', error)
-    return ADD_CATEGORY_MAP[type]
-  }
+  const categories = await get<FrontendCategoryDTO[]>('/frontend/bookkeeping/category/list', {
+    type,
+    isEnabled: true,
+  }, {
+    skipToken: true,
+  })
+  return Array.isArray(categories) ? mapCategoryOptions(categories) : []
 }
 export function getCategorySelection(name: string, categories: AddCategoryItem[]) {
   const activeCategory = categories.find((item) => item.name === name)
@@ -359,6 +350,13 @@ function buildOccurredAtValue(input: {
   const selectedDate = input.selectedDate || (input.pageMode === 'edit' ? parseOccurredDate(input.originalOccurredAt) : '')
   if (!selectedDate) {
     return createCurrentDateTimeValue()
+  }
+  if (input.pageMode === 'edit') {
+    const originalTimeMatch = input.originalOccurredAt.match(/\b(\d{2}:\d{2}:\d{2})\b/)
+    const originalTime = originalTimeMatch ? originalTimeMatch[1] : ''
+    if (originalTime) {
+      return `${selectedDate} ${originalTime}`
+    }
   }
   return `${selectedDate} ${createCurrentTimeValue()}`
 }

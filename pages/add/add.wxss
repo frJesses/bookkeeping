@@ -73,3 +73,24 @@
   justify-content: center;
   width: 100%;
 }
+.category-state {
+  padding: 100rpx 32rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color: #8992a7;
+}
+.category-state-error text {
+  display: block;
+}
+.category-retry {
+  width: 220rpx;
+  margin-top: 28rpx;
+  border: 0;
+  border-radius: 8rpx;
+  background: #526dff;
+  color: #ffffff;
+  font-size: 25rpx;
+}
+.category-retry::after {
+  border: 0;
+}

@@ -20,6 +20,19 @@ export type ApiSuccessResponse<T = unknown> = {
   msg?: string
   data?: T
 }
+export class ApiError extends Error {
+  statusCode: number
+  code: number
+  data: unknown
+
+  constructor(message: string, statusCode = 0, code = statusCode, data: unknown = null) {
+    super(message)
+    this.name = 'ApiError'
+    this.statusCode = statusCode
+    this.code = code
+    this.data = data
+  }
+}
 const defaultConfig: Required<RequestConfig> = {
   baseURL: '',
   timeout: 15000,
@@ -74,12 +87,18 @@ function normalizeErrorMessage(error: unknown) {
 function unwrapResponse<T>(response: WechatMiniprogram.RequestSuccessCallbackResult) {
   const { statusCode, data } = response
   if (statusCode < 200 || statusCode >= 300) {
-    throw new Error(`HTTP ${statusCode}`)
+    const result = data && typeof data === 'object' ? data as ApiSuccessResponse<T> : null
+    throw new ApiError(
+      (result && (result.message || result.msg)) || `HTTP ${statusCode}`,
+      statusCode,
+      result && typeof result.code === 'number' ? result.code : statusCode,
+      result ? result.data : undefined
+    )
   }
   if (data && typeof data === 'object') {
     const result = data as ApiSuccessResponse<T>
     if (typeof result.code === 'number' && result.code !== 0 && result.code !== 200) {
-      throw new Error(result.message || result.msg || '业务处理失败')
+      throw new ApiError(result.message || result.msg || '业务处理失败', statusCode, result.code, result.data)
     }
     if ('data' in result) {
       if (typeof result.data === 'undefined' || result.data === null) {
@@ -136,7 +155,7 @@ export function request<T = unknown, TData extends RequestPayload = WechatMinipr
         }
       },
       fail(error) {
-        reject(new Error(normalizeErrorMessage(error)))
+        reject(new ApiError(normalizeErrorMessage(error)))
       },
     })
   })

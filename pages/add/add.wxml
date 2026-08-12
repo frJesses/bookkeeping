@@ -16,7 +16,13 @@
   </view>
   <scroll-view scroll-y show-scrollbar="false" class="page-scroll">
     <view class="page-content {{activeCategory ? 'page-content-with-composer' : ''}}" style="padding-top: calc({{statusBarHeight + navBarHeight}}px + 44rpx);">
+      <view wx:if="{{categoryLoading}}" class="category-state">正在加载分类</view>
+      <view wx:elif="{{categoryError}}" class="category-state category-state-error">
+        <text>{{categoryError}}</text>
+        <button class="category-retry" bindtap="handleCategoryRetry">重新加载</button>
+      </view>
       <add-category-grid
+        wx:else
         categories="{{categories}}"
         activeCategory="{{activeCategory}}"
         bind:select="handleCategorySelect"

@@ -23,6 +23,8 @@ Page({
     capsuleHeight: 32,
     capsuleWidth: 96,
     capsuleRight: 16,
+    categoryLoading: false,
+    categoryError: '',
   },
   async onLoad(options: Record<string, string | undefined>) {
     const initialState = createAddPageState(options.type)
@@ -38,6 +40,7 @@ Page({
     clearEditingTransaction()
   },
   async loadCategories(type: RecordType, pageMode?: 'create' | 'edit') {
+    this.setData({ categoryLoading: true, categoryError: '' })
     try {
       const categories = await getCategoryOptions(type)
       const nextState: WechatMiniprogram.IAnyObject = {
@@ -52,10 +55,18 @@ Page({
           Object.assign(nextState, applyEditingRecord(editingRecord, categories))
         }
       }
-      this.setData(nextState)
+      this.setData({ ...nextState, categoryLoading: false })
     } catch (error) {
       console.error('load categories failed', error)
+      this.setData({
+        categoryLoading: false,
+        categoryError: error instanceof Error ? error.message : '分类加载失败',
+        categories: [],
+      })
     }
+  },
+  handleCategoryRetry() {
+    void this.loadCategories(this.data.activeType)
   },
   async handleTypeChange(e: WechatMiniprogram.CustomEvent<{ type?: RecordType }>) {
     const { type } = e.detail
