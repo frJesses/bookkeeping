@@ -1,7 +1,0 @@
-{
-  "navigationStyle": "custom",
-  "renderer": "webview",
-  "usingComponents": {
-    "qiun-data-charts": "/components/qiun-data-charts/index"
-  }
-}

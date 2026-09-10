@@ -1,6 +1,0 @@
-{
-  "usingComponents": {
-    "load-scroll": "../../components/load-scroll/index"
-  },
-  "navigationStyle": "custom"
-}
