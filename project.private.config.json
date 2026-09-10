@@ -19,38 +19,5 @@
     "ignoreDevUnusedFiles": true
   },
   "libVersion": "3.16.0",
-  "condition": {
-    "miniprogram": {
-      "list": [
-        {
-          "name": "我的Tab",
-          "pathName": "pages/profile/profile",
-          "query": "",
-          "scene": null,
-          "launchMode": "default"
-        },
-        {
-          "name": "统计Tab",
-          "pathName": "pages/stats/stats",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "月账单-详情",
-          "pathName": "pages/bill/bill-month-detail/bill-month-detail",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "账单Tab",
-          "pathName": "pages/bill/bill",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        }
-      ]
-    }
-  }
+  "condition": {}
 }

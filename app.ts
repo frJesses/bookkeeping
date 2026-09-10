@@ -1,22 +1,18 @@
-import { calculateCustomTabBarHeight } from './utils/tabbar'
-import { ensureOpenId } from './services/auth'
-import { configureRequest } from './services/request'
 import { getApiBaseURL } from './config/index'
+import { configureRequest } from './services/request'
+import { ensureOpenId } from './services/auth'
+
 App<IAppOption>({
   globalData: {
-    customTabBarHeight: 0,
     openId: '',
+    unionId: '',
   },
   onLaunch() {
-    configureRequest({
-      baseURL: getApiBaseURL(),
-    })
-    const systemInfo = wx.getSystemInfoSync()
-    this.globalData.customTabBarHeight = calculateCustomTabBarHeight(systemInfo)
+    configureRequest(getApiBaseURL())
     ensureOpenId().catch((error) => {
-      console.error('init openId failed', error)
+      console.error('初始化微信登录失败', error)
     })
-    this.checkUpdate();
+    this.checkUpdate()
   },
   checkUpdate() {
     // 基础库支持版本更新管理器

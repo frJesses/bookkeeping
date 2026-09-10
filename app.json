@@ -1,45 +1,12 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/bill/bill",
-    "pages/bill/record-detail/index",
-    "pages/bill/bill-month-detail/bill-month-detail",
-    "pages/bill/bill-ranking/index",
-    "pages/add/add",
-    "pages/budget/budget",
-    "pages/stats/stats",
-    "pages/profile/profile",
-    "pages/profile/about/index"
+    "pages/index/index"
   ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "钱小迹",
     "navigationBarBackgroundColor": "#f7f8fc",
     "backgroundColor": "#f7f8fc"
-  },
-  "tabBar": {
-    "custom": true,
-    "color": "#98a1b2",
-    "selectedColor": "#4e62ff",
-    "backgroundColor": "#ffffff",
-    "list": [
-      {
-        "pagePath": "pages/index/index",
-        "text": "首页"
-      },
-      {
-        "pagePath": "pages/bill/bill",
-        "text": "账单"
-      },
-      {
-        "pagePath": "pages/stats/stats",
-        "text": "统计"
-      },
-      {
-        "pagePath": "pages/profile/profile",
-        "text": "我的"
-      }
-    ]
   },
   "style": "v2",
   "componentFramework": "glass-easel",
