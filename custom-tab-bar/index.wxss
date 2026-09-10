@@ -71,7 +71,7 @@
   justify-content: center;
 }
 .tab-icon-active {
-  color: #4e62ff;
+  color: #2f6bff;
 }
 .tab-icon-plus {
   width: 98rpx;
@@ -92,9 +92,9 @@
   margin-top: 4rpx;
   font-size: 22rpx;
   line-height: 1.1;
-  color: #9aa3b2;
+  color: #98a1b2;
 }
 .tab-text-active {
-  color: #4e62ff;
+  color: #2f6bff;
   font-weight: 600;
 }

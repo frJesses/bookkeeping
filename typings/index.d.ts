@@ -7,4 +7,5 @@ interface IAppOption {
     unionId?: string,
   }
   userInfoReadyCallback?: WechatMiniprogram.GetUserInfoSuccessCallback,
+  checkUpdate: () => void
 }

@@ -1,15 +1,31 @@
 import { createBillRankingPageState, getBillRankingPageState } from '../../../services/bill-ranking'
 
+function createHeaderLayout() {
+  const systemInfo = wx.getSystemInfoSync()
+  const menuButton = wx.getMenuButtonBoundingClientRect()
+  const statusBarHeight = systemInfo.statusBarHeight || 20
+  const navBarHeight = (menuButton.top - statusBarHeight) * 2 + menuButton.height
+  return {
+    statusBarHeight,
+    navBarHeight,
+    capsuleWidth: menuButton.width,
+    capsuleRight: systemInfo.windowWidth - menuButton.right,
+  }
+}
+
 Page({
   data: {
     ...createBillRankingPageState(),
+    ...createHeaderLayout(),
+    pageTitle: '',
   },
   onLoad(options: Record<string, string | undefined>) {
     const now = new Date()
     const year = options.year || `${now.getFullYear()}`
     const month = (options.month || `${now.getMonth() + 1}`).padStart(2, '0')
     const monthKey = `${year}-${month}`
-    wx.setNavigationBarTitle({ title: `${year}年${Number(month)}月支出排行` })
+    const pageTitle = `${year}年${Number(month)}月支出排行`
+    this.setData({ pageTitle })
     void this.loadRanking(monthKey)
   },
   async loadRanking(monthKey: string) {
@@ -26,5 +42,8 @@ Page({
   },
   handleRetry() {
     void this.loadRanking(this.data.monthKey)
+  },
+  goBack() {
+    wx.navigateBack()
   },
 })

@@ -12,6 +12,9 @@ export type HomeRecordItem = {
   occurredAt: string
   title: string
   iconUrl: string
+  iconColor: string
+  iconBackgroundColor: string
+  iconBorderColor: string
   amountSign: string
   amountValue: string
   amountClass: 'expense' | 'income'
@@ -46,6 +49,7 @@ export type HomeRecentRecordDTO = {
   categoryName: string
   categoryIcon?: string | null
   categoryIconText?: string | null
+  categoryIconColor?: string | null
   type: 'expense' | 'income'
   amount: string
   title: string
@@ -104,6 +108,26 @@ function parseAmount(value: string) {
   const amount = Number(value || 0)
   return Number.isNaN(amount) ? 0 : amount
 }
+function normalizeIconColor(value?: string | null) {
+  const color = value ? value.trim() : ''
+  return /^#(?:[\da-fA-F]{3}|[\da-fA-F]{4}|[\da-fA-F]{6}|[\da-fA-F]{8})$/.test(color) ? color : ''
+}
+function createIconSurfaceColors(color: string) {
+  if (!color) {
+    return {
+      iconBackgroundColor: '#ffffff',
+      iconBorderColor: 'rgba(228, 233, 242, 0.9)',
+    }
+  }
+  const hex = color.slice(1)
+  const red = parseInt(hex.length <= 4 ? `${hex[0]}${hex[0]}` : hex.slice(0, 2), 16)
+  const green = parseInt(hex.length <= 4 ? `${hex[1]}${hex[1]}` : hex.slice(2, 4), 16)
+  const blue = parseInt(hex.length <= 4 ? `${hex[2]}${hex[2]}` : hex.slice(4, 6), 16)
+  return {
+    iconBackgroundColor: `rgba(${red}, ${green}, ${blue}, 0.08)`,
+    iconBorderColor: `rgba(${red}, ${green}, ${blue}, 0.22)`,
+  }
+}
 function createCurrentMonthValue() {
   const now = new Date()
   return `${now.getFullYear()}-${padNumber(now.getMonth() + 1)}`
@@ -149,6 +173,7 @@ export function buildHomeRecentRecordGroups(items: HomeRecentRecordDTO[]): HomeR
     currentGroup.incomeText = `¥${nextIncome.toFixed(2)}`
     const amountParts = createAmountParts(item.amount, item.type)
     const normalizedId = `${item.id || index + 1}`
+    const iconColor = normalizeIconColor(item.categoryIconColor)
     currentGroup.records.push({
       id: normalizedId,
       recordKey: `${groupKey}-${normalizedId}-${index}`,
@@ -157,6 +182,8 @@ export function buildHomeRecentRecordGroups(items: HomeRecentRecordDTO[]): HomeR
       occurredAt: item.occurredAt,
       title: item.categoryName || '未分类',
       iconUrl: item.categoryIcon || '',
+      iconColor,
+      ...createIconSurfaceColors(iconColor),
       amountSign: amountParts.amountSign,
       amountValue: amountParts.amountValue,
       amountClass: item.type,

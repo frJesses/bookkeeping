@@ -91,8 +91,16 @@
               </view>
               <block wx:for="{{item.records}}" wx:key="recordKey" wx:for-item="record" wx:for-index="recordIndex">
                 <view class="record-item" bindtap="handleRecordTap" data-group-index="{{groupIndex}}" data-record-index="{{recordIndex}}">
-                  <view class="record-avatar">
-                    <image wx:if="{{record.iconUrl}}" class="record-avatar-image" src="{{record.iconUrl}}" mode="aspectFit"></image>
+                  <view
+                    class="record-avatar"
+                    style="background-color: {{record.iconBackgroundColor}}; border-color: {{record.iconBorderColor}};"
+                  >
+                    <view
+                      wx:if="{{record.iconUrl && record.iconColor}}"
+                      class="record-avatar-image record-avatar-image-tinted"
+                      style="background-color: {{record.iconColor}}; -webkit-mask-image: url({{record.iconUrl}}); mask-image: url({{record.iconUrl}});"
+                    ></view>
+                    <image wx:elif="{{record.iconUrl}}" class="record-avatar-image" src="{{record.iconUrl}}" mode="aspectFit"></image>
                     <view wx:else class="record-avatar-placeholder"></view>
                   </view>
                   <view class="record-body">

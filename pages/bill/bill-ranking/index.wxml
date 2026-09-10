@@ -1,4 +1,14 @@
 <view class="page">
+  <view class="custom-header" style="padding-top: {{statusBarHeight}}px;">
+    <view class="header-main" style="height: {{navBarHeight}}px;">
+      <view class="header-back" bindtap="goBack" aria-label="返回">
+        <view class="header-back-icon"></view>
+      </view>
+      <text class="header-title">{{pageTitle}}</text>
+      <view class="header-space" style="width: {{capsuleWidth + capsuleRight}}px;"></view>
+    </view>
+  </view>
+
   <view wx:if="{{rankingLoading}}" class="ranking-state">
     <view class="loading-mark"></view>
     <text class="ranking-state-title">正在加载支出排行</text>
@@ -16,22 +26,28 @@
     <text class="ranking-state-desc">记下一笔支出后，这里会自动生成排行。</text>
   </view>
 
-  <view wx:else class="record-list">
+  <view wx:else class="record-list" style="padding-top: calc({{statusBarHeight + navBarHeight}}px + 8rpx);">
     <block wx:for="{{records}}" wx:key="id">
       <view class="record-item {{index === records.length - 1 ? 'record-item-last' : ''}}">
-        <view class="record-icon">
-          <image
+        <view
+          class="record-icon"
+          style="color: {{item.categoryIconColor}}; background-color: {{item.categoryIconBackgroundColor}};"
+        >
+          <view
             wx:if="{{item.categoryIcon}}"
             class="record-icon-image"
-            src="{{item.categoryIcon}}"
-            mode="aspectFill"
-          />
+            style="background-color: {{item.categoryIconColor}}; -webkit-mask-image: url({{item.categoryIcon}}); mask-image: url({{item.categoryIcon}});"
+          ></view>
           <text wx:else>{{item.categoryIconText}}</text>
         </view>
         <view class="record-content">
           <view class="record-info">
             <text class="record-name">{{item.category}}</text>
-            <text class="record-date">{{item.dateText}}</text>
+            <view class="record-meta">
+              <text class="record-date">{{item.dateText}}</text>
+              <text wx:if="{{item.remarkText}}" class="record-meta-divider">·</text>
+              <text wx:if="{{item.remarkText}}" class="record-remark">{{item.remarkText}}</text>
+            </view>
           </view>
           <text class="record-amount">{{item.amountText}}</text>
         </view>

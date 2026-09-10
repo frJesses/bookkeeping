@@ -353,10 +353,17 @@
   height: 76rpx;
   padding: 0 26rpx;
   border-radius: 999rpx;
-  background: #1f232e;
+  background: linear-gradient(135deg, #6881ff 0%, #4e62ff 100%);
   color: #ffffff;
   font-size: 26rpx;
   font-weight: 700;
+  box-shadow: 0 10rpx 24rpx rgba(78, 98, 255, 0.2);
+  transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+}
+.empty-action:active {
+  opacity: 0.9;
+  box-shadow: 0 6rpx 14rpx rgba(78, 98, 255, 0.16);
+  transform: scale(0.98);
 }
 @keyframes billContentIn {
   from {

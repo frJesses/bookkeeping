@@ -1,4 +1,5 @@
 {
+  "navigationStyle": "custom",
   "navigationBarTitleText": "支出排行",
   "navigationBarBackgroundColor": "#ffffff",
   "navigationBarTextStyle": "black",
