@@ -1,0 +1,21 @@
+<view class="detail-page">
+  <image class="detail-wash" src="/assets/figma/calendar/background.png" mode="scaleToFill"></image>
+  <view class="detail-header" style="padding-top: {{statusBarHeight}}px;"><view class="ds-header"><view class="ds-back" bindtap="goBack"></view><text class="ds-header-title">账单详情</text></view></view>
+  <view class="detail-summary-fixed" style="top: calc({{statusBarHeight}}px + 160rpx);">
+    <view class="detail-summary"><view class="summary-title"><text>{{title}}</text><text>{{countText}}</text></view><view class="summary-metrics"><view><text>{{totalIncome}}</text><text>收入(元)</text></view><view><text>{{totalExpense}}</text><text>支出(元)</text></view><view><text>{{totalBalance}}</text><text>剩余(元)</text></view></view></view>
+  </view>
+  <scroll-view scroll-y class="detail-scroll" show-scrollbar="false" style="padding-top: calc({{statusBarHeight}}px + 360rpx);">
+    <view class="detail-content">
+      <view wx:if="{{errorMessage}}" class="detail-state"><text>{{errorMessage}}</text><button bindtap="handleRetry">重新加载</button></view>
+      <view wx:elif="{{isLoading}}" class="detail-state">正在加载账单详情</view>
+      <view wx:else>
+        <view wx:if="{{!groups.length}}" class="detail-empty">本月暂无流水</view>
+        <view wx:for="{{groups}}" wx:key="groupKey" class="detail-group">
+          <view class="group-head"><view><text>{{item.dateLabel}}</text><text>{{item.weekLabel}}</text></view><text wx:if="{{item.expenseText}}">支出: {{item.expenseText}}</text><text wx:if="{{item.hasIncome}}">收入: {{item.incomeText}}</text></view>
+          <view class="divider"></view>
+          <view wx:for="{{item.rows}}" wx:key="recordKey" wx:for-item="record" class="detail-row"><image src="{{record.icon}}" mode="aspectFit"></image><view><text class="record-name">{{record.name}}</text><text class="record-note">{{record.note}}</text></view><text class="record-value {{record.type}}">{{record.amount}}</text></view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

@@ -1,0 +1,76 @@
+<view class="add-page {{activeCategory ? 'add-page-form' : ''}}" style="height: {{viewportHeight}}px;">
+  <view class="add-header" style="padding-top: {{statusBarHeight}}px;">
+    <view class="ds-header">
+      <view class="ds-back" bindtap="goBack"></view>
+      <view wx:if="{{!activeCategory}}" class="header-switch"><add-type-switch activeType="{{activeType}}" bind:change="handleTypeChange" /></view>
+      <text wx:else class="ds-header-title">{{activeType === 'expense' ? '支出记录' : '收入记录'}}</text>
+      <view wx:if="{{!activeCategory}}" class="add-tag" bindtap="openTagModal"></view>
+    </view>
+  </view>
+
+  <scroll-view wx:if="{{!activeCategory}}" scroll-y scroll-top="{{categoryScrollTop}}" class="category-scroll" show-scrollbar="false" style="padding-top: {{statusBarHeight + 66}}px;">
+    <view wx:if="{{categoryLoading}}" class="category-state">正在加载分类</view>
+    <view wx:elif="{{categoryError}}" class="category-state">
+      <text>{{categoryError}}</text><button class="category-retry" bindtap="handleCategoryRetry">重新加载</button>
+    </view>
+    <add-category-grid wx:else categories="{{categories}}" activeCategory="{{activeCategory}}" bind:select="handleCategorySelect" />
+  </scroll-view>
+
+  <view wx:else class="entry-form" style="padding-top: {{statusBarHeight + 82}}px;">
+    <view class="category-summary">
+      <image src="{{activeCategoryIcon}}" mode="aspectFit"></image>
+      <text>{{activeCategory}}</text>
+      <text class="change-category" bindtap="handleChangeCategory">更换 ›</text>
+    </view>
+    <view class="amount-panel">
+      <text class="field-title">{{activeType === 'expense' ? '消费金额' : '收入金额'}}</text>
+      <view class="amount-line"><text class="currency">¥</text><text class="amount-value {{amountDisplay === '0' ? 'amount-placeholder' : ''}}">{{amountDisplay === '0' ? '请输入金额' : amountDisplay}}</text></view>
+    </view>
+    <view class="remark-panel">
+      <text class="field-title">备注</text>
+      <input class="remark-input" maxlength="10" value="{{remark}}" placeholder="请输入备注信息" bindinput="handleRemarkChange" />
+      <text class="remark-count">{{remark.length}}/10</text>
+    </view>
+    <view class="native-keypad">
+      <view class="keypad-left">
+        <view class="key" data-action="digit" data-value="7" bindtap="handleNativeKeyTap">7</view>
+        <view class="key" data-action="digit" data-value="8" bindtap="handleNativeKeyTap">8</view>
+        <view class="key" data-action="digit" data-value="9" bindtap="handleNativeKeyTap">9</view>
+        <view class="key" data-action="digit" data-value="4" bindtap="handleNativeKeyTap">4</view>
+        <view class="key" data-action="digit" data-value="5" bindtap="handleNativeKeyTap">5</view>
+        <view class="key" data-action="digit" data-value="6" bindtap="handleNativeKeyTap">6</view>
+        <view class="key" data-action="digit" data-value="1" bindtap="handleNativeKeyTap">1</view>
+        <view class="key" data-action="digit" data-value="2" bindtap="handleNativeKeyTap">2</view>
+        <view class="key" data-action="digit" data-value="3" bindtap="handleNativeKeyTap">3</view>
+        <view class="key key-zero" data-action="digit" data-value="0" bindtap="handleNativeKeyTap">0</view>
+        <view class="key" data-action="digit" data-value="." bindtap="handleNativeKeyTap">.</view>
+      </view>
+      <view class="keypad-right">
+        <view class="key key-backspace" data-action="backspace" bindtap="handleNativeKeyTap">⌫</view>
+        <view class="confirm-key" bindtap="saveRecord">确定</view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{showTagModal}}" class="modal-mask" bindtap="closeTagModal">
+    <view class="tag-sheet" catchtap="noop">
+      <text class="sheet-title">添加标签</text>
+      <input class="tag-name-input" maxlength="4" value="{{customTagName}}" placeholder="请输入4字以内名称" bindinput="handleCustomTagName" />
+      <text class="icon-heading">选择图标</text>
+      <swiper class="custom-icon-swiper" style="height: {{customIconSwiperHeight}}px;" current="{{customIconPage}}" duration="200" circular="{{customIconCircular}}" bindchange="handleCustomIconPageChange">
+        <swiper-item wx:for="{{customIconPages}}" wx:for-item="iconPage" wx:for-index="pageIndex" wx:key="pageIndex">
+          <view class="custom-icon-grid">
+            <view wx:for="{{iconPage}}" wx:for-item="icon" wx:for-index="iconIndex" wx:key="*this" class="custom-icon {{selectedCustomIcon === icon ? 'custom-icon-active' : ''}}" data-icon="{{icon}}" bindtap="selectCustomIcon">
+              <image src="{{icon}}" mode="aspectFit"></image>
+              <image wx:if="{{selectedCustomIcon === icon}}" class="icon-check" src="/assets/figma/common/category-selected@3x.png" mode="aspectFit"></image>
+            </view>
+          </view>
+        </swiper-item>
+      </swiper>
+      <view class="sheet-dots">
+        <text wx:for="{{customIconPages}}" wx:key="*this" class="{{customIconPage === index ? 'dot-active' : ''}}" data-page="{{index}}" bindtap="selectCustomIconPage"></text>
+      </view>
+      <button class="ds-primary-button tag-confirm" bindtap="confirmCustomTag">确定</button>
+    </view>
+  </view>
+</view>

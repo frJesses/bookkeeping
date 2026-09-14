@@ -1,0 +1,91 @@
+.landing-page {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0 30rpx;
+  flex-direction: column;
+  background: linear-gradient(145deg, #80e8d0 0%, #c7f8e9 64%, #f8f8f8 100%);
+  box-sizing: border-box;
+}
+
+.landing-main {
+  min-height: 0;
+  flex-shrink: 0;
+  flex: 0 0 auto;
+}
+
+.landing-month {
+  display: flex;
+  height: 154rpx;
+  align-items: center;
+}
+
+.landing-month > view:first-child {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.landing-month view text:first-child { font-size: 34rpx; font-weight: 600; }
+.landing-month view text:last-child { margin-top: 14rpx; color: #989898; font-size: 21rpx; }
+
+.month-nav {
+  margin-left: 42rpx;
+  color: #333333;
+  font-size: 62rpx;
+  line-height: 1;
+}
+
+.month-nav-disabled {
+  opacity: 0.3;
+}
+
+.landing-week,
+.landing-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+.landing-week text { color: #888888; font-size: 21rpx; text-align: center; }
+.landing-grid { margin-top: 24rpx; gap: 10rpx 14rpx; }
+.landing-day { position: relative; display: flex; height: 84rpx; align-items: center; justify-content: center; border-radius: 20rpx; background: #ffffff; color: #0a1629; font-family: DIN, sans-serif; font-size: 30rpx; font-weight: 500; }
+.landing-today-label { font-family: inherit; font-size: 22rpx; line-height: 1; }
+.landing-muted { border: 2rpx dashed #d5c8cc; background: transparent; color: #aaaaaa; }
+.landing-disabled:not(.landing-muted) { color: #aaaaaa; }
+.landing-active { background: #01c6a6; color: #ffffff; }
+.day-dot { position: absolute; left: 8rpx; top: 8rpx; width: 14rpx; height: 14rpx; border-radius: 50%; background: #01c6a6; }
+.landing-active .day-dot { background: #ffffff; }
+
+.landing-ledger {
+  display: flex;
+  min-height: 0;
+  margin-top: 24rpx;
+  margin-bottom: 10px;
+  padding: 32rpx 28rpx 24rpx;
+  flex: 1 1 auto;
+  flex-direction: column;
+  border-radius: 28rpx 28rpx 0 0;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.landing-ledger-head { display: flex; align-items: center; justify-content: space-between; }
+.landing-ledger-head text:first-child { font-size: 28rpx; font-weight: 600; }
+.landing-ledger-head text:last-child { color: #989898; font-size: 22rpx; }
+.landing-divider { height: 1rpx; margin-top: 24rpx; background: #eeeeee; }
+.landing-records {
+  width: calc(100% + 58rpx);
+  height: 0;
+  min-height: 0;
+  margin-right: -58rpx;
+  padding-right: 28rpx;
+  flex: 1 1 auto;
+  box-sizing: border-box;
+}
+.landing-record { display: flex; width: 100%; min-height: 126rpx; padding-right: 24rpx; align-items: center; box-sizing: border-box; }
+.landing-record image { width: 80rpx; height: 80rpx; margin-right: 20rpx; }
+.landing-record view { display: flex; min-width: 0; flex: 1; flex-direction: column; }
+.landing-record view text:first-child { font-size: 28rpx; font-weight: 600; }
+.landing-record view text:last-child { margin-top: 7rpx; color: #989898; font-size: 22rpx; }
+.landing-record > text { flex: 0 0 126rpx; min-width: 0; overflow: hidden; font-family: DIN, sans-serif; font-size: 30rpx; font-weight: 700; line-height: 1.2; text-align: right; white-space: nowrap; }
+.landing-ledger button { display: flex; width: 274rpx; height: 90rpx; min-height: 90rpx; margin: 24rpx auto 0; padding: 0; flex-shrink: 0; align-items: center; justify-content: center; border: 0; border-radius: 24rpx; background: #01c6a6; color: #ffffff; font-size: 28rpx; line-height: 1; box-sizing: border-box; }
+.landing-ledger button::after { border: 0; }
+.landing-ledger button image { width: 30rpx; height: 30rpx; margin-right: 8rpx; }
+.landing-state { display: flex; width: 100%; min-height: 220rpx; align-items: center; justify-content: center; color: #989898; font-size: 24rpx; text-align: center; }

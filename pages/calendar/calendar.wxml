@@ -1,0 +1,83 @@
+<view class="calendar-page">
+  <view class="calendar-shell">
+    <image class="page-background" src="/assets/figma/calendar/background.png" mode="scaleToFill"></image>
+    <view class="calendar-header" style="padding-top: {{statusBarHeight}}px;">
+      <view class="ds-header">
+        <image class="page-back" src="/assets/figma/calendar/back.png" mode="aspectFit" bindtap="goBack"></image>
+        <text class="ds-header-title">收支日历</text>
+      </view>
+    </view>
+    <view class="calendar-scroll" style="padding-top: calc({{statusBarHeight}}px + 96rpx);">
+      <view class="month-section">
+        <view class="month-row">
+          <view class="month-trigger" bindtap="openDatePicker">
+            <text>{{monthLabel}}</text>
+            <image src="/assets/figma/calendar/date-caret.png" mode="aspectFit"></image>
+          </view>
+          <text class="month-days">本月已记录{{recordedDays}}天</text>
+        </view>
+      </view>
+
+      <view class="calendar-panel">
+        <view class="week-row">
+          <text wx:for="{{weekLabels}}" wx:key="*this">{{item}}</text>
+        </view>
+        <view class="day-grid">
+          <view wx:for="{{days}}" wx:key="key" class="day {{item.isMuted ? 'day-muted' : ''}} {{item.isDisabled ? 'day-disabled' : ''}} {{item.isActive ? 'day-active' : ''}}" data-date="{{item.date}}" data-disabled="{{item.isDisabled}}" bindtap="selectDay">
+            <text>{{item.isToday ? '今日' : item.label}}</text>
+            <text wx:if="{{item.expenseText}}" class="day-amount">{{item.expenseText}}</text>
+            <text wx:if="{{item.incomeText}}" class="day-income">{{item.incomeText}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="safe-bottom"></view>
+  </view>
+
+  <view class="daily-card">
+    <view class="daily-title-row">
+      <text class="daily-title">收支记账</text>
+      <view class="daily-total">
+        <text>支出: {{selectedExpenseText}}</text>
+        <text wx:if="{{hasSelectedIncome}}">收入: {{selectedIncomeText}}</text>
+      </view>
+    </view>
+    <view class="daily-divider"></view>
+    <scroll-view scroll-y class="daily-scroll" show-scrollbar="false">
+      <view wx:if="{{errorMessage}}" class="calendar-state">
+        <text>{{errorMessage}}</text>
+        <button bindtap="handleRetry">重新加载</button>
+      </view>
+      <view wx:elif="{{isLoading}}" class="calendar-state">正在加载</view>
+      <view wx:elif="{{!selectedRecords.length}}" class="calendar-state">当天暂无收支记录</view>
+      <view wx:else class="daily-list">
+        <view wx:for="{{selectedRecords}}" wx:key="recordKey" class="daily-row">
+          <image src="{{item.iconUrl}}" mode="aspectFit"></image>
+          <view>
+            <text class="daily-name">{{item.title}}</text>
+            <text class="daily-note">{{item.tagText}}</text>
+          </view>
+          <text class="daily-amount">{{item.amountSign}}{{item.amountValue}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view wx:if="{{showDatePicker}}" class="date-mask" bindtap="closeDatePicker">
+    <view class="date-sheet" catchtap="noop">
+      <text class="date-title">日期选择</text>
+      <picker-view class="date-wheels" value="{{pickerValue}}" indicator-style="height: 92rpx;" bindchange="handleDatePickerChange">
+        <picker-view-column>
+          <view wx:for="{{pickerYears}}" wx:key="*this" class="wheel-item">{{item}}年</view>
+        </picker-view-column>
+        <picker-view-column>
+          <view wx:for="{{pickerMonths}}" wx:key="*this" class="wheel-item">{{item}}月</view>
+        </picker-view-column>
+      </picker-view>
+      <view class="date-actions">
+        <button bindtap="closeDatePicker">取消</button>
+        <button class="date-confirm" bindtap="confirmDatePicker">确定</button>
+      </view>
+    </view>
+  </view>
+</view>

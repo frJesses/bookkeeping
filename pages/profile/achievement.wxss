@@ -1,0 +1,206 @@
+.achievement-page {
+  height: 100vh;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.achievement-hero {
+  position: relative;
+  height: 438rpx;
+  overflow: hidden;
+  background: #f8fbff;
+  box-sizing: border-box;
+}
+
+.achievement-background {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+.achievement-hero .ds-header,
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.page-back {
+  position: absolute;
+  left: 30rpx;
+  width: 24rpx;
+  height: 40rpx;
+}
+
+.hero-content {
+  display: flex;
+  padding: 56rpx 54rpx 0 56rpx;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-medal {
+  position: absolute;
+  top: 38rpx;
+  right: 42rpx;
+  width: 148rpx;
+  height: 106rpx;
+}
+
+.hero-total,
+.hero-date {
+  display: block;
+}
+
+.hero-total {
+  font-size: 34rpx;
+  font-weight: 600;
+}
+
+.hero-total text {
+  color: #5697e6;
+  font-family: DIN, sans-serif;
+  font-size: 44rpx;
+  font-weight: 700;
+}
+
+.hero-date {
+  margin-top: 20rpx;
+  padding: 10rpx 20rpx;
+  border: 1rpx solid #d6dfef;
+  border-radius: 30rpx;
+  color: #8891a2;
+  font-size: 22rpx;
+}
+
+.achievement-scroll {
+  height: calc(100vh - 438rpx);
+  box-sizing: border-box;
+}
+
+.badge-section {
+  padding: 30rpx 36rpx 80rpx;
+}
+
+.section-title {
+  display: inline-block;
+  color: #333333;
+  font-size: 30rpx;
+  font-weight: 600;
+  text-align: center;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+}
+
+.section-heading image {
+  width: 44rpx;
+  height: 20rpx;
+}
+
+.badge-grid {
+  display: grid;
+  margin-top: 40rpx;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 42rpx 16rpx;
+}
+
+.badge-item {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+}
+
+.badge-image-frame {
+  display: flex;
+  width: 168rpx;
+  height: 168rpx;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge-image {
+  width: 168rpx;
+  height: 168rpx;
+}
+
+.badge-name {
+  margin-top: 12rpx;
+  font-size: 25rpx;
+  font-weight: 500;
+  text-align: center;
+}
+
+.badge-note {
+  margin-top: 8rpx;
+  max-width: 220rpx;
+  overflow: hidden;
+  color: #989898;
+  font-size: 20rpx;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.achievement-state,
+.achievement-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #989898;
+  font-size: 24rpx;
+  text-align: center;
+}
+
+.achievement-state {
+  min-height: 520rpx;
+}
+
+.achievement-state button {
+  display: flex;
+  width: 220rpx;
+  height: 72rpx;
+  margin-top: 24rpx;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 18rpx;
+  background: #01c6a6;
+  color: #ffffff;
+  font-size: 24rpx;
+  line-height: 1;
+}
+
+.achievement-state button::after {
+  border: 0;
+}
+
+.achievement-empty {
+  min-height: 180rpx;
+}
+
+.achievement-bottom-space {
+  height: calc(env(safe-area-inset-bottom) + 140rpx);
+}
+
+.locked-title {
+  margin-top: 70rpx;
+}
+
+.badge-locked image {
+  filter: grayscale(1);
+  opacity: 0.45;
+}

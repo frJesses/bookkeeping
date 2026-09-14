@@ -1,11 +1,352 @@
-.page-placeholder {
+.ledger-page {
+  position: relative;
   min-height: 100vh;
+  overflow: hidden;
+  background: #f8f8f8;
+}
+
+.mint-wash {
+  position: fixed;
+  inset: 0 0 auto;
+  display: block;
+  width: 100%;
+  height: 376rpx;
+  pointer-events: none;
+}
+
+.brand-title {
+  position: fixed;
+  left: 30rpx;
+  z-index: 2;
+  display: block;
+  width: 132rpx;
+  height: 44rpx;
+  pointer-events: none;
+}
+
+.header-actions {
+  position: fixed;
+  z-index: 3;
   display: flex;
   align-items: center;
+  gap: 16rpx;
+}
+
+.header-action {
+  display: flex;
+  width: 52rpx;
+  height: 52rpx;
+  align-items: center;
   justify-content: center;
+}
+
+.header-action image {
+  display: block;
+  width: 48rpx;
+  height: 48rpx;
+}
+
+.records-scroll {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.budget-card,
+.record-list {
+  margin-left: 30rpx;
+  margin-right: 30rpx;
+}
+
+.summary-card {
+  position: fixed;
+  right: 30rpx;
+  left: 30rpx;
+  z-index: 2;
+  height: 290rpx;
+  margin: 0;
+  padding: 32rpx 30rpx 28rpx;
+  overflow: visible;
+  background: transparent;
   box-sizing: border-box;
-  padding: 48rpx;
-  color: #667085;
+}
+
+.summary-card-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.month-picker {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 2;
+}
+
+.month-trigger {
+  position: absolute;
+  display: flex;
+  width: 276rpx;
+  height: 72rpx;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  background: transparent;
+  color: #333333;
   font-size: 30rpx;
+  box-sizing: border-box;
+}
+
+.month-background {
+  position: absolute;
+  right: -50rpx;
+  top: -40rpx;
+  z-index: -1;
+  width: 374rpx;
+  height: 168rpx;
+  pointer-events: none;
+}
+
+.month-trigger > text {
+  position: relative;
+  z-index: 1;
+}
+
+.date-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.38);
+  animation: date-mask-fade-in 180ms ease-out both;
+}
+
+.date-sheet {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 34rpx 30rpx calc(env(safe-area-inset-bottom) + 28rpx);
+  border-radius: 36rpx 36rpx 0 0;
+  background: #ffffff;
+  box-sizing: border-box;
+  animation: date-sheet-slide-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes date-mask-fade-in {
+  from {
+    background: rgba(0, 0, 0, 0);
+  }
+  to {
+    background: rgba(0, 0, 0, 0.38);
+  }
+}
+
+@keyframes date-sheet-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.date-title {
+  display: block;
+  font-size: 34rpx;
+  font-weight: 600;
   text-align: center;
+}
+
+.date-wheels {
+  height: 390rpx;
+  margin-top: 20rpx;
+}
+
+.wheel-item {
+  display: flex;
+  height: 92rpx;
+  align-items: center;
+  justify-content: center;
+  color: #989898;
+  font-size: 30rpx;
+}
+
+.date-actions {
+  display: grid;
+  margin-top: 14rpx;
+  grid-template-columns: 1fr 1fr;
+  gap: 18rpx;
+}
+
+.date-actions button {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  height: 90rpx;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 22rpx;
+  background: #f8f8f8;
+  color: #333333;
+  font-size: 28rpx;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
+.date-actions button::after {
+  border: 0;
+}
+
+.date-actions .date-confirm {
+  background: #01c6a6;
+  color: #ffffff;
+}
+
+.caret {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 16rpx;
+  height: 16rpx;
+}
+
+.summary-label,
+.summary-expense,
+.summary-small-value {
+  position: relative;
+  z-index: 1;
+  display: block;
+  color: #ffffff;
+}
+
+.summary-label {
+  font-size: 24rpx;
+  line-height: 1.2;
+  font-weight: 400;
+}
+
+.summary-expense {
+  margin-top: 12rpx;
+  font-family: DIN, "Helvetica Neue", sans-serif;
+  font-size: 54rpx;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 52rpx;
+  gap: 28rpx;
+}
+
+.summary-small-value {
+  margin-top: 10rpx;
+  font-family: DIN, "Helvetica Neue", sans-serif;
+  font-size: 38rpx;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.budget-card {
+  margin-top: 24rpx;
+  padding: 28rpx 26rpx 24rpx;
+  border: 2rpx solid rgba(1, 198, 166, 0.28);
+  border-radius: 24rpx;
+  background: rgba(202, 246, 237, 0.9);
+  box-sizing: border-box;
+}
+
+.budget-copy,
+.record-group-head,
+.record-date,
+.record-totals {
+  display: flex;
+}
+
+.budget-copy {
+  align-items: center;
+  justify-content: space-between;
+  color: #333333;
+  font-size: 26rpx;
+}
+
+.row-chevron {
+  color: #989898;
+  font-size: 42rpx;
+  line-height: 1;
+}
+
+.budget-track {
+  height: 12rpx;
+  margin-top: 22rpx;
+  overflow: hidden;
+  border-radius: 999rpx;
+  background: #ffffff;
+}
+
+.budget-progress {
+  height: 100%;
+  border-radius: inherit;
+  background: #01c6a6;
+  transition: width 180ms ease-out, background-color 180ms ease-out;
+}
+
+.budget-card-over .budget-progress {
+  background: #ff6b6b;
+}
+
+.budget-meta {
+  display: flex;
+  margin-top: 12rpx;
+  align-items: center;
+  justify-content: space-between;
+  color: #989898;
+  font-size: 20rpx;
+}
+
+.record-list {
+  margin-top: 24rpx;
+  padding-bottom: 24rpx;
+}
+
+.record-group {
+  margin-bottom: 24rpx;
+  padding: 30rpx 28rpx 22rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+}
+
+.record-group-head {
+  align-items: center;
+  justify-content: space-between;
+  color: #989898;
+  font-size: 24rpx;
+}
+
+.record-date,
+.record-totals {
+  align-items: center;
+  gap: 10rpx;
+}
+
+.record-totals {
+  justify-content: flex-end;
+  gap: 14rpx;
+}
+
+.record-divider {
+  height: 1rpx;
+  margin: 24rpx 0 4rpx;
+  background: #eeeeee;
 }

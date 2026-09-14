@@ -1,0 +1,33 @@
+<view class="achievement-page">
+  <view class="achievement-hero" style="padding-top: {{statusBarHeight}}px;">
+    <image class="achievement-background" src="/assets/figma/achievements/background.png" mode="widthFix"></image>
+    <view class="ds-header"><image class="page-back" src="/assets/figma/achievements/back.png" mode="aspectFit" bindtap="goBack"></image><text class="ds-header-title">我的成就</text></view>
+    <view class="hero-content">
+      <view class="hero-copy"><text class="hero-total">共获得 <text>{{earnedCount}}</text> 枚成就</text><text wx:if="{{joinedAtText}}" class="hero-date">{{joinedAtText}}加入@滴水记账</text></view>
+      <image class="hero-medal" src="/assets/figma/achievements/hero.png" mode="aspectFit"></image>
+    </view>
+  </view>
+  <scroll-view scroll-y class="achievement-scroll" show-scrollbar="false">
+    <view class="badge-section">
+      <view wx:if="{{errorMessage}}" class="achievement-state"><text>{{errorMessage}}</text><button bindtap="handleRetry">重新加载</button></view>
+      <view wx:elif="{{isLoading}}" class="achievement-state">正在加载成就</view>
+      <view wx:else>
+        <view class="section-heading"><image src="/assets/figma/achievements/left.png" mode="aspectFit"></image><text class="section-title">我的徽章</text><image src="/assets/figma/achievements/right.png" mode="aspectFit"></image></view>
+        <view wx:if="{{!earned.length}}" class="achievement-empty">暂未获得成就</view>
+        <view wx:else class="badge-grid">
+          <view wx:for="{{earned}}" wx:key="code" class="badge-item">
+            <view class="badge-image-frame"><image class="badge-image {{item.imageClass}}" src="{{item.image}}" mode="aspectFit"></image></view><text class="badge-name">{{item.name}}</text><text class="badge-note">{{item.dateText}}</text>
+          </view>
+        </view>
+        <view class="section-heading locked-title"><image src="/assets/figma/achievements/left.png" mode="aspectFit"></image><text class="section-title">未获得</text><image src="/assets/figma/achievements/right.png" mode="aspectFit"></image></view>
+        <view wx:if="{{!locked.length}}" class="achievement-empty">全部成就已获得</view>
+        <view wx:else class="badge-grid badge-grid-locked">
+          <view wx:for="{{locked}}" wx:key="code" class="badge-item badge-locked">
+            <view class="badge-image-frame"><image class="badge-image {{item.imageClass}}" src="{{item.image}}" mode="aspectFit"></image></view><text class="badge-name">{{item.name}}</text><text class="badge-note">{{item.lockedNote}}</text>
+          </view>
+        </view>
+        <view class="achievement-bottom-space"></view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

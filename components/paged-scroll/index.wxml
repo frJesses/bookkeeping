@@ -1,0 +1,38 @@
+<scroll-view
+  class="paged-scroll"
+  scroll-y
+  enhanced
+  show-scrollbar="false"
+  lower-threshold="80"
+  refresher-enabled
+  refresher-triggered="{{isRefreshing}}"
+  bindrefresherrefresh="handleRefresh"
+  bindscrolltolower="handleLoadMore"
+>
+  <slot></slot>
+
+  <view wx:if="{{status === 'loading'}}" class="load-state loading-state">
+    <view class="loading-ring"></view>
+    <text>正在加载</text>
+  </view>
+
+  <view wx:elif="{{status === 'empty'}}" class="load-state">
+    <image src="/assets/figma/states/empty-v2.svg" mode="aspectFit"></image>
+    <text class="state-title">还没有记账记录</text>
+    <text class="state-description">记下第一笔，让每一笔收支都有迹可循</text>
+  </view>
+
+  <view wx:elif="{{status === 'error'}}" class="load-state">
+    <image src="/assets/figma/states/error.png" mode="aspectFit"></image>
+    <text class="state-title">记录加载失败</text>
+    <text class="state-description">请检查网络后重新加载</text>
+    <button class="retry-button" bindtap="handleRetry">重新加载</button>
+  </view>
+
+  <view wx:if="{{status === 'ready' && isLoadingMore}}" class="load-more-row">
+    <view class="loading-ring loading-ring-small"></view>
+    <text>加载更多</text>
+  </view>
+  <view wx:if="{{status === 'ready' && !hasMore}}" class="load-more-row end-row">没有更多了</view>
+  <view style="height: {{bottomSpace}}px;"></view>
+</scroll-view>

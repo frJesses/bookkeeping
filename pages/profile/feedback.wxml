@@ -1,0 +1,12 @@
+<view class="feedback-page" style="padding-top: {{statusBarHeight}}px;">
+  <view class="ds-header"><view class="ds-back" bindtap="goBack"></view><text class="ds-header-title">意见反馈</text></view>
+  <scroll-view scroll-y class="feedback-scroll" show-scrollbar="true">
+    <view class="feedback-content">
+      <view class="feedback-card"><text class="feedback-title">问题类型</text><view class="type-grid"><view wx:for="{{types}}" wx:key="value" class="type-item {{activeType === item.value ? 'type-active' : ''}}" data-type="{{item.value}}" bindtap="selectType">{{item.label}}</view></view></view>
+      <view class="feedback-card description-card"><text class="feedback-title">问题描述</text><textarea maxlength="500" value="{{description}}" placeholder="请输入10字以上内容，以便我们为您提供更好的反馈" bindinput="handleDescription"></textarea><view class="image-grid"><view wx:for="{{images}}" wx:key="*this" class="image-item"><image src="{{item}}" mode="aspectFill" bindtap="previewImage" data-url="{{item}}"></image><view class="image-remove" catchtap="removeImage" data-index="{{index}}">×</view></view><view wx:if="{{images.length < maxImages}}" class="upload-placeholder" bindtap="chooseImages">+</view></view><text class="image-hint">最多上传{{maxImages}}张图片，提交时上传</text></view>
+      <view class="contact-card"><text>联系方式</text><input value="{{contact}}" placeholder="输入手机号/邮箱" bindinput="handleContact" /></view>
+      <view class="feedback-bottom-space"></view>
+    </view>
+  </scroll-view>
+  <button class="ds-primary-button submit-button" loading="{{isSubmitting}}" disabled="{{isSubmitting}}" bindtap="submit">确认提交</button>
+</view>

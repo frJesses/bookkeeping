@@ -1,0 +1,419 @@
+.calendar-page {
+  position: relative;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  flex-direction: column;
+  gap: 10px;
+  background: #f3f5f5;
+}
+
+.calendar-shell {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.page-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 376rpx;
+  pointer-events: none;
+}
+
+.calendar-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 2;
+}
+
+.calendar-header .ds-header-title {
+  font-size: 32rpx;
+}
+
+.page-back {
+  position: absolute;
+  left: 30rpx;
+  width: 24rpx;
+  height: 40rpx;
+}
+
+.calendar-scroll {
+  position: relative;
+  z-index: 1;
+  display: block;
+  box-sizing: border-box;
+}
+
+.month-section {
+  padding: 22rpx 30rpx 0;
+}
+
+.month-row,
+.month-trigger,
+.month-arrows {
+  display: flex;
+  align-items: center;
+}
+
+.month-row {
+  justify-content: space-between;
+}
+
+.month-trigger {
+  height: 54rpx;
+  color: #333333;
+  font-size: 32rpx;
+  font-weight: 600;
+  gap: 8rpx;
+}
+
+.month-trigger image {
+  width: 18rpx;
+  height: 18rpx;
+}
+
+.month-days {
+  color: #989898;
+  font-size: 23rpx;
+}
+
+.month-section {
+  padding-bottom: 12rpx;
+}
+
+.calendar-panel {
+  flex: 0 0 auto;
+  padding: 30rpx 30rpx 38rpx;
+  border-radius: 36rpx 36rpx 0 0;
+  background: transparent;
+}
+
+.week-row,
+.day-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.week-row text {
+  color: #989898;
+  font-size: 21rpx;
+  text-align: center;
+}
+
+.day-grid {
+  margin-top: 24rpx;
+  gap: 10rpx 8rpx;
+}
+
+.day {
+  position: relative;
+  display: flex;
+  height: 108rpx;
+  min-width: 0;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  border-radius: 14rpx;
+  background: rgba(248, 248, 248, 0.92);
+  color: #2f3a3b;
+  font-family: DIN, sans-serif;
+  font-size: 28rpx;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+
+.day > text:first-of-type {
+  display: block;
+  min-height: 34rpx;
+  margin-top: 18rpx;
+}
+
+.record-dot {
+  position: absolute;
+  left: 8rpx;
+  top: 8rpx;
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: #01c6a6;
+}
+
+.day-muted {
+  background: #f8f8f8;
+  color: #bdbdbd;
+}
+
+.day-disabled {
+  pointer-events: none;
+}
+
+.day-disabled:not(.day-muted) {
+  color: #bdbdbd;
+}
+
+.day-active {
+  border: 0;
+  background: #01c6a6;
+  color: #ffffff;
+}
+
+.day-amount,
+.day-income {
+  display: block;
+  max-width: 100%;
+  margin-top: 8rpx;
+  color: #a8a8a8;
+  font-family: DIN, sans-serif;
+  font-size: 16rpx;
+  line-height: 1;
+}
+
+.day-income {
+  margin-top: 4rpx;
+}
+
+.day-active .day-amount,
+.day-active .day-income {
+  color: #ffffff;
+}
+
+.daily-card {
+  position: relative;
+  display: flex;
+  min-height: 0;
+  width: 100%;
+  margin: 0;
+  padding: 28rpx 28rpx 34rpx;
+  flex: 1 1 auto;
+  flex-direction: column;
+  border-radius: 0;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.daily-title-row,
+.daily-row,
+.daily-total,
+.add-record-button {
+  display: flex;
+  align-items: center;
+}
+
+.daily-title-row {
+  justify-content: space-between;
+}
+
+.daily-title {
+  color: #333333;
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.daily-total {
+  justify-content: flex-end;
+  color: #a8a8a8;
+  font-size: 21rpx;
+  gap: 12rpx;
+}
+
+.daily-divider {
+  height: 1rpx;
+  margin-top: 22rpx;
+  background: #eeeeee;
+}
+
+.daily-scroll {
+  width: 100%;
+  height: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+  box-sizing: border-box;
+}
+
+.daily-list {
+  margin-top: 8rpx;
+}
+
+.daily-row {
+  min-height: 114rpx;
+}
+
+.daily-row image {
+  width: 72rpx;
+  height: 72rpx;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.daily-row > view {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.daily-name,
+.daily-note,
+.daily-amount {
+  display: block;
+}
+
+.daily-name,
+.daily-note {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.daily-name {
+  color: #333333;
+  font-size: 27rpx;
+  font-weight: 600;
+}
+
+.daily-note {
+  margin-top: 6rpx;
+  color: #989898;
+  font-size: 22rpx;
+}
+
+.daily-amount {
+  margin-left: 16rpx;
+  color: #333333;
+  font-family: DIN, sans-serif;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.calendar-state {
+  display: flex;
+  min-height: 190rpx;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #989898;
+  font-size: 23rpx;
+}
+
+.calendar-state button {
+  display: flex;
+  width: 220rpx !important;
+  height: 72rpx;
+  margin: 24rpx 0 0 !important;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 18rpx;
+  background: #01c6a6;
+  color: #ffffff;
+  font-size: 24rpx;
+  line-height: 1;
+}
+
+.calendar-state button::after {
+  border: 0;
+}
+
+.safe-bottom {
+  height: 0;
+}
+
+.date-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.38);
+  animation: date-mask-fade-in 180ms ease-out both;
+}
+
+.date-sheet {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 34rpx 30rpx calc(env(safe-area-inset-bottom) + 28rpx);
+  border-radius: 36rpx 36rpx 0 0;
+  background: #ffffff;
+  box-sizing: border-box;
+  animation: date-sheet-slide-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.date-title {
+  display: block;
+  font-size: 34rpx;
+  font-weight: 600;
+  text-align: center;
+}
+
+.date-wheels {
+  height: 390rpx;
+  margin-top: 20rpx;
+}
+
+.wheel-item {
+  display: flex;
+  height: 92rpx;
+  align-items: center;
+  justify-content: center;
+  color: #989898;
+  font-size: 30rpx;
+}
+
+.date-actions {
+  display: grid;
+  margin-top: 14rpx;
+  grid-template-columns: 1fr 1fr;
+  gap: 18rpx;
+}
+
+.date-actions button {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  height: 90rpx;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 22rpx;
+  background: #f8f8f8;
+  color: #333333;
+  font-size: 28rpx;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
+.date-actions button::after {
+  border: 0;
+}
+
+.date-actions .date-confirm {
+  background: #01c6a6;
+  color: #ffffff;
+}
+
+@keyframes date-mask-fade-in {
+  from {
+    background: rgba(0, 0, 0, 0);
+  }
+  to {
+    background: rgba(0, 0, 0, 0.38);
+  }
+}
+
+@keyframes date-sheet-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

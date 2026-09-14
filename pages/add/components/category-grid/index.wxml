@@ -1,0 +1,12 @@
+<view class="category-grid">
+  <view
+    wx:for="{{categories}}"
+    wx:key="id"
+    class="category-card {{activeCategory === item.name ? 'category-card-active' : ''}}"
+    data-name="{{item.name}}"
+    bindtap="handleSelect"
+  >
+    <image class="category-card-icon" src="{{item.icon}}" mode="aspectFit"></image>
+    <text class="category-card-name">{{item.name}}</text>
+  </view>
+</view>

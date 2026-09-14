@@ -1,0 +1,108 @@
+:host {
+  display: block;
+}
+
+.swipe-shell {
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.swipe-actions {
+  position: absolute;
+  inset: 0 0 0 auto;
+  display: grid;
+  width: 216rpx;
+  grid-template-columns: 1fr 1fr;
+}
+
+.swipe-actions-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.swipe-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.swipe-action image {
+  display: block;
+  width: 34rpx;
+  height: 34rpx;
+}
+
+.edit-action {
+  background: #01c6a6;
+}
+
+.delete-action {
+  background: #ff6b6b;
+}
+
+.record-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 120rpx;
+  align-items: center;
+  background: #ffffff;
+  transition: transform 180ms ease-out;
+  will-change: transform;
+}
+
+.record-row-dragging {
+  transition: none;
+}
+
+.record-icon {
+  width: 80rpx;
+  height: 80rpx;
+  flex-shrink: 0;
+}
+
+.record-info {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  margin-left: 20rpx;
+  flex-direction: column;
+}
+
+.record-name,
+.record-note,
+.record-amount {
+  display: block;
+}
+
+.record-name {
+  overflow: hidden;
+  color: #333333;
+  font-size: 30rpx;
+  line-height: 1.2;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.record-note {
+  margin-top: 8rpx;
+  overflow: hidden;
+  color: #989898;
+  font-size: 24rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.record-amount {
+  margin-left: 16rpx;
+  color: #333333;
+  font-family: DIN, "Helvetica Neue", sans-serif;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.record-amount.income {
+  color: #333333;
+}

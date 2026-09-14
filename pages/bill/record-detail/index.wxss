@@ -1,0 +1,32 @@
+.detail-page { position: relative; height: 100vh; overflow: hidden; background: #f8f8f8; }
+.detail-wash { position: fixed; inset: 0 0 auto; z-index: 0; display: block; width: 100%; height: 376rpx; pointer-events: none; }
+.detail-header { position: fixed; inset: 0 0 auto; z-index: 5; }
+.detail-summary-fixed { position: fixed; right: 30rpx; left: 30rpx; z-index: 4; }
+.detail-scroll { position: relative; z-index: 1; width: 100%; height: 100vh; padding: 0 0 60rpx; box-sizing: border-box; }
+.detail-content { padding: 0 30rpx; box-sizing: border-box; }
+.detail-summary { padding: 30rpx 28rpx; border-radius: 24rpx; background: #01c6a6; color: #ffffff; }
+.summary-title { display: flex; align-items: baseline; gap: 14rpx; }
+.summary-title text:first-child { font-size: 31rpx; font-weight: 600; }
+.summary-title text:last-child { color: rgba(255, 255, 255, .68); font-size: 22rpx; }
+.summary-metrics { display: grid; margin-top: 34rpx; grid-template-columns: repeat(3, 1fr); }
+.summary-metrics view { display: flex; min-width: 0; flex-direction: column; }
+.summary-metrics text:first-child { overflow: hidden; font-family: DIN, sans-serif; font-size: 36rpx; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.summary-metrics text:last-child { margin-top: 8rpx; font-size: 22rpx; }
+.detail-group { margin-top: 24rpx; padding: 30rpx 28rpx 18rpx; border-radius: 24rpx; background: #ffffff; }
+.group-head { display: flex; align-items: center; justify-content: space-between; color: #989898; font-size: 23rpx; }
+.group-head view { display: flex; gap: 10rpx; }
+.group-head > text + text { margin-left: 12rpx; }
+.divider { height: 1rpx; margin-top: 26rpx; background: #eeeeee; }
+.detail-row { display: flex; min-height: 126rpx; align-items: center; }
+.detail-row image { width: 80rpx; height: 80rpx; margin-right: 20rpx; }
+.detail-row > view { display: flex; min-width: 0; flex: 1; flex-direction: column; }
+.record-name, .record-note, .record-value { display: block; }
+.record-name { overflow: hidden; font-size: 28rpx; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.record-note { margin-top: 8rpx; overflow: hidden; color: #989898; font-size: 23rpx; text-overflow: ellipsis; white-space: nowrap; }
+.record-value { margin-left: 16rpx; font-family: DIN, sans-serif; font-size: 30rpx; font-weight: 700; }
+.record-value.expense { color: #333333; }
+.record-value.income { color: #01a98f; }
+.detail-state { display: flex; min-height: 520rpx; align-items: center; justify-content: center; flex-direction: column; color: #989898; font-size: 24rpx; text-align: center; }
+.detail-state button { display: flex; width: 220rpx; height: 72rpx; margin-top: 24rpx; padding: 0; align-items: center; justify-content: center; border: 0; border-radius: 18rpx; background: #01c6a6; color: #ffffff; font-size: 24rpx; line-height: 1; }
+.detail-state button::after { border: 0; }
+.detail-empty { padding: 120rpx 0; color: #989898; font-size: 24rpx; text-align: center; }

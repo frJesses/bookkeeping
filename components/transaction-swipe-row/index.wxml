@@ -1,0 +1,25 @@
+<view class="swipe-shell">
+  <view class="swipe-actions {{offsetRpx === 0 ? 'swipe-actions-hidden' : ''}}">
+    <view class="swipe-action edit-action" role="button" aria-label="编辑" catchtap="handleEdit">
+      <image src="/assets/figma/actions/edit.svg" mode="aspectFit"></image>
+    </view>
+    <view class="swipe-action delete-action" role="button" aria-label="删除" catchtap="handleDelete">
+      <image src="/assets/figma/actions/delete.svg" mode="aspectFit"></image>
+    </view>
+  </view>
+  <view
+    class="record-row {{isDragging ? 'record-row-dragging' : ''}}"
+    style="transform: translateX({{offsetRpx}}rpx);"
+    bindtouchstart="handleTouchStart"
+    bindtouchmove="handleTouchMove"
+    bindtouchend="handleTouchEnd"
+    bindtouchcancel="handleTouchEnd"
+  >
+    <image class="record-icon" src="{{iconSource}}" mode="aspectFit" binderror="handleIconError"></image>
+    <view class="record-info">
+      <text class="record-name">{{record.title}}</text>
+      <text class="record-note">{{record.tagText}}</text>
+    </view>
+    <text class="record-amount {{record.amountClass}}">{{record.amountSign}}{{record.amountValue}}</text>
+  </view>
+</view>

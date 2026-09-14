@@ -1,0 +1,38 @@
+.type-switch {
+  display: grid;
+  width: 336rpx;
+  max-width: calc(100vw - 240rpx);
+  height: 72rpx;
+  flex-shrink: 1;
+  padding: 4rpx;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 20rpx;
+  background: #f8f8f8;
+  box-sizing: border-box;
+}
+
+.type-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18rpx;
+}
+
+.type-pill-text {
+  color: #989898;
+  font-size: 30rpx;
+  white-space: nowrap;
+}
+
+.type-pill-active {
+  background: #01c6a6;
+}
+
+.type-pill-active .type-pill-text {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.type-pill-line {
+  display: none;
+}

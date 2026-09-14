@@ -1,0 +1,6 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "adaptive-viewport": "../../components/adaptive-viewport/index"
+  }
+}

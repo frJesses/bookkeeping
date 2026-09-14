@@ -1,0 +1,11 @@
+<view
+  class="adaptive-viewport"
+  style="height: {{viewportHeight}}px; padding-top: {{topInset}}px; padding-bottom: {{bottomInset}}px; background: {{background}};"
+>
+  <view wx:if="{{customHeader}}" class="adaptive-header" style="height: {{resolvedHeaderHeight}}px;">
+    <slot name="header"></slot>
+  </view>
+  <view class="adaptive-content" style="height: {{contentHeight}}px;">
+    <slot></slot>
+  </view>
+</view>

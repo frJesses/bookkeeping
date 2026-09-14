@@ -1,0 +1,29 @@
+:host {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+}
+
+.adaptive-viewport {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.adaptive-header,
+.adaptive-content {
+  width: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+.adaptive-header {
+  flex: 0 0 auto;
+}
+
+.adaptive-content {
+  flex: 1 1 auto;
+  overflow: hidden;
+}

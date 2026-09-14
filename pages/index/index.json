@@ -1,3 +1,7 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "paged-scroll": "../../components/paged-scroll/index",
+    "transaction-swipe-row": "../../components/transaction-swipe-row/index"
+  },
+  "navigationStyle": "custom"
 }

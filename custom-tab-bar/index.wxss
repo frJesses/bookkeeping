@@ -1,0 +1,104 @@
+.tab-shell {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 166rpx;
+  padding: 0;
+  box-sizing: border-box;
+  z-index: 20;
+  pointer-events: none;
+}
+.tab-shell-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.tab-shell-hidden .tabbar {
+  pointer-events: none;
+}
+.tabbar {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  height: 166rpx;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  pointer-events: auto;
+  overflow: visible;
+}
+
+.tabbar-background {
+  position: absolute;
+  left: 50%;
+  bottom: -56rpx;
+  z-index: 0;
+  display: block;
+  width: 894rpx;
+  height: 310rpx;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.tab-item {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 166rpx;
+  justify-content: flex-start;
+  gap: 0;
+  padding-bottom: 0;
+  box-sizing: border-box;
+  z-index: 1;
+}
+.tab-item-special {
+  position: relative;
+  transform: none;
+  padding-bottom: 0;
+}
+.tab-icon {
+  width: 52rpx;
+  height: 52rpx;
+  margin-top: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tab-icon-active {
+  color: #01c6a6;
+}
+.tab-icon-idle {
+  opacity: 1;
+  filter: none;
+}
+.tab-icon-plus {
+  position: absolute;
+  left: 50%;
+  top: -88rpx;
+  width: 200rpx;
+  height: 200rpx;
+  margin-top: 0;
+  transform: translateX(-50%);
+}
+.tab-icon-image {
+  width: 52rpx;
+  height: 52rpx;
+}
+.tab-icon-image-plus {
+  width: 200rpx;
+  height: 200rpx;
+}
+.tab-text {
+  margin-top: 2rpx;
+  font-size: 28rpx;
+  line-height: 1;
+  color: #989898;
+}
+.tab-text-active {
+  color: #333333;
+  font-weight: 600;
+}

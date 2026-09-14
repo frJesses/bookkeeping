@@ -1,0 +1,25 @@
+<view class="preview-page" style="padding-top: {{statusBarHeight}}px;">
+  <view class="ds-header"><view class="ds-back" bindtap="goBack"></view><text class="ds-header-title">收支预览</text></view>
+  <view wx:if="{{errorMessage}}" class="preview-state"><text>{{errorMessage}}</text><button bindtap="handleRetry">重新加载</button></view>
+  <view wx:elif="{{!isLoading}}">
+  <view class="preview-card">
+    <text class="preview-title">{{previewTitle}}</text>
+    <view class="metric-grid">
+      <view class="metric metric-blue"><view class="metric-mark"><image src="/assets/figma/stats-preview/income.png" mode="aspectFit"></image></view><text>收入(元)</text><text>{{totalIncome}}</text></view>
+      <view class="metric metric-orange"><view class="metric-mark"><image src="/assets/figma/stats-preview/expense.png" mode="aspectFit"></image></view><text>支出(元)</text><text>{{totalExpense}}</text></view>
+      <view class="metric metric-green"><view class="metric-mark"><image src="/assets/figma/stats-preview/balance.png" mode="aspectFit"></image></view><text>剩余(元)</text><text>{{totalBalance}}</text></view>
+      <view class="metric metric-pink"><view class="metric-mark"><image src="/assets/figma/stats-preview/records.png" mode="aspectFit"></image></view><text>记账总笔数</text><text>{{totalCount}}</text></view>
+    </view>
+  </view>
+  <view class="compare-panel">
+    <text class="compare-title">对比上个月</text>
+    <view class="compare-row compare-active"><text>本月支出</text><text>¥{{currentExpense}}</text></view>
+    <view class="compare-row"><text>上月支出</text><text>¥{{previousExpense}}</text></view>
+  </view>
+  <view class="compare-panel">
+    <text class="compare-title">日均对比</text>
+    <view class="compare-row compare-active compare-short"><text>本月日均支出</text><text>¥{{currentDailyExpense}}</text></view>
+    <view class="compare-row"><text>上月日均支出</text><text>¥{{previousDailyExpense}}</text></view>
+  </view>
+  </view>
+</view>

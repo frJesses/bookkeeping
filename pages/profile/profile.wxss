@@ -1,0 +1,218 @@
+.profile-page {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: #f8f8f8;
+}
+
+.profile-wash {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 0;
+  width: 100%;
+  height: 376rpx;
+  pointer-events: none;
+}
+
+.profile-scroll {
+  position: relative;
+  z-index: 1;
+  height: 100vh;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+}
+
+.profile-safe {
+  height: 166rpx;
+}
+
+.identity,
+.member-line,
+.stats-card,
+.menu-row {
+  display: flex;
+  align-items: center;
+}
+
+.identity {
+  height: 148rpx;
+}
+
+.avatar {
+  width: 124rpx;
+  height: 124rpx;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e4f8f2;
+  color: #01c6a6;
+  font-size: 38rpx;
+  font-weight: 600;
+}
+
+.identity-copy {
+  display: flex;
+  margin-left: 22rpx;
+  flex-direction: column;
+}
+
+.nickname {
+  color: #333333;
+  font-size: 38rpx;
+  line-height: 1.2;
+  font-weight: 500;
+}
+
+.achievement-chip {
+  display: flex;
+  width: fit-content;
+  height: 44rpx;
+  margin-top: 10rpx;
+  padding: 0 14rpx 0 0;
+  align-items: center;
+  border-radius: 22rpx;
+  background: #a57cff;
+  color: #ffffff;
+  font-size: 20rpx;
+}
+
+.achievement-chip image {
+  display: block;
+  width: 56rpx;
+  height: 56rpx;
+  margin-right: 6rpx;
+  margin-left: -5px;
+}
+
+.personal-link {
+  display: flex;
+  margin-left: auto;
+  align-items: center;
+  color: #989898;
+  font-size: 24rpx;
+}
+
+.personal-link image {
+  width: 12rpx;
+  height: 22rpx;
+  margin-left: 12rpx;
+}
+
+.member-banner {
+  margin-top: 20rpx;
+  padding: 26rpx 28rpx;
+  border-radius: 24rpx;
+  background: linear-gradient(100deg, #fff4c8 0%, #fff0b3 100%);
+}
+
+.member-line {
+  font-size: 27rpx;
+  font-weight: 600;
+}
+
+.member-mark {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 12rpx;
+  flex-shrink: 0;
+}
+
+.member-subtitle {
+  display: block;
+  margin-top: 10rpx;
+  color: #b3a371;
+  font-size: 22rpx;
+}
+
+.stats-card,
+.menu-card {
+  margin-top: 24rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+}
+
+.stats-card {
+  height: 142rpx;
+  padding: 0 24rpx;
+}
+
+.stats-item {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stats-item + .stats-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 16rpx;
+  width: 1rpx;
+  height: 42rpx;
+  background: #eeeeee;
+}
+
+.stats-value,
+.stats-label {
+  display: block;
+}
+
+.stats-value {
+  font-family: DIN, sans-serif;
+  font-size: 40rpx;
+  font-weight: 700;
+}
+
+.stats-label {
+  margin-top: 10rpx;
+  color: #989898;
+  font-size: 22rpx;
+}
+
+.menu-card {
+  padding: 8rpx 28rpx;
+}
+
+.menu-row {
+  height: 102rpx;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #333333;
+  font-size: 28rpx;
+  font-weight: 600;
+  line-height: normal;
+  margin: 0;
+  box-sizing: border-box;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.menu-row::after {
+  border: 0;
+}
+
+.menu-icon {
+  width: 60rpx;
+  height: 60rpx;
+  margin-right: 22rpx;
+  flex-shrink: 0;
+}
+
+.menu-arrow {
+  width: 16rpx;
+  height: 32rpx;
+  margin-left: auto;
+}
+
+.share-row {
+  width: 636rpx !important;
+  margin: 0 !important;
+}

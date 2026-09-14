@@ -1,0 +1,96 @@
+<view class="stats-page">
+  <view class="stats-wash"></view>
+  <view class="stats-header" style="padding-top: {{statusBarHeight}}px;">
+    <view class="ds-header">
+      <view class="ds-back" bindtap="goBack"></view>
+      <view class="report-tabs">
+        <view
+          wx:for="{{reportOptions}}"
+          wx:key="key"
+          class="report-tab {{activeReport === item.key ? 'report-tab-active' : ''}}"
+          data-report="{{item.key}}"
+          bindtap="selectReport"
+        >{{item.label}}</view>
+      </view>
+    </view>
+  </view>
+  <scroll-view scroll-y class="stats-scroll" show-scrollbar="false" style="padding-top: {{statusBarHeight + 72}}px;">
+    <view class="stats-content">
+      <view wx:if="{{errorMessage}}" class="stats-state"><text>{{errorMessage}}</text><button bindtap="handleRetry">重新加载</button></view>
+      <block wx:elif="{{!isLoading}}">
+      <view class="overview-card">
+        <view class="overview-title"><text bindtap="goToPreview">收支概览</text><view class="overview-arrow" aria-label="查看详情"></view><view wx:if="{{activeReport === 'week'}}" class="period-picker" catchtap="openWeekPicker"><view class="overview-month"><text>{{periodLabel}}</text><view class="period-caret"></view></view></view><picker wx:else class="period-picker" mode="date" fields="{{periodPickerFields}}" value="{{periodPickerValue}}" start="{{pickerStart}}" end="{{pickerEnd}}" bindchange="handlePeriodPickerChange"><view class="overview-month"><text>{{periodLabel}}</text><view class="period-caret"></view></view></picker></view>
+        <view class="overview-values">
+          <view><text>{{totalIncome}}</text><text>总收入(元)</text></view>
+          <view><text>{{totalExpense}}</text><text>总支出(元)</text></view>
+          <view><text>{{totalBalance}}</text><text>剩余(元)</text></view>
+        </view>
+      </view>
+
+    <view class="category-card">
+      <view class="card-heading">
+        <text class="card-title">{{activeFlow === 'expense' ? '支出' : '收入'}}类目分布</text>
+        <view class="flow-tabs">
+          <view class="{{activeFlow === 'expense' ? 'flow-active' : ''}}" data-flow="expense" bindtap="selectFlow">支出</view>
+          <view class="{{activeFlow === 'income' ? 'flow-active' : ''}}" data-flow="income" bindtap="selectFlow">收入</view>
+        </view>
+      </view>
+      <view class="distribution">
+        <view class="donut" style="background: conic-gradient({{donutGradient}});"><view class="donut-hole"><text>{{activeFlow === 'expense' ? '总支出' : '总收入'}}</text><text>{{activeFlow === 'expense' ? totalExpense : totalIncome}}</text></view></view>
+        <view class="legend">
+          <view wx:for="{{categories}}" wx:key="name" class="legend-row">
+            <view class="legend-dot" style="background: {{item.color}};"></view><text>{{item.name}}</text><text>{{item.percent}}%</text>
+          </view>
+        </view>
+      </view>
+      <view class="category-list">
+        <view wx:for="{{categories}}" wx:key="name" class="category-row" data-index="{{index}}" bindtap="openCategoryDetail">
+          <image src="{{item.icon}}" mode="aspectFit"></image>
+          <view class="category-body">
+            <view class="category-copy"><text class="category-name">{{item.name}}</text><text class="category-count">共{{activeFlow === 'expense' ? '支出' : '收入'}}{{item.count}}笔</text><text class="category-value">{{item.value}} ›</text></view>
+            <view class="category-track"><view style="width: {{item.percent}}%;"></view></view>
+          </view>
+        </view>
+      </view>
+      <view class="view-all" bindtap="openAllCategories">查看全部 ›</view>
+    </view>
+
+    <view class="compare-card">
+      <view class="card-heading"><text class="card-title">收支对比</text><view class="compare-legend"><text class="income-key">收入</text><text class="expense-key">支出</text></view></view>
+      <view class="bar-chart">
+        <view wx:for="{{bars}}" wx:key="label" class="bar-group">
+          <view class="bar-columns"><view class="bar income-bar" style="height: {{item.income}}%;"></view><view class="bar expense-bar" style="height: {{item.expense}}%;"></view></view>
+          <text>{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+      </block>
+    </view>
+  </scroll-view>
+  <view wx:if="{{categoryModalVisible}}" class="category-modal-mask" bindtap="closeCategoryModal">
+    <view class="category-modal" catchtap="noop">
+      <view class="category-modal-head"><text>{{categoryModalTitle}}</text><text class="category-modal-close" bindtap="closeCategoryModal">×</text></view>
+      <scroll-view scroll-y class="category-modal-scroll" show-scrollbar="false">
+        <view wx:for="{{categoryModalRows}}" wx:key="name" class="category-modal-row">
+          <view class="category-modal-summary" data-index="{{index}}" bindtap="toggleCategoryRecords">
+            <image src="{{item.icon}}" mode="aspectFit"></image>
+            <view class="category-modal-copy"><text>{{item.name}}</text><text>{{item.percent}}% · {{item.count}}笔 · {{item.value}}</text></view>
+            <view class="category-toggle-icon {{item.expanded ? 'category-toggle-icon-open' : ''}}" aria-label="{{item.expanded ? '收起' : '展开'}}"></view>
+          </view>
+          <view wx:if="{{item.expanded}}" wx:for="{{item.records}}" wx:for-item="record" wx:key="title" class="category-modal-record"><text>{{record.occurredAt}}</text><text>{{record.title}}</text><text>{{activeFlow === 'expense' ? '-' : ''}}{{record.amount}}</text></view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+  <view wx:if="{{showWeekPicker}}" class="week-picker-mask" bindtap="closeWeekPicker">
+    <view class="week-picker-sheet" catchtap="noop">
+      <view class="week-picker-head"><text>选择周</text><text class="week-picker-close" bindtap="closeWeekPicker">×</text></view>
+      <scroll-view scroll-y class="week-picker-list" show-scrollbar="false">
+        <view wx:for="{{weekOptions}}" wx:key="value" class="week-picker-option {{weekPickerIndex === index ? 'week-picker-option-active' : ''}}" data-index="{{index}}" bindtap="selectWeekOption">
+          <text>{{item.label}}</text><text>{{item.rangeLabel}}</text>
+        </view>
+      </scroll-view>
+      <view class="week-picker-actions"><button bindtap="closeWeekPicker">取消</button><button class="week-picker-confirm" bindtap="confirmWeekPicker">确定</button></view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,150 @@
+.personal-page {
+  min-height: 100vh;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+  background: #f8f8f8;
+  box-sizing: border-box;
+}
+
+.page-back {
+  position: absolute;
+  left: 0;
+  width: 24rpx;
+  height: 40rpx;
+}
+
+.personal-card {
+  margin-top: 16rpx;
+  padding: 0 28rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+}
+
+.personal-row {
+  display: flex;
+  height: 104rpx;
+  padding: 0;
+  align-items: center;
+  border: 0;
+  background: transparent;
+  color: #333333;
+  font-size: 28rpx;
+  font-weight: 600;
+  justify-content: flex-start;
+  line-height: normal;
+  text-align: left;
+}
+
+.personal-row::after {
+  border: 0;
+}
+
+.avatar-row {
+  width: 636rpx !important;
+  height: 140rpx;
+  margin: 0 !important;
+}
+
+.avatar-row image {
+  width: 80rpx;
+  height: 80rpx;
+  margin-left: auto;
+  border-radius: 50%;
+}
+
+.avatar-row-placeholder {
+  display: flex;
+  width: 80rpx;
+  height: 80rpx;
+  margin-left: auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #e4f8f2;
+  color: #01c6a6;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.avatar-row .row-arrow-image {
+  width: 12rpx;
+  height: 24rpx;
+  margin-left: 14rpx;
+  border-radius: 0;
+}
+
+.row-value {
+  max-width: 300rpx;
+  overflow: hidden;
+  margin-left: auto;
+  color: #989898;
+  font-weight: 400;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.row-arrow-image {
+  width: 12rpx;
+  height: 24rpx;
+  margin-left: 14rpx;
+  flex-shrink: 0;
+}
+
+.row-divider {
+  height: 1rpx;
+  background: #eeeeee;
+}
+
+.gender-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.38);
+}
+
+.gender-sheet {
+  position: absolute;
+  inset: auto 0 0;
+  height: 500rpx;
+  padding: 38rpx 110rpx calc(env(safe-area-inset-bottom) + 40rpx);
+  border-radius: 36rpx 36rpx 0 0;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.gender-title {
+  display: block;
+  font-size: 34rpx;
+  font-weight: 600;
+  text-align: center;
+}
+
+.gender-options {
+  display: flex;
+  margin-top: 72rpx;
+  justify-content: space-between;
+}
+
+.gender-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gender-option image {
+  width: 192rpx;
+  height: 192rpx;
+  border: 4rpx solid transparent;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.gender-active image {
+  border-color: #01c6a6;
+}
+
+.gender-option text {
+  margin-top: 18rpx;
+  font-size: 28rpx;
+}

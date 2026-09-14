@@ -1,0 +1,30 @@
+.category-grid {
+  display: grid;
+  margin-right: 24rpx;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 38rpx 12rpx;
+}
+
+.category-card {
+  min-width: 0;
+  text-align: center;
+}
+
+.category-card-icon {
+  display: block;
+  width: 140rpx;
+  height: 140rpx;
+  margin: 0 auto;
+}
+
+.category-card-name {
+  display: block;
+  margin-top: 14rpx;
+  color: #333333;
+  font-size: 25rpx;
+  line-height: 1;
+}
+
+.category-card-active {
+  transform: scale(0.96);
+}

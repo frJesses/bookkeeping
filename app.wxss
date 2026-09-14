@@ -1,8 +1,15 @@
 /**app.wxss**/
 page {
-  background: #f7f8fc;
-  color: #182230;
+  --primary: #01c6a6;
+  --primary-light: #14dbbb;
+  --mint-surface: #e4f8f2;
+  --page-bg: #f8f8f8;
+  --text-main: #333333;
+  --text-muted: #989898;
+  background: var(--page-bg);
+  color: var(--text-main);
   font-family: "PingFang SC", "Helvetica Neue", sans-serif;
+  letter-spacing: 0;
 }
 .container {
   height: 100%;
@@ -10,4 +17,68 @@ page {
   flex-direction: column;
   padding: 0;
   box-sizing: border-box;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.ds-page {
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: var(--page-bg);
+  color: var(--text-main);
+}
+
+.ds-header {
+  position: relative;
+  display: flex;
+  height: 96rpx;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.ds-header-title {
+  font-size: 36rpx;
+  line-height: 1;
+  font-weight: 600;
+}
+
+.ds-back {
+  position: absolute;
+  left: 30rpx;
+  top: 50%;
+  width: 28rpx;
+  height: 28rpx;
+  border-left: 4rpx solid #333333;
+  border-bottom: 4rpx solid #333333;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.ds-card {
+  background: #ffffff;
+  border-radius: 24rpx;
+}
+
+.ds-primary-button {
+  display: flex;
+  height: 96rpx;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 24rpx;
+  background: var(--primary);
+  color: #ffffff;
+  font-size: 30rpx;
+  font-weight: 500;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
+.ds-primary-button::after {
+  border: 0;
 }

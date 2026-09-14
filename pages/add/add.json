@@ -1,0 +1,7 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "add-type-switch": "./components/type-switch/index",
+    "add-category-grid": "./components/category-grid/index"
+  }
+}

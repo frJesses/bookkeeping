@@ -1,12 +1,42 @@
 {
   "pages": [
-    "pages/index/index"
+    "pages/index/index",
+    "pages/login/login",
+    "pages/calendar/calendar",
+    "pages/stats/preview",
+    "pages/add/landing",
+    "pages/bill/bill",
+    "pages/bill/record-detail/index",
+    "pages/add/add",
+    "pages/budget/budget",
+    "pages/stats/stats",
+    "pages/profile/profile",
+    "pages/profile/achievement",
+    "pages/profile/personal",
+    "pages/profile/member",
+    "pages/profile/feedback"
   ],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "钱小迹",
-    "navigationBarBackgroundColor": "#f7f8fc",
-    "backgroundColor": "#f7f8fc"
+    "navigationBarTitleText": "滴水记账",
+    "navigationBarBackgroundColor": "#f8f8f8",
+    "backgroundColor": "#f8f8f8"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#98a1b2",
+    "selectedColor": "#01c6a6",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "账单"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
   },
   "style": "v2",
   "componentFramework": "glass-easel",
