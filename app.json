@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/login/login",
     "pages/calendar/calendar",
     "pages/stats/preview",
     "pages/add/landing",
@@ -12,9 +11,7 @@
     "pages/stats/stats",
     "pages/profile/profile",
     "pages/profile/achievement",
-    "pages/profile/personal",
-    "pages/profile/member",
-    "pages/profile/feedback"
+    "pages/profile/personal"
   ],
   "window": {
     "navigationBarTextStyle": "black",
