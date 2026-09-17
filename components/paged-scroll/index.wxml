@@ -17,7 +17,7 @@
   </view>
 
   <view wx:elif="{{status === 'empty'}}" class="load-state">
-    <image src="/assets/figma/states/empty-v2.svg" mode="aspectFit"></image>
+    <image class="load-state-image" src="/assets/figma/states/empty-v2.svg" mode="aspectFit"></image>
     <text class="state-title">还没有记账记录</text>
     <text class="state-description">记下第一笔，让每一笔收支都有迹可循</text>
   </view>

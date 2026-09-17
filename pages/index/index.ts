@@ -12,15 +12,9 @@ import {
   type HomeRecentRecordDTO,
   type HomeRecordItem,
 } from '../../services/home'
-import {
-  cacheEditingHomeTransaction,
-  deleteTransactionById,
-} from '../../services/transaction-detail'
-import {
-  createAvailableMonthOptions,
-  createMonthPickerState,
-  createRecentYearOptions,
-} from '../../utils/month-picker'
+import { cacheEditingHomeTransaction, deleteTransactionById } from '../../services/transaction-detail'
+import { createAvailableMonthOptions, createMonthPickerState, createRecentYearOptions } from '../../utils/month-picker'
+import { getWindowInfo } from '../../utils/system-info'
 
 type EntryType = 'expense' | 'income'
 type CustomTabBarPage = WechatMiniprogram.Page.Instance<WechatMiniprogram.IAnyObject, WechatMiniprogram.IAnyObject> & {
@@ -47,6 +41,9 @@ type HomePageInstance = TabBarBehaviorPageInstance & {
     pickerMonths: string[]
     pickerValue: number[]
   }
+  pickerSelection: number[]
+  isPickerScrolling: boolean
+  pendingPickerConfirmation: boolean
 }
 
 function setCustomTabBarHidden(page: HomePageInstance, hidden: boolean) {
@@ -91,23 +88,20 @@ Page({
   onUnload(this: HomePageInstance) {
     setCustomTabBarHidden(this, false)
   },
-  async loadPageData(this: HomePageInstance) {
+  async loadPageData(this: HomePageInstance, month?: string) {
     this.homeInitialized = true
     this.loadPageDataVersion += 1
     const requestVersion = this.loadPageDataVersion
-    const selectedMonth = this.data.selectedMonth
+    const selectedMonth = month || this.data.selectedMonth
     const pagedScroll = this.selectComponent('#homePagedScroll') as PagedScrollInstance | null
     const listTask = pagedScroll
       ? pagedScroll.initLoad(this.fetchRecentRecords.bind(this) as PagedScrollFetchMethod, {
-        pageSize: 10,
-        month: selectedMonth,
-        status: 'normal',
-      })
+          pageSize: 10,
+          month: selectedMonth,
+          status: 'normal',
+        })
       : Promise.resolve()
-    const [overview] = await Promise.all([
-      getHomeMonthOverview(selectedMonth),
-      listTask,
-    ])
+    const [overview] = await Promise.all([getHomeMonthOverview(selectedMonth), listTask])
     if (requestVersion === this.loadPageDataVersion && selectedMonth === this.data.selectedMonth) {
       this.setData(overview)
     }
@@ -186,52 +180,84 @@ Page({
     })
   },
   openDatePicker(this: HomePageInstance) {
+    const pickerState = createMonthPickerState(this.data.selectedMonth)
+    this.pickerSelection = [...pickerState.pickerValue]
+    this.isPickerScrolling = false
+    this.pendingPickerConfirmation = false
     this.setData({
       showDatePicker: true,
-      ...createMonthPickerState(this.data.selectedMonth),
+      ...pickerState,
     })
     setCustomTabBarHidden(this, true)
   },
   closeDatePicker(this: HomePageInstance) {
+    this.isPickerScrolling = false
+    this.pendingPickerConfirmation = false
     this.setData({ showDatePicker: false })
     setCustomTabBarHidden(this, false)
+  },
+  handleDatePickerStart(this: HomePageInstance) {
+    this.isPickerScrolling = true
+  },
+  handleDatePickerEnd(this: HomePageInstance) {
+    this.isPickerScrolling = false
+    if (!this.pendingPickerConfirmation) {
+      return
+    }
+    this.pendingPickerConfirmation = false
+    setTimeout(() => this.confirmDatePicker(), 0)
   },
   handleDatePickerChange(this: HomePageInstance, e: WechatMiniprogram.CustomEvent<{ value?: number[] }>) {
     if (!Array.isArray(e.detail.value)) {
       return
     }
     const [yearIndex = 0, monthIndex = 0] = e.detail.value
-    const previousYear = this.data.pickerYears[this.data.pickerValue[0]]
+    const previousYear = this.data.pickerYears[this.pickerSelection[0]]
     const selectedYear = this.data.pickerYears[yearIndex]
     if (!selectedYear) {
       return
     }
     if (selectedYear !== previousYear) {
+      this.pickerSelection = [yearIndex, 0]
       this.setData({
         pickerMonths: createAvailableMonthOptions(selectedYear),
         pickerValue: [yearIndex, 0],
       })
       return
     }
-    this.setData({ pickerValue: [yearIndex, monthIndex] })
+    this.pickerSelection = [yearIndex, monthIndex]
+    this.setData({ pickerValue: this.pickerSelection })
   },
   async confirmDatePicker(this: HomePageInstance) {
-    const year = this.data.pickerYears[this.data.pickerValue[0]]
-    const month = this.data.pickerMonths[this.data.pickerValue[1]]
+    if (this.isPickerScrolling) {
+      this.pendingPickerConfirmation = true
+      return
+    }
+    const [yearIndex, monthIndex] = this.pickerSelection
+    const year = this.data.pickerYears[yearIndex]
+    const month = this.data.pickerMonths[monthIndex]
     if (!year || !month) {
       return
     }
     const selectedMonth = `${year}-${String(month).padStart(2, '0')}`
-    this.setData({
-      showDatePicker: false,
-      selectedMonth,
-      selectedMonthLabel: `${year}年${month}月`,
-      recentRecordGroups: [],
+    await new Promise<void>((resolve) => {
+      this.setData(
+        {
+          showDatePicker: false,
+          selectedMonth,
+          selectedMonthLabel: `${year}年${month}月`,
+          recentRecordGroups: [],
+        },
+        resolve,
+      )
     })
     setCustomTabBarHidden(this, false)
-    await this.loadPageData()
+    await this.loadPageData(selectedMonth)
   },
   noop() {},
+  pickerSelection: [0, 0],
+  isPickerScrolling: false,
+  pendingPickerConfirmation: false,
   goToAdd(e: WechatMiniprogram.BaseEvent) {
     const { type } = e.currentTarget.dataset as { type?: EntryType }
     const entryType = type === 'income' ? 'income' : 'expense'
@@ -240,7 +266,7 @@ Page({
     })
   },
   initCustomHeader() {
-    const systemInfo = wx.getSystemInfoSync()
+    const systemInfo = getWindowInfo()
     const menuButton = wx.getMenuButtonBoundingClientRect()
     const statusBarHeight = systemInfo.statusBarHeight || 20
     const navBarHeight = (menuButton.top - statusBarHeight) * 2 + menuButton.height

@@ -1,13 +1,10 @@
-import {
-  createCalendarPageState,
-  getCalendarPageData,
-  type CalendarPageState,
-} from '../../services/calendar'
+import { createCalendarPageState, getCalendarPageData, type CalendarPageState } from '../../services/calendar'
 import {
   createAvailableMonthOptions,
   createDefaultDateForMonth,
   createMonthPickerState,
 } from '../../utils/month-picker'
+import { getWindowInfo } from '../../utils/system-info'
 
 type CalendarPageInstance = WechatMiniprogram.Page.Instance<
   WechatMiniprogram.IAnyObject,
@@ -23,6 +20,9 @@ type CalendarPageInstance = WechatMiniprogram.Page.Instance<
     isLoading: boolean
     errorMessage: string
   }
+  pickerSelection: number[]
+  isPickerScrolling: boolean
+  pendingPickerConfirmation: boolean
 }
 
 const initialState = createCalendarPageState()
@@ -39,7 +39,7 @@ Page({
     weekLabels: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
   },
   onLoad(this: CalendarPageInstance) {
-    this.setData({ statusBarHeight: wx.getSystemInfoSync().statusBarHeight || 20 })
+    this.setData({ statusBarHeight: getWindowInfo().statusBarHeight || 20 })
     void this.loadCalendarData(this.data.selectedMonth, this.data.selectedDate)
   },
   async loadCalendarData(this: CalendarPageInstance, month: string, date?: string) {
@@ -81,39 +81,60 @@ Page({
     wx.switchTab({ url: '/pages/index/index' })
   },
   openDatePicker(this: CalendarPageInstance) {
+    const pickerState = createMonthPickerState(this.data.selectedMonth)
+    this.pickerSelection = [...pickerState.pickerValue]
+    this.isPickerScrolling = false
+    this.pendingPickerConfirmation = false
     this.setData({
       showDatePicker: true,
-      ...createMonthPickerState(this.data.selectedMonth),
+      ...pickerState,
     })
   },
-  closeDatePicker() {
+  closeDatePicker(this: CalendarPageInstance) {
+    this.isPickerScrolling = false
+    this.pendingPickerConfirmation = false
     this.setData({ showDatePicker: false })
   },
-  handleDatePickerChange(
-    this: CalendarPageInstance,
-    event: WechatMiniprogram.CustomEvent<{ value?: number[] }>,
-  ) {
+  handleDatePickerStart(this: CalendarPageInstance) {
+    this.isPickerScrolling = true
+  },
+  handleDatePickerEnd(this: CalendarPageInstance) {
+    this.isPickerScrolling = false
+    if (!this.pendingPickerConfirmation) {
+      return
+    }
+    this.pendingPickerConfirmation = false
+    setTimeout(() => this.confirmDatePicker(), 0)
+  },
+  handleDatePickerChange(this: CalendarPageInstance, event: WechatMiniprogram.CustomEvent<{ value?: number[] }>) {
     if (!Array.isArray(event.detail.value)) {
       return
     }
     const [yearIndex = 0, monthIndex = 0] = event.detail.value
-    const previousYear = this.data.pickerYears[this.data.pickerValue[0]]
+    const previousYear = this.data.pickerYears[this.pickerSelection[0]]
     const selectedYear = this.data.pickerYears[yearIndex]
     if (!selectedYear) {
       return
     }
     if (selectedYear !== previousYear) {
+      this.pickerSelection = [yearIndex, 0]
       this.setData({
         pickerMonths: createAvailableMonthOptions(selectedYear),
         pickerValue: [yearIndex, 0],
       })
       return
     }
-    this.setData({ pickerValue: [yearIndex, monthIndex] })
+    this.pickerSelection = [yearIndex, monthIndex]
+    this.setData({ pickerValue: this.pickerSelection })
   },
   confirmDatePicker(this: CalendarPageInstance) {
-    const year = this.data.pickerYears[this.data.pickerValue[0]]
-    const month = this.data.pickerMonths[this.data.pickerValue[1]]
+    if (this.isPickerScrolling) {
+      this.pendingPickerConfirmation = true
+      return
+    }
+    const [yearIndex, monthIndex] = this.pickerSelection
+    const year = this.data.pickerYears[yearIndex]
+    const month = this.data.pickerMonths[monthIndex]
     if (!year || !month) {
       return
     }
@@ -136,5 +157,8 @@ Page({
     void this.loadCalendarData(this.data.selectedMonth, this.data.selectedDate)
   },
   noop() {},
+  pickerSelection: [initialPickerState.pickerValue[0], initialPickerState.pickerValue[1]],
+  isPickerScrolling: false,
+  pendingPickerConfirmation: false,
   requestVersion: 0,
 })

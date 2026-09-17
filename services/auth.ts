@@ -31,7 +31,7 @@ export async function fetchOpenIdByCode(code: string) {
   const data = await post<OpenIdResponse, { code: string }>(
     '/frontend/bookkeeping/auth/openid',
     { code },
-    { skipToken: true }
+    { skipToken: true },
   )
   setAuthStorage(data)
   return data

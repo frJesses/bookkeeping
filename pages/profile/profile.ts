@@ -58,7 +58,7 @@ Page({
     return {
       title: '滴水记账',
       path: '/pages/index/index',
-      imageUrl: "https://www.wwlblog.top/system/shoppking.png"
+      imageUrl: 'https://www.wwlblog.top/system/shoppking.png',
     }
   },
   profileInitialized: false,

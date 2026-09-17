@@ -1,8 +1,5 @@
 import { getCategoryIconAsset } from '../constants/design'
-import {
-  createCurrentMonthValue,
-  createDefaultDateForMonth,
-} from '../utils/month-picker'
+import { createCurrentMonthValue, createDefaultDateForMonth } from '../utils/month-picker'
 import { ensureOpenId } from './auth'
 import { get } from './request'
 import type { HomeRecentRecordDTO, HomeRecordItem } from './home'
@@ -101,11 +98,7 @@ export function buildCalendarCells(
   const dayMap = new Map(dayItems.map((item) => [item.date, item]))
 
   return Array.from({ length: cellCount }, (_, index) => {
-    const date = new Date(
-      firstCellDate.getFullYear(),
-      firstCellDate.getMonth(),
-      firstCellDate.getDate() + index,
-    )
+    const date = new Date(firstCellDate.getFullYear(), firstCellDate.getMonth(), firstCellDate.getDate() + index)
     const dateValue = formatDateValue(date)
     const isCurrentMonth = date.getFullYear() === year && date.getMonth() === monthIndex
     const isFuture = date.getTime() > today.getTime()
@@ -171,13 +164,17 @@ export function createCalendarPageState(referenceDate = new Date()): CalendarPag
 
 export async function getCalendarPageData(month: string, date?: string) {
   const openId = await ensureOpenId()
-  const data = await get<CalendarResponseDTO>('/frontend/bookkeeping/transaction/calendar', {
-    openId,
-    month,
-    date: date || '',
-  }, {
-    skipToken: true,
-  })
+  const data = await get<CalendarResponseDTO>(
+    '/frontend/bookkeeping/transaction/calendar',
+    {
+      openId,
+      month,
+      date: date || '',
+    },
+    {
+      skipToken: true,
+    },
+  )
   return {
     selectedMonth: data.month,
     monthLabel: formatMonthLabel(data.month),

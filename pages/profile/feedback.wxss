@@ -1,20 +1,134 @@
-.feedback-page { position: relative; height: 100vh; overflow: hidden; background: #f8f8f8; box-sizing: border-box; }
-.feedback-scroll { width: 100%; height: calc(100vh - 230rpx); box-sizing: border-box; }
-.feedback-content { padding: 0 30rpx; box-sizing: border-box; }
-.feedback-card, .contact-card { margin-top: 16rpx; padding: 34rpx 28rpx; border-radius: 24rpx; background: #ffffff; }
-.feedback-title { display: block; font-size: 30rpx; font-weight: 600; }
-.type-grid { display: grid; margin-top: 28rpx; grid-template-columns: 1fr 1fr; gap: 24rpx 18rpx; }
-.type-item { display: flex; height: 82rpx; align-items: center; justify-content: center; border-radius: 20rpx; background: #f8f8f8; color: #333333; font-size: 24rpx; }
-.type-active { background: #01c6a6; color: #ffffff; }
-.description-card { min-height: 650rpx; }
-.description-card textarea { width: 100%; height: 360rpx; margin-top: 28rpx; padding: 28rpx; border-radius: 20rpx; background: #f8f8f8; font-size: 25rpx; line-height: 1.8; box-sizing: border-box; }
-.image-grid { display: flex; flex-wrap: wrap; gap: 18rpx; margin-top: 24rpx; }
-.image-item, .upload-placeholder { position: relative; display: flex; width: 190rpx; height: 190rpx; align-items: center; justify-content: center; border-radius: 20rpx; background: #f8f8f8; overflow: hidden; }
-.image-item image { width: 100%; height: 100%; }
-.image-remove { position: absolute; top: 4rpx; right: 4rpx; display: flex; width: 36rpx; height: 36rpx; align-items: center; justify-content: center; border-radius: 50%; background: rgba(0, 0, 0, 0.55); color: #ffffff; font-size: 28rpx; line-height: 1; }
-.upload-placeholder { color: #bbbbbb; font-size: 54rpx; }
-.image-hint { display: block; margin-top: 12rpx; color: #a3a3a3; font-size: 20rpx; }
-.contact-card { display: flex; height: 98rpx; padding-top: 0; padding-bottom: 0; align-items: center; font-size: 28rpx; font-weight: 600; }
-.contact-card input { flex: 1; margin-left: 24rpx; color: #333333; font-size: 25rpx; font-weight: 400; }
-.submit-button { position: fixed; left: 30rpx; right: 30rpx; bottom: calc(env(safe-area-inset-bottom) + 26rpx); }
-.feedback-bottom-space { height: 180rpx; }
+.feedback-page {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: #f8f8f8;
+  box-sizing: border-box;
+}
+.feedback-scroll {
+  width: 100%;
+  height: calc(100vh - 230rpx);
+  box-sizing: border-box;
+}
+.feedback-content {
+  padding: 0 30rpx;
+  box-sizing: border-box;
+}
+.feedback-card,
+.contact-card {
+  margin-top: 16rpx;
+  padding: 34rpx 28rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+}
+.feedback-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+.type-grid {
+  display: grid;
+  margin-top: 28rpx;
+  grid-template-columns: 1fr 1fr;
+  gap: 24rpx 18rpx;
+}
+.type-item {
+  display: flex;
+  height: 82rpx;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20rpx;
+  background: #f8f8f8;
+  color: #333333;
+  font-size: 24rpx;
+}
+.type-active {
+  background: #01c6a6;
+  color: #ffffff;
+}
+.description-card {
+  min-height: 650rpx;
+}
+.description-card textarea {
+  width: 100%;
+  height: 360rpx;
+  margin-top: 28rpx;
+  padding: 28rpx;
+  border-radius: 20rpx;
+  background: #f8f8f8;
+  font-size: 25rpx;
+  line-height: 1.8;
+  box-sizing: border-box;
+}
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18rpx;
+  margin-top: 24rpx;
+}
+.image-item,
+.upload-placeholder {
+  position: relative;
+  display: flex;
+  width: 190rpx;
+  height: 190rpx;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20rpx;
+  background: #f8f8f8;
+  overflow: hidden;
+}
+.image-item image {
+  width: 100%;
+  height: 100%;
+}
+.image-remove {
+  position: absolute;
+  top: 4rpx;
+  right: 4rpx;
+  display: flex;
+  width: 36rpx;
+  height: 36rpx;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #ffffff;
+  font-size: 28rpx;
+  line-height: 1;
+}
+.upload-placeholder {
+  color: #bbbbbb;
+  font-size: 54rpx;
+}
+.image-hint {
+  display: block;
+  margin-top: 12rpx;
+  color: #a3a3a3;
+  font-size: 20rpx;
+}
+.contact-card {
+  display: flex;
+  height: 98rpx;
+  padding-top: 0;
+  padding-bottom: 0;
+  align-items: center;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+.contact-card input {
+  flex: 1;
+  margin-left: 24rpx;
+  color: #333333;
+  font-size: 25rpx;
+  font-weight: 400;
+}
+.submit-button {
+  position: fixed;
+  left: 30rpx;
+  right: 30rpx;
+  bottom: calc(env(safe-area-inset-bottom) + 26rpx);
+}
+.feedback-bottom-space {
+  height: 180rpx;
+}

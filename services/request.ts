@@ -87,12 +87,12 @@ function normalizeErrorMessage(error: unknown) {
 function unwrapResponse<T>(response: WechatMiniprogram.RequestSuccessCallbackResult) {
   const { statusCode, data } = response
   if (statusCode < 200 || statusCode >= 300) {
-    const result = data && typeof data === 'object' ? data as ApiSuccessResponse<T> : null
+    const result = data && typeof data === 'object' ? (data as ApiSuccessResponse<T>) : null
     throw new ApiError(
       (result && (result.message || result.msg)) || `HTTP ${statusCode}`,
       statusCode,
       result && typeof result.code === 'number' ? result.code : statusCode,
-      result ? result.data : undefined
+      result ? result.data : undefined,
     )
   }
   if (data && typeof data === 'object') {
@@ -126,15 +126,10 @@ export function configureRequest(config: RequestConfig) {
     }
   }
 }
-export function request<T = unknown, TData extends RequestPayload = WechatMiniprogram.IAnyObject>(options: RequestOptions<TData>) {
-  const {
-    url,
-    method = 'GET',
-    data,
-    header,
-    timeout = defaultConfig.timeout,
-    skipToken = false,
-  } = options
+export function request<T = unknown, TData extends RequestPayload = WechatMiniprogram.IAnyObject>(
+  options: RequestOptions<TData>,
+) {
+  const { url, method = 'GET', data, header, timeout = defaultConfig.timeout, skipToken = false } = options
   const requestMethod: WechatMiniprogram.RequestOption['method'] = method === 'PATCH' ? 'POST' : method
   const requestHeader = createHeader(header, skipToken)
   if (method === 'PATCH') {
@@ -163,7 +158,7 @@ export function request<T = unknown, TData extends RequestPayload = WechatMinipr
 export function get<T = unknown, TData extends RequestPayload = WechatMiniprogram.IAnyObject>(
   url: string,
   data?: TData,
-  options?: Omit<RequestOptions<TData>, 'url' | 'method' | 'data'>
+  options?: Omit<RequestOptions<TData>, 'url' | 'method' | 'data'>,
 ) {
   return request<T, TData>({
     ...options,
@@ -175,7 +170,7 @@ export function get<T = unknown, TData extends RequestPayload = WechatMiniprogra
 export function post<T = unknown, TData extends RequestPayload = WechatMiniprogram.IAnyObject>(
   url: string,
   data?: TData,
-  options?: Omit<RequestOptions<TData>, 'url' | 'method' | 'data'>
+  options?: Omit<RequestOptions<TData>, 'url' | 'method' | 'data'>,
 ) {
   return request<T, TData>({
     ...options,
@@ -187,7 +182,7 @@ export function post<T = unknown, TData extends RequestPayload = WechatMiniprogr
 export function put<T = unknown, TData extends RequestPayload = WechatMiniprogram.IAnyObject>(
   url: string,
   data?: TData,
-  options?: Omit<RequestOptions<TData>, 'url' | 'method' | 'data'>
+  options?: Omit<RequestOptions<TData>, 'url' | 'method' | 'data'>,
 ) {
   return request<T, TData>({
     ...options,
@@ -199,7 +194,7 @@ export function put<T = unknown, TData extends RequestPayload = WechatMiniprogra
 export function del<T = unknown, TData extends RequestPayload = WechatMiniprogram.IAnyObject>(
   url: string,
   data?: TData,
-  options?: Omit<RequestOptions<TData>, 'url' | 'method' | 'data'>
+  options?: Omit<RequestOptions<TData>, 'url' | 'method' | 'data'>,
 ) {
   return request<T, TData>({
     ...options,
@@ -211,7 +206,7 @@ export function del<T = unknown, TData extends RequestPayload = WechatMiniprogra
 export function patch<T = unknown, TData extends RequestPayload = WechatMiniprogram.IAnyObject>(
   url: string,
   data?: TData,
-  options?: Omit<RequestOptions<TData>, 'url' | 'method' | 'data'>
+  options?: Omit<RequestOptions<TData>, 'url' | 'method' | 'data'>,
 ) {
   return request<T, TData>({
     ...options,

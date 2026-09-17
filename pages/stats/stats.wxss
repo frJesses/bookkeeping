@@ -336,7 +336,31 @@
   background: #01c6a6;
 }
 
+.compare-chart {
+  display: flex;
+  align-items: stretch;
+}
+
+.bar-y-axis {
+  display: flex;
+  width: 56rpx;
+  height: 390rpx;
+  margin-top: 46rpx;
+  padding-bottom: 0;
+  flex-shrink: 0;
+  align-items: stretch;
+  justify-content: space-between;
+  flex-direction: column;
+  box-sizing: border-box;
+  color: #989898;
+  font-family: DIN, sans-serif;
+  font-size: 18rpx;
+  line-height: 1;
+  text-align: right;
+}
+
 .bar-chart {
+  flex: 1;
   height: 390rpx;
   margin-top: 46rpx;
   align-items: flex-end;

@@ -67,10 +67,22 @@
   box-sizing: border-box;
 }
 
-.metric-blue { background: #eff6ff; border-color: #e0edff; }
-.metric-orange { background: #fff5f2; border-color: #ffe6df; }
-.metric-green { background: #dcfbf7; border-color: #c8f3ee; }
-.metric-pink { background: #fdf1f6; border-color: #fae6ee; }
+.metric-blue {
+  background: #eff6ff;
+  border-color: #e0edff;
+}
+.metric-orange {
+  background: #fff5f2;
+  border-color: #ffe6df;
+}
+.metric-green {
+  background: #dcfbf7;
+  border-color: #c8f3ee;
+}
+.metric-pink {
+  background: #fdf1f6;
+  border-color: #fae6ee;
+}
 
 .metric-mark {
   display: flex;

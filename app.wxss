@@ -8,7 +8,7 @@ page {
   --text-muted: #989898;
   background: var(--page-bg);
   color: var(--text-main);
-  font-family: "PingFang SC", "Helvetica Neue", sans-serif;
+  font-family: 'PingFang SC', 'Helvetica Neue', sans-serif;
   letter-spacing: 0;
 }
 .container {
@@ -47,15 +47,27 @@ textarea {
   font-weight: 600;
 }
 
-.ds-back {
+.ds-back-hitarea {
   position: absolute;
-  left: 30rpx;
+  left: 8rpx;
   top: 50%;
-  width: 28rpx;
-  height: 28rpx;
-  border-left: 4rpx solid #333333;
-  border-bottom: 4rpx solid #333333;
-  transform: translateY(-50%) rotate(45deg);
+  display: flex;
+  width: 72rpx;
+  height: 72rpx;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.ds-back-image {
+  display: block;
+  width: 24rpx;
+  height: 40rpx;
+}
+
+.ds-back-image-light {
+  filter: brightness(0) invert(1);
 }
 
 .ds-card {

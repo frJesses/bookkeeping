@@ -1,8 +1,6 @@
-import {
-  createBillDetailPageState,
-  getBillDetailPageData,
-} from '../../../services/bill'
+import { createBillDetailPageState, getBillDetailPageData } from '../../../services/bill'
 import { createCurrentMonthValue } from '../../../utils/month-picker'
+import { getWindowInfo } from '../../../utils/system-info'
 
 type DetailPageInstance = WechatMiniprogram.Page.Instance<
   WechatMiniprogram.IAnyObject,
@@ -23,9 +21,9 @@ Page({
     statusBarHeight: 20,
   },
   onLoad(this: DetailPageInstance, options: Record<string, string | undefined>) {
-    const month = /^\d{4}-\d{2}$/.test(options.month || '') ? options.month as string : initialMonth
+    const month = /^\d{4}-\d{2}$/.test(options.month || '') ? (options.month as string) : initialMonth
     this.setData({
-      statusBarHeight: wx.getSystemInfoSync().statusBarHeight || 20,
+      statusBarHeight: getWindowInfo().statusBarHeight || 20,
       ...createBillDetailPageState(month),
     })
     void this.loadPageData(month)

@@ -19,7 +19,7 @@
   box-sizing: border-box;
 }
 
-.load-state image {
+.load-state-image {
   display: block;
   width: 260rpx;
   height: 220rpx;

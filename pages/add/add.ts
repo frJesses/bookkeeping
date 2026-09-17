@@ -9,14 +9,16 @@ import {
   getCategoryOptions,
   getCategorySelection,
   isRelativeDateLabel,
+  normalizeRemark,
   resolveSubmitAction,
   submitTransaction,
   updateTransaction,
 } from '../../services/add'
 import { clearEditingTransaction, getEditingTransaction } from '../../services/transaction-detail'
+import { getWindowInfo } from '../../utils/system-info'
 
 function getCustomIconSwiperHeight(pages: string[][]) {
-  const windowWidth = wx.getSystemInfoSync().windowWidth || 375
+  const windowWidth = getWindowInfo().windowWidth || 375
   const rpx = windowWidth / 750
   const gridWidth = windowWidth - 60 * rpx
   const columnGap = 30 * rpx
@@ -48,7 +50,7 @@ Page({
     customIconCircular: false,
   },
   async onLoad(options: Record<string, string | undefined>) {
-    const initialState = createAddPageState(options.type)
+    const initialState = createAddPageState(options.type, options.date)
     const pageMode = options.mode === 'edit' ? 'edit' : 'create'
     this.initCustomHeader()
     this.setData({ ...initialState, pageMode })
@@ -64,9 +66,7 @@ Page({
     this.setData({ categoryLoading: true, categoryError: '' })
     try {
       const categories = await getCategoryOptions(type)
-      const customIcons = categories
-        .filter((item) => item.name !== SETTINGS_CATEGORY_NAME)
-        .map((item) => item.icon)
+      const customIcons = categories.filter((item) => item.name !== SETTINGS_CATEGORY_NAME).map((item) => item.icon)
       const customIconPages = [] as string[][]
       for (let index = 0; index < customIcons.length; index += 12) {
         customIconPages.push(customIcons.slice(index, index + 12))
@@ -154,8 +154,12 @@ Page({
       customIconPages.push(customIcons.slice(index, index + 12))
     }
     const selectedCustomIcon = selectedIcon
-      ? (customIcons.includes(selectedIcon) ? selectedIcon : '')
-      : (customIcons.includes(this.data.selectedCustomIcon) ? this.data.selectedCustomIcon : customIcons[0] || '')
+      ? customIcons.includes(selectedIcon)
+        ? selectedIcon
+        : ''
+      : customIcons.includes(this.data.selectedCustomIcon)
+      ? this.data.selectedCustomIcon
+      : customIcons[0] || ''
     const selectedIndex = customIcons.indexOf(selectedCustomIcon)
     const customIconPage = selectedIndex >= 0 ? Math.floor(selectedIndex / 12) : 0
     this.setData({
@@ -216,6 +220,12 @@ Page({
     this.setData({
       remark: e.detail.value || '',
     })
+  },
+  handleRemarkBlur(this: WechatMiniprogram.Page.Instance<WechatMiniprogram.IAnyObject, WechatMiniprogram.IAnyObject>) {
+    const remark = normalizeRemark(this.data.remark || '')
+    if (remark !== this.data.remark) {
+      this.setData({ remark })
+    }
   },
   handleDateChange(e: WechatMiniprogram.CustomEvent<{ value?: string }>) {
     const selectedDate = e.detail.value || this.data.selectedDate
@@ -310,7 +320,7 @@ Page({
     }
   },
   initCustomHeader() {
-    const systemInfo = wx.getSystemInfoSync()
+    const systemInfo = getWindowInfo()
     const menuButton = wx.getMenuButtonBoundingClientRect()
     const statusBarHeight = systemInfo.statusBarHeight || 20
     const navBarHeight = (menuButton.top - statusBarHeight) * 2 + menuButton.height

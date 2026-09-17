@@ -120,9 +120,13 @@ export function clearEditingTransaction() {
   wx.removeStorageSync(EDIT_STORAGE_KEY)
 }
 export async function deleteTransactionById(id: string) {
-  return del('/frontend/bookkeeping/transaction/delete', {
-    id,
-  }, {
-    skipToken: true,
-  })
+  return del(
+    '/frontend/bookkeeping/transaction/delete',
+    {
+      id,
+    },
+    {
+      skipToken: true,
+    },
+  )
 }

@@ -2,6 +2,7 @@ import { getApiBaseURL } from './config/index'
 import { configureRequest } from './services/request'
 import { ensureOpenId } from './services/auth'
 import { calculateCustomTabBarHeight } from './utils/tabbar'
+import { getWindowInfo } from './utils/system-info'
 
 App<IAppOption>({
   globalData: {
@@ -14,7 +15,7 @@ App<IAppOption>({
       baseURL: getApiBaseURL(),
       tokenStorageKey: 'bookkeeping_token',
     })
-    this.globalData.customTabBarHeight = calculateCustomTabBarHeight(wx.getSystemInfoSync())
+    this.globalData.customTabBarHeight = calculateCustomTabBarHeight(getWindowInfo())
     ensureOpenId().catch((error) => {
       console.error('初始化微信登录失败', error)
     })
@@ -38,7 +39,7 @@ App<IAppOption>({
             if (res.confirm) {
               updateManager.applyUpdate()
             }
-          }
+          },
         })
       })
       updateManager.onUpdateFailed(() => {
@@ -48,5 +49,5 @@ App<IAppOption>({
         })
       })
     }
-  }
+  },
 })

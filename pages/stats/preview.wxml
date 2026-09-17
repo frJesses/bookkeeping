@@ -1,5 +1,5 @@
 <view class="preview-page" style="padding-top: {{statusBarHeight}}px;">
-  <view class="ds-header"><view class="ds-back" bindtap="goBack"></view><text class="ds-header-title">收支预览</text></view>
+  <view class="ds-header"><view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view><text class="ds-header-title">收支预览</text></view>
   <view wx:if="{{errorMessage}}" class="preview-state"><text>{{errorMessage}}</text><button bindtap="handleRetry">重新加载</button></view>
   <view wx:elif="{{!isLoading}}">
   <view class="preview-card">

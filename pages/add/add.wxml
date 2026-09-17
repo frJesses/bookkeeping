@@ -1,7 +1,7 @@
 <view class="add-page {{activeCategory ? 'add-page-form' : ''}}" style="height: {{viewportHeight}}px;">
   <view class="add-header" style="padding-top: {{statusBarHeight}}px;">
     <view class="ds-header">
-      <view class="ds-back" bindtap="goBack"></view>
+      <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view>
       <view wx:if="{{!activeCategory}}" class="header-switch"><add-type-switch activeType="{{activeType}}" bind:change="handleTypeChange" /></view>
       <text wx:else class="ds-header-title">{{activeType === 'expense' ? '支出记录' : '收入记录'}}</text>
       <view wx:if="{{!activeCategory}}" class="add-tag" bindtap="openTagModal"></view>
@@ -28,8 +28,8 @@
     </view>
     <view class="remark-panel">
       <text class="field-title">备注</text>
-      <input class="remark-input" maxlength="10" value="{{remark}}" placeholder="请输入备注信息" bindinput="handleRemarkChange" />
-      <text class="remark-count">{{remark.length}}/10</text>
+      <input class="remark-input" value="{{remark}}" placeholder="请输入备注信息" bindinput="handleRemarkChange" bindblur="handleRemarkBlur" />
+      <text class="remark-count">{{remark.length}}/15</text>
     </view>
     <view class="native-keypad">
       <view class="keypad-left">
@@ -46,6 +46,15 @@
         <view class="key" data-action="digit" data-value="." bindtap="handleNativeKeyTap">.</view>
       </view>
       <view class="keypad-right">
+        <picker
+          mode="date"
+          value="{{selectedDate}}"
+          end="{{maxDate}}"
+          class="date-picker"
+          bindchange="handleDateChange"
+        >
+          <view class="key date-key {{isRelativeDateLabel ? 'date-key-relative' : 'date-key-long'}}">{{dateLabel}}</view>
+        </picker>
         <view class="key key-backspace" data-action="backspace" bindtap="handleNativeKeyTap">⌫</view>
         <view class="confirm-key" bindtap="saveRecord">确定</view>
       </view>

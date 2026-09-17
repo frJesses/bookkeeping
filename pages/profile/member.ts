@@ -1,3 +1,5 @@
+import { getWindowInfo } from '../../utils/system-info'
+
 Page({
   data: {
     statusBarHeight: 20,
@@ -8,8 +10,12 @@ Page({
       { key: 'lifetime', name: '永久会员', price: '298', original: '¥988/月' },
     ],
   },
-  onLoad() { this.setData({ statusBarHeight: wx.getSystemInfoSync().statusBarHeight || 20 }) },
-  goBack() { wx.navigateBack() },
+  onLoad() {
+    this.setData({ statusBarHeight: getWindowInfo().statusBarHeight || 20 })
+  },
+  goBack() {
+    wx.navigateBack()
+  },
   selectPlan(e: WechatMiniprogram.BaseEvent) {
     const { plan } = e.currentTarget.dataset as { plan?: string }
     if (plan) this.setData({ selectedPlan: plan })

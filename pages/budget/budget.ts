@@ -10,6 +10,7 @@ import {
 } from '../../services/budget'
 import type { AddCategoryItem } from '../../services/add'
 import { createRecentYearOptions } from '../../utils/month-picker'
+import { getWindowInfo } from '../../utils/system-info'
 
 function money(value: number) {
   return Number(value || 0).toLocaleString('en-US', {
@@ -19,7 +20,7 @@ function money(value: number) {
 }
 
 function getMonthScrollLeft(index: number) {
-  const windowWidth = wx.getSystemInfoSync().windowWidth || 375
+  const windowWidth = getWindowInfo().windowWidth || 375
   const rpx = windowWidth / 750
   const cardWidth = 106 * rpx
   const gap = 12 * rpx
@@ -41,7 +42,10 @@ const initialMonth = getCurrentBudgetMonth()
 const initialMonths = createBudgetMonths(initialMonth)
 const initialMonthIndex = initialMonths.findIndex((item) => item.active)
 const initialYearOptions = createRecentYearOptions().map((item) => `${item}年`)
-const initialYearIndex = Math.max(0, initialYearOptions.findIndex((item) => item === `${initialMonth.slice(0, 4)}年`))
+const initialYearIndex = Math.max(
+  0,
+  initialYearOptions.findIndex((item) => item === `${initialMonth.slice(0, 4)}年`),
+)
 
 Page({
   data: {
@@ -71,7 +75,7 @@ Page({
     savingCategoryId: '',
   },
   onLoad() {
-    this.setData({ statusBarHeight: wx.getSystemInfoSync().statusBarHeight || 20 })
+    this.setData({ statusBarHeight: getWindowInfo().statusBarHeight || 20 })
     void this.loadBudgetPage()
   },
   async loadBudgetPage(month?: string, preserveDrafts = false) {
@@ -95,8 +99,16 @@ Page({
       ...data,
       categories,
       isLoading: false,
-      yearIndex: Math.max(0, this.data.yearOptions.findIndex((item: string) => item === `${data.year}年`)),
-      monthScrollLeft: getMonthScrollLeft(Math.max(0, data.months.findIndex((item) => item.active))),
+      yearIndex: Math.max(
+        0,
+        this.data.yearOptions.findIndex((item: string) => item === `${data.year}年`),
+      ),
+      monthScrollLeft: getMonthScrollLeft(
+        Math.max(
+          0,
+          data.months.findIndex((item) => item.active),
+        ),
+      ),
       incomeText: money(data.income),
       addedMonthCount: data.months.filter((item) => item.added).length,
       ...calculateBudgetTotals(categories, data.income),
@@ -135,9 +147,9 @@ Page({
   updateBudgetValue(index: number, value: number) {
     const category = this.data.categories[index]
     const isDraft = Boolean(category && category.isDraft)
-    const categories = this.data.categories.map((item: BudgetCategory, itemIndex: number) => (
-      itemIndex === index ? { ...item, value } : item
-    ))
+    const categories = this.data.categories.map((item: BudgetCategory, itemIndex: number) =>
+      itemIndex === index ? { ...item, value } : item,
+    )
     const income = Number(this.data.income || 0)
     const nextCategories = categories.map((item) => ({
       ...item,
@@ -160,7 +172,11 @@ Page({
     const { isDraft, income, categories } = this.updateBudgetValue(index, value)
     if (isDraft) return
     try {
-      await saveBudgetPageData(this.data.month, income, categories.filter((item) => !item.isDraft))
+      await saveBudgetPageData(
+        this.data.month,
+        income,
+        categories.filter((item) => !item.isDraft),
+      )
     } catch (error) {
       console.error('save budget failed', error)
       wx.showToast({ title: '预算保存失败', icon: 'none' })
@@ -185,7 +201,7 @@ Page({
     try {
       const persistedCategories = this.data.categories.filter((item: BudgetCategory) => !item.isDraft)
       await saveBudgetPageData(this.data.month, income, persistedCategories)
-      const months = this.data.months.map((item) => item.value === this.data.month ? { ...item, added: true } : item)
+      const months = this.data.months.map((item) => (item.value === this.data.month ? { ...item, added: true } : item))
       this.setData({
         showIncomeModal: false,
         income,
@@ -200,9 +216,9 @@ Page({
     }
   },
   addBudget() {
-    const candidates = this.data.categoryCandidates.filter((category) => (
-      !this.data.categories.some((item: BudgetCategory) => `${item.id}` === `${category.id}`)
-    ))
+    const candidates = this.data.categoryCandidates.filter(
+      (category) => !this.data.categories.some((item: BudgetCategory) => `${item.id}` === `${category.id}`),
+    )
     if (!candidates.length) {
       wx.showToast({ title: '所有分类都已添加预算', icon: 'none' })
       return
@@ -230,14 +246,14 @@ Page({
     const categoryId = `${category.id}`
     this.setData({ savingCategoryId: categoryId })
     try {
-      const categoriesToSave = this.data.categories.filter((item: BudgetCategory) => (
-        !item.isDraft || `${item.id}` === categoryId
-      ))
+      const categoriesToSave = this.data.categories.filter(
+        (item: BudgetCategory) => !item.isDraft || `${item.id}` === categoryId,
+      )
       await saveBudgetPageData(this.data.month, this.data.income, categoriesToSave)
       this.setData({
-        categories: this.data.categories.map((item: BudgetCategory) => (
-          `${item.id}` === categoryId ? { ...item, isDraft: false } : item
-        )),
+        categories: this.data.categories.map((item: BudgetCategory) =>
+          `${item.id}` === categoryId ? { ...item, isDraft: false } : item,
+        ),
       })
       wx.showToast({ title: '预算已保存', icon: 'success' })
       await this.loadBudgetPage(this.data.month, true)

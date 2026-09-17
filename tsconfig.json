@@ -20,12 +20,6 @@
     "typeRoots": ["./typings/types"],
     "skipLibCheck": true
   },
-  "include": [
-    "./**/*.ts",
-    "./typings/**/*.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "miniprogram_npm"
-  ]
+  "include": ["./**/*.ts", "./typings/**/*.d.ts"],
+  "exclude": ["node_modules", "miniprogram_npm"]
 }

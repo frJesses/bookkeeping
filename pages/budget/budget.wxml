@@ -1,6 +1,6 @@
 <view class="budget-page">
   <view class="budget-top" style="padding-top: {{statusBarHeight}}px;">
-    <view class="ds-header"><view class="ds-back" bindtap="goBack"></view><text class="ds-header-title">我的预算</text></view>
+    <view class="ds-header"><view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view><text class="ds-header-title">我的预算</text></view>
     <view class="year-row"><picker mode="selector" range="{{yearOptions}}" value="{{yearIndex}}" bindchange="selectYear"><view class="year-picker-trigger"><text>{{year}}年</text><text class="year-caret"></text></view></picker><text>已添加{{addedMonthCount}}个月预算</text></view>
     <scroll-view scroll-x scroll-left="{{monthScrollLeft}}" scroll-with-animation class="month-scroll" show-scrollbar="false"><view class="month-row"><view wx:for="{{months}}" wx:key="label" class="month-card {{item.active ? 'month-active' : ''}}" data-index="{{index}}" bindtap="selectMonth"><text>{{item.label}}</text><text>{{item.added ? '已添加' : '未添加'}}</text></view></view></scroll-view>
     <view class="budget-hero"><text class="hero-label">收入总额(元)</text><text class="hero-value">{{incomeText}}</text><view class="adjust-income" bindtap="adjustIncome">收入调整</view><view class="hero-footer"><text>消费预算(元) <text>{{totalBudgetText}}</text></text><text>剩余预算(元) <text>{{remainingBudgetText}}</text></text></view></view>

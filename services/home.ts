@@ -106,9 +106,7 @@ function formatTimeLabel(date: Date) {
 }
 
 function parseOccurredDate(value: string) {
-  const matched = value.match(
-    /^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::(\d{2}))?)?/,
-  )
+  const matched = value.match(/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::(\d{2}))?)?/)
   if (!matched) {
     return new Date(value)
   }
@@ -209,8 +207,10 @@ export function buildHomeRecentRecordGroups(items: HomeRecentRecordDTO[]): HomeR
     }
     const currentGroup = groupMap[groupKey]
     const amount = Number(item.amount || 0)
-    const nextExpense = item.type === 'expense' ? amount + Number(currentGroup.expenseText) : Number(currentGroup.expenseText)
-    const nextIncome = item.type === 'income' ? amount + Number(currentGroup.incomeText) : Number(currentGroup.incomeText)
+    const nextExpense =
+      item.type === 'expense' ? amount + Number(currentGroup.expenseText) : Number(currentGroup.expenseText)
+    const nextIncome =
+      item.type === 'income' ? amount + Number(currentGroup.incomeText) : Number(currentGroup.incomeText)
     currentGroup.expenseText = nextExpense.toFixed(2)
     currentGroup.incomeText = nextIncome.toFixed(2)
     currentGroup.hasIncome = currentGroup.hasIncome || (item.type === 'income' && amount !== 0)
@@ -276,15 +276,19 @@ export async function getHomeRecentRecordPage(params: HomeRecentRecordQuery = {}
   const openId = await ensureOpenId()
   const pageNo = typeof params.pageNo === 'number' ? params.pageNo : 1
   const pageSize = typeof params.pageSize === 'number' ? params.pageSize : 10
-  return get<HomeRecentRecordPageResult>('/frontend/bookkeeping/transaction/recent', {
-    openId,
-    page: pageNo,
-    size: pageSize,
-    month: params.month || '',
-    status: params.status || 'normal',
-  }, {
-    skipToken: true,
-  })
+  return get<HomeRecentRecordPageResult>(
+    '/frontend/bookkeeping/transaction/recent',
+    {
+      openId,
+      page: pageNo,
+      size: pageSize,
+      month: params.month || '',
+      status: params.status || 'normal',
+    },
+    {
+      skipToken: true,
+    },
+  )
 }
 export async function getHomeMonthOverview(month: string) {
   const monthOptions = createMonthOptions()
@@ -296,12 +300,16 @@ export async function getHomeMonthOverview(month: string) {
   try {
     const openId = await ensureOpenId()
     const [data, budget] = await Promise.all([
-      get<HomeMonthBillDTO>('/frontend/bookkeeping/transaction/month-bill', {
-        openId,
-        month: selectedMonth,
-      }, {
-        skipToken: true,
-      }),
+      get<HomeMonthBillDTO>(
+        '/frontend/bookkeeping/transaction/month-bill',
+        {
+          openId,
+          month: selectedMonth,
+        },
+        {
+          skipToken: true,
+        },
+      ),
       getBudgetSummary(selectedMonth).catch((error) => {
         console.error('get home budget summary failed', error)
         return null

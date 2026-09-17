@@ -1,4 +1,5 @@
 import type { HomeRecordItem } from '../../services/home'
+import { getWindowInfo } from '../../utils/system-info'
 
 type SwipeRowInternalInstance = WechatMiniprogram.Component.TrivialInstance & {
   data: {
@@ -65,7 +66,7 @@ Component({
       if (!this.isHorizontalGesture) {
         return
       }
-      const deltaRpx = deltaX * 750 / this.viewportWidth
+      const deltaRpx = (deltaX * 750) / this.viewportWidth
       const offsetRpx = Math.max(-REVEAL_WIDTH_RPX, Math.min(0, this.startOffsetRpx + deltaRpx))
       this.setData({ offsetRpx, isDragging: true })
     },
@@ -107,7 +108,7 @@ Component({
       this.startClientY = 0
       this.startOffsetRpx = 0
       this.isHorizontalGesture = false
-      this.viewportWidth = wx.getSystemInfoSync().windowWidth || 375
+      this.viewportWidth = getWindowInfo().windowWidth || 375
     },
   },
 })

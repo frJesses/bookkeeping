@@ -2,7 +2,7 @@
   <view class="stats-wash"></view>
   <view class="stats-header" style="padding-top: {{statusBarHeight}}px;">
     <view class="ds-header">
-      <view class="ds-back" bindtap="goBack"></view>
+      <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view>
       <view class="report-tabs">
         <view
           wx:for="{{reportOptions}}"
@@ -57,10 +57,13 @@
 
     <view class="compare-card">
       <view class="card-heading"><text class="card-title">收支对比</text><view class="compare-legend"><text class="income-key">收入</text><text class="expense-key">支出</text></view></view>
-      <view class="bar-chart">
-        <view wx:for="{{bars}}" wx:key="label" class="bar-group">
-          <view class="bar-columns"><view class="bar income-bar" style="height: {{item.income}}%;"></view><view class="bar expense-bar" style="height: {{item.expense}}%;"></view></view>
-          <text>{{item.label}}</text>
+      <view class="compare-chart">
+        <view class="bar-y-axis"><text wx:for="{{barScaleLabels}}" wx:key="*this">{{item}}</text></view>
+        <view class="bar-chart">
+          <view wx:for="{{bars}}" wx:key="label" class="bar-group">
+            <view class="bar-columns"><view class="bar income-bar" style="height: {{item.income}}%;"></view><view class="bar expense-bar" style="height: {{item.expense}}%;"></view></view>
+            <text>{{item.label}}</text>
+          </view>
         </view>
       </view>
     </view>

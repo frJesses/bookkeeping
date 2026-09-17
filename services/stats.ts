@@ -98,6 +98,7 @@ export type StatsPageData = {
   categories: StatsCategory[]
   allCategories: StatsCategory[]
   bars: StatsBar[]
+  barScaleLabels: string[]
   donutGradient: string
 }
 
@@ -111,9 +112,7 @@ function formatMonthLabel(month: string) {
 function getDateForMonth(month: string) {
   const now = new Date()
   const currentMonth = `${now.getFullYear()}-${`${now.getMonth() + 1}`.padStart(2, '0')}`
-  return month === currentMonth
-    ? `${month}-${`${now.getDate()}`.padStart(2, '0')}`
-    : `${month}-15`
+  return month === currentMonth ? `${month}-${`${now.getDate()}`.padStart(2, '0')}` : `${month}-15`
 }
 
 function parseAmount(value: string) {
@@ -186,27 +185,34 @@ function mapCategories(detail: MonthDetailResponse, flow: StatsFlowMode) {
   ]
 }
 
+function formatAxisAmount(value: number) {
+  if (value >= 10000) {
+    return `${(value / 10000).toFixed(value >= 100000 ? 0 : 1)}万`
+  }
+  return value.toFixed(0)
+}
+
 function mapBars(expenseTrend: ExpenseTrendResponse, incomeTrend: ExpenseTrendResponse) {
-  const expenseItems = expenseTrend.trend && Array.isArray(expenseTrend.trend.list)
-    ? expenseTrend.trend.list
-    : []
-  const incomeItems = incomeTrend.trend && Array.isArray(incomeTrend.trend.list)
-    ? incomeTrend.trend.list
-    : []
+  const expenseItems = expenseTrend.trend && Array.isArray(expenseTrend.trend.list) ? expenseTrend.trend.list : []
+  const incomeItems = incomeTrend.trend && Array.isArray(incomeTrend.trend.list) ? incomeTrend.trend.list : []
   const incomeByKey = new Map(incomeItems.map((item) => [item.key, item]))
   const maxAmount = Math.max(
     1,
     ...expenseItems.map((item) => parseAmount(item.amount)),
     ...incomeItems.map((item) => parseAmount(item.amount)),
   )
-  return expenseItems.map((item) => {
+  const bars = expenseItems.map((item) => {
     const incomeItem = incomeByKey.get(item.key)
     return {
-    label: item.label,
-    income: Math.round((parseAmount(incomeItem ? incomeItem.amount : '0') / maxAmount) * 100),
-    expense: Math.round((parseAmount(item.amount) / maxAmount) * 100),
+      label: item.label,
+      income: Math.round((parseAmount(incomeItem ? incomeItem.amount : '0') / maxAmount) * 100),
+      expense: Math.round((parseAmount(item.amount) / maxAmount) * 100),
     }
   })
+  return {
+    bars,
+    scaleLabels: [formatAxisAmount(maxAmount), formatAxisAmount(maxAmount / 2), '0'],
+  }
 }
 
 function createDonutGradient(categories: StatsCategory[]) {
@@ -214,12 +220,14 @@ function createDonutGradient(categories: StatsCategory[]) {
     return '#e9eeee 0 100%'
   }
   let start = 0
-  return categories.map((item) => {
-    const end = start + item.percent
-    const segment = `${item.color} ${start}% ${end}%`
-    start = end
-    return segment
-  }).join(', ')
+  return categories
+    .map((item) => {
+      const end = start + item.percent
+      const segment = `${item.color} ${start}% ${end}%`
+      start = end
+      return segment
+    })
+    .join(', ')
 }
 
 export async function getStatsPageData(
@@ -230,50 +238,75 @@ export async function getStatsPageData(
 ): Promise<StatsPageData> {
   const openId = await ensureOpenId()
   const [detail, trendExpense, trendIncome, distribution] = await Promise.all([
-    get<MonthDetailResponse>('/frontend/bookkeeping/transaction/month-bill/detail', {
-      openId,
-      month,
-    }, { skipToken: true }),
-    get<ExpenseTrendResponse>('/frontend/bookkeeping/transaction/expense-trend', {
-      openId,
-      range: report,
-      type: 'expense',
-      date: periodDate || getDateForMonth(month),
-    }, { skipToken: true }),
-    get<ExpenseTrendResponse>('/frontend/bookkeeping/transaction/expense-trend', {
-      openId,
-      range: report,
-      type: 'income',
-      date: periodDate || getDateForMonth(month),
-    }, { skipToken: true }),
-    get<CategoryDistributionResponse>('/frontend/bookkeeping/transaction/category-distribution', {
-      openId,
-      range: report,
-      type: flow,
-      date: periodDate || getDateForMonth(month),
-    }, { skipToken: true }),
+    get<MonthDetailResponse>(
+      '/frontend/bookkeeping/transaction/month-bill/detail',
+      {
+        openId,
+        month,
+      },
+      { skipToken: true },
+    ),
+    get<ExpenseTrendResponse>(
+      '/frontend/bookkeeping/transaction/expense-trend',
+      {
+        openId,
+        range: report,
+        type: 'expense',
+        date: periodDate || getDateForMonth(month),
+      },
+      { skipToken: true },
+    ),
+    get<ExpenseTrendResponse>(
+      '/frontend/bookkeeping/transaction/expense-trend',
+      {
+        openId,
+        range: report,
+        type: 'income',
+        date: periodDate || getDateForMonth(month),
+      },
+      { skipToken: true },
+    ),
+    get<CategoryDistributionResponse>(
+      '/frontend/bookkeeping/transaction/category-distribution',
+      {
+        openId,
+        range: report,
+        type: flow,
+        date: periodDate || getDateForMonth(month),
+      },
+      { skipToken: true },
+    ),
   ])
-  const yearSummary = report === 'year'
-    ? await get<YearBillResponse>('/frontend/bookkeeping/transaction/year-bill', {
-      openId,
-      year: (periodDate || month).slice(0, 4),
-    }, { skipToken: true })
-    : null
-  const periodDetail = flow === 'expense'
-    ? { ...detail, categories: distribution.categories, rankings: distribution.rankings }
-    : { ...detail, incomeCategories: distribution.categories, incomeRankings: distribution.rankings }
+  const yearSummary =
+    report === 'year'
+      ? await get<YearBillResponse>(
+          '/frontend/bookkeeping/transaction/year-bill',
+          {
+            openId,
+            year: (periodDate || month).slice(0, 4),
+          },
+          { skipToken: true },
+        )
+      : null
+  const periodDetail =
+    flow === 'expense'
+      ? { ...detail, categories: distribution.categories, rankings: distribution.rankings }
+      : { ...detail, incomeCategories: distribution.categories, incomeRankings: distribution.rankings }
   const categories = mapCategories(periodDetail, flow)
   const allCategories = mapAllCategories(periodDetail, flow)
-  const periodExpense = report === 'week'
-    ? sumTrendItems(trendExpense.currentTrend.list)
-    : yearSummary
-      ? parseAmount(yearSummary.totalExpense)
-      : parseAmount(detail.totalExpense)
-  const periodIncome = report === 'week'
-    ? sumTrendItems(trendIncome.currentTrend.list)
-    : yearSummary
-      ? parseAmount(yearSummary.totalIncome)
-      : parseAmount(detail.totalIncome)
+  const periodExpense =
+    report === 'week'
+      ? sumTrendItems(trendExpense.currentTrend.list)
+      : yearSummary
+        ? parseAmount(yearSummary.totalExpense)
+        : parseAmount(detail.totalExpense)
+  const periodIncome =
+    report === 'week'
+      ? sumTrendItems(trendIncome.currentTrend.list)
+      : yearSummary
+        ? parseAmount(yearSummary.totalIncome)
+        : parseAmount(detail.totalIncome)
+  const barData = mapBars(trendExpense, trendIncome)
   return {
     month: detail.month,
     monthLabel: formatMonthLabel(detail.month),
@@ -284,7 +317,8 @@ export async function getStatsPageData(
     totalBalance: (periodIncome - periodExpense).toFixed(2),
     categories,
     allCategories,
-    bars: mapBars(trendExpense, trendIncome),
+    bars: barData.bars,
+    barScaleLabels: barData.scaleLabels,
     donutGradient: createDonutGradient(categories),
   }
 }

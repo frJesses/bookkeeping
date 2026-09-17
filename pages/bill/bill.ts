@@ -1,14 +1,7 @@
-import {
-  applyBillFilter,
-  createBillPageState,
-  getBillPageData,
-  type BillFilter,
-} from '../../services/bill'
+import { applyBillFilter, createBillPageState, getBillPageData, type BillFilter } from '../../services/bill'
+import { getWindowInfo } from '../../utils/system-info'
 
-type BillPageInstance = WechatMiniprogram.Page.Instance<
-  WechatMiniprogram.IAnyObject,
-  WechatMiniprogram.IAnyObject
-> & {
+type BillPageInstance = WechatMiniprogram.Page.Instance<WechatMiniprogram.IAnyObject, WechatMiniprogram.IAnyObject> & {
   data: ReturnType<typeof createBillPageState>
   billInitialized: boolean
   requestVersion: number
@@ -19,7 +12,7 @@ const initialState = createBillPageState()
 Page({
   data: initialState,
   onLoad(this: BillPageInstance) {
-    this.setData({ statusBarHeight: wx.getSystemInfoSync().statusBarHeight || 20 })
+    this.setData({ statusBarHeight: getWindowInfo().statusBarHeight || 20 })
     void this.loadPageData()
   },
   onShow(this: BillPageInstance) {

@@ -27,7 +27,7 @@
   justify-content: center;
 }
 
-.swipe-action image {
+.swipe-action-image {
   display: block;
   width: 34rpx;
   height: 34rpx;
@@ -98,7 +98,7 @@
 .record-amount {
   margin-left: 16rpx;
   color: #333333;
-  font-family: DIN, "Helvetica Neue", sans-serif;
+  font-family: DIN, 'Helvetica Neue', sans-serif;
   font-size: 30rpx;
   font-weight: 700;
 }

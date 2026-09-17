@@ -3,13 +3,16 @@
   "version": "1.0.2",
   "description": "",
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write \"**/*.{ts,wxss,json}\" --ignore-path .prettierignore",
+    "format:check": "prettier --check \"**/*.{ts,wxss,json}\" --ignore-path .prettierignore"
   },
   "keywords": [],
   "author": "",
   "license": "",
   "devDependencies": {
     "miniprogram-api-typings": "^2.8.3-1",
+    "prettier": "^3.0.3",
     "typescript": "^6.0.3"
   }
 }

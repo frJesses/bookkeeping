@@ -88,10 +88,14 @@ export async function getBudgetPageData(month = getCurrentBudgetMonth()): Promis
   const [categoryCandidates, stats, budget] = await Promise.all([
     getCategoryOptions('expense'),
     getStatsPageData(month, 'month', 'expense').catch(() => null),
-    get<BudgetDetailResponse>('/frontend/bookkeeping/budget/detail', {
-      openId,
-      month,
-    }, { skipToken: true }),
+    get<BudgetDetailResponse>(
+      '/frontend/bookkeeping/budget/detail',
+      {
+        openId,
+        month,
+      },
+      { skipToken: true },
+    ),
   ])
   const spentMap = new Map(((stats && stats.allCategories) || []).map((item) => [item.name, Number(item.value || 0)]))
   const itemMap = new Map((budget.items || []).map((item) => [String(item.categoryId), item]))
@@ -100,9 +104,8 @@ export async function getBudgetPageData(month = getCurrentBudgetMonth()): Promis
     .filter((item) => item.name !== SETTINGS_CATEGORY_NAME && itemMap.has(`${item.id}`))
     .map((item) => {
       const budgetItem = itemMap.get(`${item.id}`)
-      const spent = !budgetItem || budgetItem.spent == null
-        ? (spentMap.get(item.name) || 0)
-        : Number(budgetItem.spent || 0)
+      const spent =
+        !budgetItem || budgetItem.spent == null ? spentMap.get(item.name) || 0 : Number(budgetItem.spent || 0)
       const value = Number((budgetItem && budgetItem.amount) || 0)
       return {
         id: item.id,
@@ -128,22 +131,30 @@ export async function getBudgetPageData(month = getCurrentBudgetMonth()): Promis
 
 export async function getBudgetSummary(month = getCurrentBudgetMonth()): Promise<BudgetSummary> {
   const openId = await ensureOpenId()
-  const budget = await get<BudgetDetailResponse>('/frontend/bookkeeping/budget/detail', {
-    openId,
-    month,
-  }, { skipToken: true })
-  const totalBudget = budget.totalBudget == null
-    ? (budget.items || []).reduce((sum, item) => sum + Number(item.amount || 0), 0)
-    : Number(budget.totalBudget || 0)
-  const totalSpent = budget.totalSpent == null
-    ? (budget.items || []).reduce((sum, item) => sum + Number(item.spent || 0), 0)
-    : Number(budget.totalSpent || 0)
-  const remainingBudget = budget.remainingBudget == null
-    ? totalBudget - totalSpent
-    : Number(budget.remainingBudget || 0)
-  const usagePercent = budget.usagePercent == null
-    ? (totalBudget > 0 ? Math.min(100, Number(((totalSpent / totalBudget) * 100).toFixed(2))) : 0)
-    : Number(budget.usagePercent || 0)
+  const budget = await get<BudgetDetailResponse>(
+    '/frontend/bookkeeping/budget/detail',
+    {
+      openId,
+      month,
+    },
+    { skipToken: true },
+  )
+  const totalBudget =
+    budget.totalBudget == null
+      ? (budget.items || []).reduce((sum, item) => sum + Number(item.amount || 0), 0)
+      : Number(budget.totalBudget || 0)
+  const totalSpent =
+    budget.totalSpent == null
+      ? (budget.items || []).reduce((sum, item) => sum + Number(item.spent || 0), 0)
+      : Number(budget.totalSpent || 0)
+  const remainingBudget =
+    budget.remainingBudget == null ? totalBudget - totalSpent : Number(budget.remainingBudget || 0)
+  const usagePercent =
+    budget.usagePercent == null
+      ? totalBudget > 0
+        ? Math.min(100, Number(((totalSpent / totalBudget) * 100).toFixed(2)))
+        : 0
+      : Number(budget.usagePercent || 0)
   return {
     configured: Boolean(budget.exists && totalBudget > 0),
     totalBudget,
@@ -153,30 +164,34 @@ export async function getBudgetSummary(month = getCurrentBudgetMonth()): Promise
   }
 }
 
-export async function saveBudgetPageData(
-  month: string,
-  income: number,
-  categories: BudgetCategory[],
-) {
+export async function saveBudgetPageData(month: string, income: number, categories: BudgetCategory[]) {
   const openId = await ensureOpenId()
-  return put<BudgetDetailResponse>('/frontend/bookkeeping/budget/save', {
-    openId,
-    month,
-    income: Math.max(0, Number(income || 0)).toFixed(2),
-    items: categories.map((item) => ({
-      categoryId: item.id,
-      amount: Math.max(0, Number(item.value || 0)).toFixed(2),
-    })),
-  }, { skipToken: true })
+  return put<BudgetDetailResponse>(
+    '/frontend/bookkeeping/budget/save',
+    {
+      openId,
+      month,
+      income: Math.max(0, Number(income || 0)).toFixed(2),
+      items: categories.map((item) => ({
+        categoryId: item.id,
+        amount: Math.max(0, Number(item.value || 0)).toFixed(2),
+      })),
+    },
+    { skipToken: true },
+  )
 }
 
 export async function deleteBudgetCategory(month: string, categoryId: string | number) {
   const openId = await ensureOpenId()
-  return del<BudgetDetailResponse>('/frontend/bookkeeping/budget/item', {
-    openId,
-    month,
-    categoryId,
-  }, { skipToken: true })
+  return del<BudgetDetailResponse>(
+    '/frontend/bookkeeping/budget/item',
+    {
+      openId,
+      month,
+      categoryId,
+    },
+    { skipToken: true },
+  )
 }
 
 export function addBudgetCategory(categories: BudgetCategory[], category: AddCategoryItem) {

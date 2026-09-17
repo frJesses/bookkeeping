@@ -2,10 +2,7 @@ const RECENT_YEAR_COUNT = 4
 
 export function createRecentYearOptions(referenceDate = new Date()) {
   const currentYear = referenceDate.getFullYear()
-  return Array.from(
-    { length: RECENT_YEAR_COUNT },
-    (_, index) => `${currentYear - RECENT_YEAR_COUNT + 1 + index}`,
-  )
+  return Array.from({ length: RECENT_YEAR_COUNT }, (_, index) => `${currentYear - RECENT_YEAR_COUNT + 1 + index}`)
 }
 
 export function createAvailableMonthOptions(year: string, referenceDate = new Date()) {

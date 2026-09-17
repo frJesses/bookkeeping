@@ -89,7 +89,7 @@
   <view wx:if="{{showDatePicker}}" class="date-mask" bindtap="closeDatePicker">
     <view class="date-sheet" catchtap="noop">
       <text class="date-title">日期选择</text>
-      <picker-view class="date-wheels" value="{{pickerValue}}" indicator-style="height: 92rpx;" bindchange="handleDatePickerChange">
+      <picker-view class="date-wheels" value="{{pickerValue}}" indicator-style="height: 92rpx;" bindchange="handleDatePickerChange" bindpickstart="handleDatePickerStart" bindpickend="handleDatePickerEnd">
         <picker-view-column>
           <view wx:for="{{pickerYears}}" wx:key="*this" class="wheel-item">{{item}}年</view>
         </picker-view-column>

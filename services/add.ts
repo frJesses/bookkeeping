@@ -97,6 +97,14 @@ export function formatDateLabel(date: string) {
   const [year = '', month = '', day = ''] = date.split('-')
   return `${year}/${month}/${day}`
 }
+
+const REMARK_MAX_LENGTH = 15
+
+export function normalizeRemark(value: string) {
+  return Array.from(value || '')
+    .slice(0, REMARK_MAX_LENGTH)
+    .join('')
+}
 export function isRelativeDateLabel(date: string) {
   if (!date) {
     return true
@@ -108,9 +116,25 @@ export function isRelativeDateLabel(date: string) {
   const yesterdayValue = createRelativeDateValue(-1)
   return date === yesterdayValue
 }
-export function createAddPageState(type?: string): AddPageState {
+function normalizeSelectedDate(value?: string) {
+  const today = createTodayValue()
+  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value) || value > today) {
+    return today
+  }
+  const [yearText, monthText, dayText] = value.split('-')
+  const date = new Date(Number(yearText), Number(monthText) - 1, Number(dayText))
+  if (
+    date.getFullYear() !== Number(yearText) ||
+    date.getMonth() !== Number(monthText) - 1 ||
+    date.getDate() !== Number(dayText)
+  ) {
+    return today
+  }
+  return value
+}
+export function createAddPageState(type?: string, selectedDateValue?: string): AddPageState {
   const activeType = normalizeRecordType(type)
-  const selectedDate = createTodayValue()
+  const selectedDate = normalizeSelectedDate(selectedDateValue)
   return {
     pageMode: 'create',
     editingRecordId: '',
@@ -152,7 +176,9 @@ function parseOccurredDate(value: string) {
 }
 export function applyEditingRecord(record: TransactionDetailRecord, categories: AddCategoryItem[]) {
   const selectedDate = parseOccurredDate(record.occurredAt)
-  const matchedCategory = categories.find((item) => `${item.id}` === `${record.categoryId}`) || categories.find((item) => item.name === record.title)
+  const matchedCategory =
+    categories.find((item) => `${item.id}` === `${record.categoryId}`) ||
+    categories.find((item) => item.name === record.title)
   return {
     pageMode: 'edit' as const,
     editingRecordId: `${record.id}`,
@@ -224,12 +250,16 @@ function mapCategoryOptions(items: FrontendCategoryDTO[]): AddCategoryItem[] {
 }
 export async function getCategoryOptions(type: RecordType): Promise<AddCategoryItem[]> {
   try {
-    const categories = await get<FrontendCategoryDTO[]>('/frontend/bookkeeping/category/list', {
-      type,
-      isEnabled: true,
-    }, {
-      skipToken: true,
-    })
+    const categories = await get<FrontendCategoryDTO[]>(
+      '/frontend/bookkeeping/category/list',
+      {
+        type,
+        isEnabled: true,
+      },
+      {
+        skipToken: true,
+      },
+    )
     if (Array.isArray(categories)) {
       const remoteCategories = mapCategoryOptions(categories)
       if (remoteCategories.length) {
@@ -240,9 +270,36 @@ export async function getCategoryOptions(type: RecordType): Promise<AddCategoryI
     console.warn('load category options failed, use local design set', error)
   }
 
-  const names = type === 'income'
-    ? ['工资', '奖金', '兼职', '理财', '红包', SETTINGS_CATEGORY_NAME, '其他']
-    : ['餐饮', '购物', '交通', '水电', '服装', '医疗', '美妆', '娱乐', '通讯', '汽车', '烟酒', '书籍', '宠物', '孩子', '居家', '旅行', '送礼', '家电', '零食', '数码', '住房', '日用', '维修', '运动', SETTINGS_CATEGORY_NAME]
+  const names =
+    type === 'income'
+      ? ['工资', '奖金', '兼职', '理财', '红包', SETTINGS_CATEGORY_NAME, '其他']
+      : [
+          '餐饮',
+          '购物',
+          '交通',
+          '水电',
+          '服装',
+          '医疗',
+          '美妆',
+          '娱乐',
+          '通讯',
+          '汽车',
+          '烟酒',
+          '书籍',
+          '宠物',
+          '孩子',
+          '居家',
+          '旅行',
+          '送礼',
+          '家电',
+          '零食',
+          '数码',
+          '住房',
+          '日用',
+          '维修',
+          '运动',
+          SETTINGS_CATEGORY_NAME,
+        ]
   return names.map((name, index) => {
     return {
       id: `local-${type}-${index}`,
@@ -330,7 +387,10 @@ export function formatAmountDisplay(value: number | string) {
   if (Number.isNaN(normalized)) {
     return '0'
   }
-  return normalized.toFixed(2).replace(/\.00$/, '').replace(/(\.\d)0$/, '$1')
+  return normalized
+    .toFixed(2)
+    .replace(/\.00$/, '')
+    .replace(/(\.\d)0$/, '$1')
 }
 export function resolveSubmitAction(amount: string) {
   const hasOperator = /[+-]/.test(amount)
@@ -375,7 +435,8 @@ function buildOccurredAtValue(input: {
   selectedDate: string
   originalOccurredAt: string
 }) {
-  const selectedDate = input.selectedDate || (input.pageMode === 'edit' ? parseOccurredDate(input.originalOccurredAt) : '')
+  const selectedDate =
+    input.selectedDate || (input.pageMode === 'edit' ? parseOccurredDate(input.originalOccurredAt) : '')
   if (!selectedDate) {
     return createCurrentDateTimeValue()
   }
@@ -419,7 +480,7 @@ export function buildSubmitPayload(input: {
       categoryId: activeCategory.id,
       type: input.activeType,
       amount: amountValue.toFixed(2),
-      remark: input.remark.trim(),
+      remark: normalizeRemark(input.remark.trim()),
       occurredAt: buildOccurredAtValue({
         pageMode: input.pageMode,
         selectedDate: input.selectedDate,
@@ -437,18 +498,22 @@ export async function submitTransaction(payload: {
   occurredAt: string
 }) {
   const openId = await ensureOpenId()
-  return post('/frontend/bookkeeping/transaction/create', {
-    openId,
-    categoryId: payload.categoryId,
-    type: payload.type,
-    amount: payload.amount,
-    title: payload.remark || payload.categoryName,
-    remark: payload.remark,
-    occurredAt: payload.occurredAt,
-    status: 'normal',
-  }, {
-    skipToken: true,
-  })
+  return post(
+    '/frontend/bookkeeping/transaction/create',
+    {
+      openId,
+      categoryId: payload.categoryId,
+      type: payload.type,
+      amount: payload.amount,
+      title: payload.remark || payload.categoryName,
+      remark: payload.remark,
+      occurredAt: payload.occurredAt,
+      status: 'normal',
+    },
+    {
+      skipToken: true,
+    },
+  )
 }
 export async function updateTransaction(payload: {
   id: string
@@ -460,17 +525,21 @@ export async function updateTransaction(payload: {
   occurredAt: string
 }) {
   const openId = await ensureOpenId()
-  return put('/frontend/bookkeeping/transaction/update', {
-    id: payload.id,
-    openId,
-    categoryId: payload.categoryId,
-    type: payload.type,
-    amount: payload.amount,
-    title: payload.remark || payload.categoryName,
-    remark: payload.remark,
-    occurredAt: payload.occurredAt,
-    status: 'normal',
-  }, {
-    skipToken: true,
-  })
+  return put(
+    '/frontend/bookkeeping/transaction/update',
+    {
+      id: payload.id,
+      openId,
+      categoryId: payload.categoryId,
+      type: payload.type,
+      amount: payload.amount,
+      title: payload.remark || payload.categoryName,
+      remark: payload.remark,
+      occurredAt: payload.occurredAt,
+      status: 'normal',
+    },
+    {
+      skipToken: true,
+    },
+  )
 }

@@ -1,14 +1,7 @@
-import {
-  getStatsPageData,
-  type StatsFlowMode,
-  type StatsPageData,
-  type StatsReportMode,
-} from '../../services/stats'
+import { getStatsPageData, type StatsFlowMode, type StatsPageData, type StatsReportMode } from '../../services/stats'
+import { getWindowInfo } from '../../utils/system-info'
 
-type StatsPageInstance = WechatMiniprogram.Page.Instance<
-  WechatMiniprogram.IAnyObject,
-  WechatMiniprogram.IAnyObject
-> & {
+type StatsPageInstance = WechatMiniprogram.Page.Instance<WechatMiniprogram.IAnyObject, WechatMiniprogram.IAnyObject> & {
   requestVersion: number
   data: StatsPageData & {
     statusBarHeight: number
@@ -101,6 +94,7 @@ Page({
     categories: [],
     allCategories: [],
     bars: [],
+    barScaleLabels: ['0', '0', '0'],
     donutGradient: '#e9eeee 0 100%',
     statusBarHeight: 20,
     activeReport: 'month' as StatsReportMode,
@@ -124,7 +118,7 @@ Page({
     ],
   },
   onLoad(this: StatsPageInstance) {
-    this.setData({ statusBarHeight: wx.getSystemInfoSync().statusBarHeight || 20 })
+    this.setData({ statusBarHeight: getWindowInfo().statusBarHeight || 20 })
     void this.loadStats()
   },
   onShow(this: StatsPageInstance) {
@@ -138,15 +132,26 @@ Page({
     this.setData({ isLoading: true, errorMessage: '' })
     wx.showLoading({ title: '', mask: true })
     try {
-      const data = await getStatsPageData(this.data.month, this.data.activeReport, this.data.activeFlow, this.data.periodDate)
+      const data = await getStatsPageData(
+        this.data.month,
+        this.data.activeReport,
+        this.data.activeFlow,
+        this.data.periodDate,
+      )
       if (requestVersion !== this.requestVersion) {
         return
       }
       this.setData({
         ...data,
         periodLabel: formatPeriodLabel(this.data.activeReport, data.month, data.periodDate),
-        periodPickerFields: this.data.activeReport === 'year' ? 'year' : this.data.activeReport === 'week' ? 'day' : 'month',
-        periodPickerValue: this.data.activeReport === 'year' ? data.month.slice(0, 4) : this.data.activeReport === 'week' ? data.periodDate : data.month,
+        periodPickerFields:
+          this.data.activeReport === 'year' ? 'year' : this.data.activeReport === 'week' ? 'day' : 'month',
+        periodPickerValue:
+          this.data.activeReport === 'year'
+            ? data.month.slice(0, 4)
+            : this.data.activeReport === 'week'
+              ? data.periodDate
+              : data.month,
         isLoading: false,
       })
     } catch (error) {
@@ -255,9 +260,8 @@ Page({
     if (!category) {
       return
     }
-    const categoryRows = category.name === '其他'
-      ? this.data.allCategories.slice(5)
-      : [this.data.allCategories[index] || category]
+    const categoryRows =
+      category.name === '其他' ? this.data.allCategories.slice(5) : [this.data.allCategories[index] || category]
     this.setData({
       categoryModalVisible: true,
       categoryModalTitle: category.name,

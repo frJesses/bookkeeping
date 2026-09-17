@@ -1,3 +1,5 @@
+import { getWindowInfo } from './system-info'
+
 type TabBarPageInstance = WechatMiniprogram.Page.Instance<
   WechatMiniprogram.IAnyObject,
   WechatMiniprogram.IAnyObject
@@ -7,11 +9,15 @@ type TabBarPageInstance = WechatMiniprogram.Page.Instance<
 export const BASE_TAB_BAR_HEIGHT_RPX = 98
 export const TAB_BAR_BOTTOM_GAP_RPX = 0
 export const TAB_BAR_CONTENT_GAP = 0
-export function calculateCustomTabBarHeight(systemInfo: WechatMiniprogram.SystemInfo) {
+type TabBarSystemInfo = Pick<WechatMiniprogram.SystemInfo, 'windowWidth' | 'screenHeight'> & {
+  safeArea?: {
+    bottom: number
+  }
+}
+
+export function calculateCustomTabBarHeight(systemInfo: TabBarSystemInfo) {
   const rpxUnit = systemInfo.windowWidth / 750
-  const safeBottom = systemInfo.safeArea
-    ? systemInfo.screenHeight - systemInfo.safeArea.bottom
-    : 0
+  const safeBottom = systemInfo.safeArea ? systemInfo.screenHeight - systemInfo.safeArea.bottom : 0
   return (BASE_TAB_BAR_HEIGHT_RPX + TAB_BAR_BOTTOM_GAP_RPX) * rpxUnit + safeBottom
 }
 export function getCustomTabBarHeight() {
@@ -19,7 +25,7 @@ export function getCustomTabBarHeight() {
   if (app.globalData.customTabBarHeight) {
     return app.globalData.customTabBarHeight
   }
-  const systemInfo = wx.getSystemInfoSync()
+  const systemInfo = getWindowInfo()
   return calculateCustomTabBarHeight(systemInfo)
 }
 export function syncCustomTabBar(page: TabBarPageInstance, selectedPath: string) {

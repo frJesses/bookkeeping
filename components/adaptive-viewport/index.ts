@@ -8,7 +8,7 @@ type ViewportInfo = {
   windowHeight: number
   statusBarHeight: number
   safeArea?: {
-    top: number
+    top?: number
     bottom: number
   }
 }
@@ -25,19 +25,7 @@ type AdaptiveViewportData = {
 }
 
 function getWindowInfo(): ViewportInfo {
-  const wxApi = wx as unknown as {
-    getWindowInfo?: () => ViewportInfo
-  }
-  if (typeof wxApi.getWindowInfo === 'function') {
-    return wxApi.getWindowInfo()
-  }
-  const legacyInfo = wx.getSystemInfoSync()
-  return {
-    screenHeight: legacyInfo.screenHeight,
-    windowHeight: legacyInfo.windowHeight,
-    statusBarHeight: legacyInfo.statusBarHeight,
-    safeArea: legacyInfo.safeArea,
-  }
+  return getSystemWindowInfo()
 }
 
 function getBottomSafeAreaHeight(windowInfo: ViewportInfo) {
@@ -96,9 +84,7 @@ Component({
     contentHeight: 0,
   },
   observers: {
-  'customHeader, includeStatusBar, includeBottomSafeArea, headerHeight'(
-      this: AdaptiveViewportInstance,
-    ) {
+    'customHeader, includeStatusBar, includeBottomSafeArea, headerHeight'(this: AdaptiveViewportInstance) {
       this.updateMetrics()
     },
   },
@@ -110,9 +96,7 @@ Component({
       const navigationBarHeight = getNavigationBarHeight(windowInfo)
       const topInset = this.data.includeStatusBar ? statusBarHeight : 0
       const bottomInset = this.data.includeBottomSafeArea ? bottomSafeAreaHeight : 0
-      const resolvedHeaderHeight = this.data.customHeader
-        ? (this.data.headerHeight || navigationBarHeight)
-        : 0
+      const resolvedHeaderHeight = this.data.customHeader ? this.data.headerHeight || navigationBarHeight : 0
       const viewportHeight = windowInfo.windowHeight || windowInfo.screenHeight
       const contentHeight = Math.max(0, viewportHeight - topInset - bottomInset - resolvedHeaderHeight)
 
@@ -151,3 +135,4 @@ Component({
     },
   },
 })
+import { getWindowInfo as getSystemWindowInfo } from '../../utils/system-info'

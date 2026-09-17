@@ -4,6 +4,7 @@ import {
   updateCurrentUserInfo,
   type UserProfileUpdate,
 } from '../../services/profile'
+import { getWindowInfo } from '../../utils/system-info'
 
 const GENDER_LABELS: Record<string, string> = {
   '0': '未知',
@@ -59,7 +60,7 @@ Page({
   },
   onLoad(this: PersonalPageInstance) {
     this.setData({
-      statusBarHeight: wx.getSystemInfoSync().statusBarHeight || 20,
+      statusBarHeight: getWindowInfo().statusBarHeight || 20,
     })
     void this.loadUserInfo()
   },

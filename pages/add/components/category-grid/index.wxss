@@ -1,7 +1,7 @@
 .category-grid {
   display: grid;
   margin-right: 24rpx;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 38rpx 12rpx;
 }
 
@@ -12,8 +12,8 @@
 
 .category-card-icon {
   display: block;
-  width: 140rpx;
-  height: 140rpx;
+  width: 128rpx;
+  height: 128rpx;
   margin: 0 auto;
 }
 

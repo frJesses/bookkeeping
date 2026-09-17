@@ -1,4 +1,5 @@
 import { submitFeedback, uploadFeedbackImage, type FeedbackType } from '../../services/feedback'
+import { getWindowInfo } from '../../utils/system-info'
 
 const FEEDBACK_TYPES: Array<{ label: string; value: FeedbackType }> = [
   { label: '功能建议', value: 'feature' },
@@ -19,7 +20,7 @@ Page({
     isSubmitting: false,
   },
   onLoad() {
-    this.setData({ statusBarHeight: wx.getSystemInfoSync().statusBarHeight || 20 })
+    this.setData({ statusBarHeight: getWindowInfo().statusBarHeight || 20 })
   },
   goBack() {
     wx.navigateBack()

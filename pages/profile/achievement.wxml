@@ -1,7 +1,7 @@
 <view class="achievement-page">
   <view class="achievement-hero" style="padding-top: {{statusBarHeight}}px;">
     <image class="achievement-background" src="/assets/figma/achievements/background.png" mode="widthFix"></image>
-    <view class="ds-header"><image class="page-back" src="/assets/figma/achievements/back.png" mode="aspectFit" bindtap="goBack"></image><text class="ds-header-title">我的成就</text></view>
+    <view class="ds-header"><view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view><text class="ds-header-title">我的成就</text></view>
     <view class="hero-content">
       <view class="hero-copy"><text class="hero-total">共获得 <text>{{earnedCount}}</text> 枚成就</text><text wx:if="{{joinedAtText}}" class="hero-date">{{joinedAtText}}加入@滴水记账</text></view>
       <image class="hero-medal" src="/assets/figma/achievements/hero.png" mode="aspectFit"></image>

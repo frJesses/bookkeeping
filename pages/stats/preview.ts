@@ -1,7 +1,5 @@
-import {
-  getStatsPreviewPageData,
-  type StatsPreviewPageData,
-} from '../../services/stats-preview'
+import { getStatsPreviewPageData, type StatsPreviewPageData } from '../../services/stats-preview'
+import { getWindowInfo } from '../../utils/system-info'
 
 type PreviewPageInstance = WechatMiniprogram.Page.Instance<
   WechatMiniprogram.IAnyObject,
@@ -36,7 +34,7 @@ Page({
     errorMessage: '',
   },
   onLoad(this: PreviewPageInstance, options: Record<string, string | undefined>) {
-    this.setData({ statusBarHeight: wx.getSystemInfoSync().statusBarHeight || 20 })
+    this.setData({ statusBarHeight: getWindowInfo().statusBarHeight || 20 })
     void this.loadPreview(options.month || createCurrentMonth())
   },
   async loadPreview(this: PreviewPageInstance, month: string) {

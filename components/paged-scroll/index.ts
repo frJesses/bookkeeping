@@ -11,15 +11,10 @@ export type PagedScrollResult<T = unknown> = {
   hasMore?: boolean
 }
 
-export type PagedScrollFetchMethod<T = unknown> = (
-  params: PagedScrollRequest,
-) => Promise<PagedScrollResult<T>>
+export type PagedScrollFetchMethod<T = unknown> = (params: PagedScrollRequest) => Promise<PagedScrollResult<T>>
 
 export type PagedScrollInstance = WechatMiniprogram.Component.TrivialInstance & {
-  initLoad: <T = unknown>(
-    fetchMethod: PagedScrollFetchMethod<T>,
-    params?: Record<string, unknown>,
-  ) => Promise<void>
+  initLoad: <T = unknown>(fetchMethod: PagedScrollFetchMethod<T>, params?: Record<string, unknown>) => Promise<void>
   refresh: () => Promise<void>
   getList: <T = unknown>() => T[]
 }
@@ -84,12 +79,7 @@ Component({
       this.requestVersion = (this.requestVersion || 0) + 1
       await this.loadPage(1, 'refresh', this.requestVersion)
     },
-    async loadPage(
-      this: PagedScrollInternalInstance,
-      pageNo: number,
-      mode: LoadMode,
-      requestVersion: number,
-    ) {
+    async loadPage(this: PagedScrollInternalInstance, pageNo: number, mode: LoadMode, requestVersion: number) {
       if (!this.fetchMethod) {
         return
       }

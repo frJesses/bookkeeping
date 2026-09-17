@@ -119,11 +119,13 @@ function createBillMonths(months: YearBillResponse['months']) {
 
 export function filterBillMonths(months: BillMonth[], filter: BillFilter) {
   return months
-    .filter((item) => filter === 'all'
-      ? parseAmount(item.income) > 0 || parseAmount(item.expense) > 0
-      : filter === 'income'
-        ? parseAmount(item.income) > 0
-        : parseAmount(item.expense) > 0)
+    .filter((item) =>
+      filter === 'all'
+        ? parseAmount(item.income) > 0 || parseAmount(item.expense) > 0
+        : filter === 'income'
+          ? parseAmount(item.income) > 0
+          : parseAmount(item.expense) > 0,
+    )
     .map((item) => {
       if (filter === 'all') return item
       const income = filter === 'income' ? parseAmount(item.income) : 0
@@ -145,7 +147,10 @@ export function createBillPageState(year = getCurrentYear()): BillPageData & {
   errorMessage: string
 } {
   const yearOptions = createRecentYearOptions().map((item) => `${item}年`)
-  const yearIndex = Math.max(0, yearOptions.findIndex((item) => item === `${year}年`))
+  const yearIndex = Math.max(
+    0,
+    yearOptions.findIndex((item) => item === `${year}年`),
+  )
   return {
     year,
     yearOptions,
@@ -163,7 +168,10 @@ export function createBillPageState(year = getCurrentYear()): BillPageData & {
   }
 }
 
-export function applyBillFilter(data: Pick<BillPageData, 'months' | 'year'>, filter: BillFilter): Pick<BillPageData, 'bills' | 'totalIncome' | 'totalExpense' | 'totalBalance' | 'periodLabel'> {
+export function applyBillFilter(
+  data: Pick<BillPageData, 'months' | 'year'>,
+  filter: BillFilter,
+): Pick<BillPageData, 'bills' | 'totalIncome' | 'totalExpense' | 'totalBalance' | 'periodLabel'> {
   const bills = filterBillMonths(data.months, filter)
   const totalIncome = bills.reduce((sum, item) => sum + parseAmount(item.income), 0)
   const totalExpense = bills.reduce((sum, item) => sum + parseAmount(item.expense), 0)
@@ -179,15 +187,22 @@ export function applyBillFilter(data: Pick<BillPageData, 'months' | 'year'>, fil
 
 export async function getBillPageData(year: number, filter: BillFilter): Promise<BillPageData> {
   const openId = await ensureOpenId()
-  const data = await get<YearBillResponse>('/frontend/bookkeeping/transaction/year-bill', {
-    openId,
-    year,
-  }, { skipToken: true })
+  const data = await get<YearBillResponse>(
+    '/frontend/bookkeeping/transaction/year-bill',
+    {
+      openId,
+      year,
+    },
+    { skipToken: true },
+  )
   const months = createBillMonths(Array.isArray(data.months) ? data.months : [])
   return {
     year,
     yearOptions: createRecentYearOptions().map((item) => `${item}年`),
-    yearIndex: Math.max(0, createRecentYearOptions().findIndex((item) => item === `${year}`)),
+    yearIndex: Math.max(
+      0,
+      createRecentYearOptions().findIndex((item) => item === `${year}`),
+    ),
     months,
     ...applyBillFilter({ months, year }, filter),
   }
@@ -213,10 +228,14 @@ export function createBillDetailPageState(month: string): BillDetailPageData & {
 
 export async function getBillDetailPageData(month: string): Promise<BillDetailPageData> {
   const openId = await ensureOpenId()
-  const data = await get<MonthDetailResponse>('/frontend/bookkeeping/transaction/month-bill/detail', {
-    openId,
-    month,
-  }, { skipToken: true })
+  const data = await get<MonthDetailResponse>(
+    '/frontend/bookkeeping/transaction/month-bill/detail',
+    {
+      openId,
+      month,
+    },
+    { skipToken: true },
+  )
   const records = [
     ...(Array.isArray(data.rankings) ? data.rankings : []),
     ...(Array.isArray(data.incomeRankings) ? data.incomeRankings : []),

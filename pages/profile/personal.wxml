@@ -1,5 +1,5 @@
 <view class="personal-page" style="padding-top: {{statusBarHeight}}px;">
-  <view class="ds-header"><image class="page-back" src="/assets/figma/personal/back.png" mode="aspectFit" bindtap="goBack"></image><text class="ds-header-title">个人信息</text></view>
+  <view class="ds-header"><view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view><text class="ds-header-title">个人信息</text></view>
   <view class="personal-card">
     <button class="personal-row avatar-row" open-type="chooseAvatar" bindchooseavatar="handleChooseAvatar"><text>头像</text><image wx:if="{{avatarUrl}}" src="{{avatarUrl}}" mode="aspectFill"></image><view wx:else class="avatar-row-placeholder">{{avatarText}}</view><image class="row-arrow-image" src="/assets/figma/personal/chevron.png" mode="aspectFit"></image></button>
     <view class="row-divider"></view>

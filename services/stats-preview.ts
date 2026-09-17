@@ -43,7 +43,11 @@ export async function getStatsPreviewPageData(month: string): Promise<StatsPrevi
   const openId = await ensureOpenId()
   const [current, previous] = await Promise.all([
     get<PreviewDetail>('/frontend/bookkeeping/transaction/month-bill/detail', { openId, month }, { skipToken: true }),
-    get<PreviewDetail>('/frontend/bookkeeping/transaction/month-bill/detail', { openId, month: shiftMonth(month, -1) }, { skipToken: true }),
+    get<PreviewDetail>(
+      '/frontend/bookkeeping/transaction/month-bill/detail',
+      { openId, month: shiftMonth(month, -1) },
+      { skipToken: true },
+    ),
   ])
   const totalCount = (current.rankings || []).length + (current.incomeRankings || []).length
   return {

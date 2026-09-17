@@ -1,6 +1,6 @@
 <view class="bills-page">
   <view class="bills-hero" style="padding-top: {{statusBarHeight}}px;">
-    <view class="ds-header bills-header"><view class="ds-back white-back" bindtap="goBack"></view><text class="ds-header-title">我的账单</text></view>
+    <view class="ds-header bills-header"><view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image ds-back-image-light" src="/assets/figma/common/back.png" mode="aspectFit"></image></view><text class="ds-header-title">我的账单</text></view>
     <view class="bills-toolbar">
       <view class="bills-period-picker">
         <picker mode="selector" range="{{yearOptions}}" value="{{yearIndex}}" bindchange="selectYear">
@@ -15,14 +15,16 @@
     <text class="balance-value">{{totalBalance}}</text>
   </view>
   <scroll-view scroll-y class="bills-scroll" show-scrollbar="false">
-    <view wx:if="{{errorMessage}}" class="bill-state"><text>{{errorMessage}}</text><button bindtap="handleRetry">重新加载</button></view>
-    <view wx:elif="{{isLoading}}" class="bill-state">正在加载账单</view>
-    <view wx:else>
-      <view class="total-card"><text>总收入：<text>¥{{totalIncome}}</text></text><text>总支出：<text>¥{{totalExpense}}</text></text></view>
-      <view wx:if="{{!bills.length}}" class="bill-empty">{{activeFilter === 'all' ? '本年度暂无账单' : '当前筛选暂无账单'}}</view>
-      <view wx:for="{{bills}}" wx:key="month" class="bill-card" data-month="{{item.month}}" bindtap="openDetail">
-        <view class="bill-title-row"><text>{{item.monthLabel}}</text><text class="bill-chevron">›</text></view>
-        <view class="bill-metrics"><view><text>{{item.income}}</text><text>收入(元)</text></view><view><text>{{item.expense}}</text><text>支出(元)</text></view><view><text>{{item.balance}}</text><text>剩余(元)</text></view></view>
+    <view class="bills-scroll-content">
+      <view wx:if="{{errorMessage}}" class="bill-state"><text>{{errorMessage}}</text><button bindtap="handleRetry">重新加载</button></view>
+      <view wx:elif="{{isLoading}}" class="bill-state">正在加载账单</view>
+      <view wx:else>
+        <view class="total-card"><text>总收入：<text>¥{{totalIncome}}</text></text><text>总支出：<text>¥{{totalExpense}}</text></text></view>
+        <view wx:if="{{!bills.length}}" class="bill-empty">{{activeFilter === 'all' ? '本年度暂无账单' : '当前筛选暂无账单'}}</view>
+        <view wx:for="{{bills}}" wx:key="month" class="bill-card" data-month="{{item.month}}" bindtap="openDetail">
+          <view class="bill-title-row"><text>{{item.monthLabel}}</text><text class="bill-chevron">›</text></view>
+          <view class="bill-metrics"><view><text>{{item.income}}</text><text>收入(元)</text></view><view><text>{{item.expense}}</text><text>支出(元)</text></view><view><text>{{item.balance}}</text><text>剩余(元)</text></view></view>
+        </view>
       </view>
     </view>
   </scroll-view>

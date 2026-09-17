@@ -154,7 +154,7 @@
 
 .amount-placeholder {
   color: #cccccc;
-  font-family: "PingFang SC", sans-serif;
+  font-family: 'PingFang SC', sans-serif;
   font-size: 25rpx;
   font-weight: 400;
 }
@@ -195,10 +195,32 @@
 }
 
 .keypad-right {
-  display: flex;
   width: 168rpx;
-  flex-direction: column;
+  min-height: 0;
+  grid-template-rows: 102rpx 102rpx minmax(0, 1fr);
+  display: grid;
   gap: 8rpx;
+}
+
+.date-picker {
+  display: block;
+  width: 100%;
+  height: 102rpx;
+}
+
+.key.date-key {
+  width: 100%;
+  height: 102rpx;
+  padding: 0 8rpx;
+  color: #333333;
+  font-family: 'PingFang SC', sans-serif;
+  font-size: 26rpx;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.key.date-key-long {
+  font-size: 21rpx;
 }
 
 .key,
@@ -223,10 +245,11 @@
 }
 
 .confirm-key {
-  height: 322rpx;
+  height: auto;
+  min-height: 0;
   background: #01c6a6;
   color: #ffffff;
-  font-family: "PingFang SC", sans-serif;
+  font-family: 'PingFang SC', sans-serif;
   font-size: 30rpx;
 }
 

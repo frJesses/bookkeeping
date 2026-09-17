@@ -237,7 +237,7 @@
 
 .summary-expense {
   margin-top: 12rpx;
-  font-family: DIN, "Helvetica Neue", sans-serif;
+  font-family: DIN, 'Helvetica Neue', sans-serif;
   font-size: 54rpx;
   line-height: 1;
   font-weight: 700;
@@ -252,7 +252,7 @@
 
 .summary-small-value {
   margin-top: 10rpx;
-  font-family: DIN, "Helvetica Neue", sans-serif;
+  font-family: DIN, 'Helvetica Neue', sans-serif;
   font-size: 38rpx;
   line-height: 1;
   font-weight: 700;
@@ -299,7 +299,9 @@
   height: 100%;
   border-radius: inherit;
   background: #01c6a6;
-  transition: width 180ms ease-out, background-color 180ms ease-out;
+  transition:
+    width 180ms ease-out,
+    background-color 180ms ease-out;
 }
 
 .budget-card-over .budget-progress {
