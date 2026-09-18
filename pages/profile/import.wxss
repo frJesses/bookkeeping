@@ -1,0 +1,267 @@
+.import-page {
+  position: relative;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  padding-right: 30rpx;
+  padding-left: 30rpx;
+  flex-direction: column;
+  background: #f8f8f8;
+  box-sizing: border-box;
+}
+
+.page-background {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 0;
+  width: 100%;
+  height: 376rpx;
+  pointer-events: none;
+}
+
+.import-page .ds-header,
+.import-static,
+.import-preview-scroll {
+  position: relative;
+  z-index: 1;
+}
+
+.import-page .ds-header {
+  flex: 0 0 96rpx;
+}
+
+.import-static {
+  flex: 0 0 auto;
+}
+
+.import-preview-scroll {
+  min-height: 0;
+  height: auto;
+  flex: 1;
+  width: calc(100% + 60rpx);
+  margin-top: 20rpx;
+  margin-left: -30rpx;
+}
+
+.import-preview-content {
+  padding: 0 30rpx 32rpx;
+}
+
+.import-tip {
+  margin: 18rpx 4rpx;
+  color: #7f8794;
+  font-size: 23rpx;
+  line-height: 1.6;
+}
+
+.import-file-card,
+.import-summary-card,
+.import-error-card,
+.import-preview-card {
+  border-radius: 24rpx;
+  background: #ffffff;
+}
+
+.import-file-card {
+  display: flex;
+  min-height: 116rpx;
+  padding: 0 28rpx;
+  align-items: center;
+}
+
+.import-file-card > image {
+  width: 60rpx;
+  height: 60rpx;
+  margin-right: 22rpx;
+}
+
+.import-file-card > view {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.import-file-title,
+.import-file-subtitle {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.import-file-title {
+  color: #333333;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.import-file-subtitle {
+  margin-top: 8rpx;
+  color: #989898;
+  font-size: 22rpx;
+}
+
+.import-file-arrow {
+  color: #01ad93;
+  font-size: 38rpx;
+}
+
+.import-clear {
+  width: 180rpx;
+  height: 52rpx;
+  margin: 0;
+  padding: 0;
+  border: 1rpx solid #e05b61;
+  border-radius: 14rpx;
+  background: #ffffff;
+  color: #e05b61;
+  font-size: 22rpx;
+  line-height: 50rpx;
+}
+
+.import-clear::after {
+  border: 0;
+}
+
+.import-summary-card {
+  display: flex;
+  margin-top: 20rpx;
+  padding: 24rpx 0;
+}
+
+.import-summary-item {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  flex-direction: column;
+}
+
+.import-summary-item + .import-summary-item {
+  border-left: 1rpx solid #eeeeee;
+}
+
+.import-summary-item text:first-child {
+  color: #333333;
+  font-family: DIN, sans-serif;
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+.import-summary-item text:last-child {
+  margin-top: 8rpx;
+  color: #989898;
+  font-size: 21rpx;
+}
+
+.import-valid {
+  color: #01ad93 !important;
+}
+
+.import-invalid {
+  color: #e05b61 !important;
+}
+
+.import-error-card,
+.import-preview-card {
+  margin-top: 20rpx;
+  padding: 24rpx 28rpx;
+}
+
+.import-error-title,
+.import-preview-title {
+  display: block;
+  color: #333333;
+  font-size: 27rpx;
+  font-weight: 600;
+}
+
+.import-error-title {
+  color: #e05b61;
+}
+
+.import-error-row {
+  margin-top: 12rpx;
+  color: #b34a52;
+  font-size: 22rpx;
+  line-height: 1.5;
+}
+
+.import-preview-row {
+  display: flex;
+  min-height: 74rpx;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1rpx solid #eeeeee;
+}
+
+.import-preview-row:last-child {
+  border-bottom: 0;
+}
+
+.import-preview-main {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.import-preview-main text:first-child {
+  color: #333333;
+  font-size: 21rpx;
+}
+
+.import-preview-main text:last-child {
+  margin-top: 6rpx;
+  color: #989898;
+  font-size: 21rpx;
+}
+
+.import-preview-amount {
+  margin-left: 20rpx;
+  color: #333333;
+  font-family: DIN, sans-serif;
+  font-size: 25rpx;
+}
+
+.import-error-message {
+  margin-top: 18rpx;
+  color: #e05b61;
+  font-size: 23rpx;
+}
+
+.import-submit {
+  display: flex;
+  width: 100%;
+  height: 88rpx;
+  margin: 30rpx 0 0;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 20rpx;
+  background: #01c6a6;
+  color: #ffffff;
+  font-size: 29rpx;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
+.import-action-bar {
+  display: flex;
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  gap: 18rpx;
+  align-items: center;
+  padding: 14rpx 0 calc(env(safe-area-inset-bottom) + 20rpx);
+  background: #f8f8f8;
+}
+
+.import-action-bar .import-submit {
+  flex: 1;
+  margin-top: 0;
+}
+
+.import-submit::after {
+  border: 0;
+}

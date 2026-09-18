@@ -1,0 +1,48 @@
+<view class="recurring-page" style="padding-top: {{statusBarHeight}}px;">
+  <image class="page-background" src="/assets/figma/profile/background.png" mode="scaleToFill"></image>
+  <view class="ds-header">
+    <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view>
+    <text class="ds-header-title">固定收支</text>
+  </view>
+  <scroll-view scroll-y="{{rules.length > 2}}" class="recurring-scroll" show-scrollbar="false">
+    <view class="recurring-content">
+      <view class="recurring-tip">设置后，每月到执行日会自动生成一条流水。2月没有31日时会按当月最后一天执行。</view>
+      <view wx:if="{{isLoading}}" class="recurring-state">正在加载</view>
+      <view wx:elif="{{!rules.length}}" class="recurring-empty">还没有固定收支，先添加一条吧</view>
+      <view wx:else class="recurring-list">
+        <view wx:for="{{rules}}" wx:key="id" class="recurring-card {{item.isEnabled ? '' : 'recurring-card-disabled'}}">
+          <view class="recurring-card-top"><view class="recurring-identity"><image wx:if="{{item.categoryIcon}}" src="{{item.categoryIcon}}" mode="aspectFit"></image><view><text class="recurring-title">{{item.title}}</text><text class="recurring-category">{{item.categoryName}} · 每月{{item.dayOfMonth}}日</text></view></view><text class="recurring-status {{item.isEnabled ? 'enabled' : 'disabled'}}">{{item.isEnabled ? '执行中' : '已停用'}}</text></view>
+          <view class="recurring-primary"><view><text>每月{{item.dayOfMonth}}日自动记账</text><text>开始于 {{item.startDate}}</text></view><text class="recurring-amount {{item.type}}">{{item.type === 'income' ? '+' : '-'}}¥{{item.amount}}</text></view>
+          <text wx:if="{{item.remark}}" class="recurring-remark">{{item.remark}}</text>
+          <view class="recurring-actions"><button class="recurring-action recurring-action-edit" data-id="{{item.id}}" bindtap="editRule"><image src="/assets/figma/actions/edit.svg" mode="aspectFit"></image><text>编辑</text></button><button class="recurring-action recurring-action-toggle" data-id="{{item.id}}" bindtap="toggleRule"><text>{{item.isEnabled ? 'Ⅱ' : '▶'}}</text><text>{{item.isEnabled ? '停用' : '启用'}}</text></button><button class="recurring-action recurring-action-delete" data-id="{{item.id}}" bindtap="deleteRule"><image src="/assets/figma/actions/delete.svg" mode="aspectFit"></image><text>删除</text></button></view>
+        </view>
+      </view>
+      <view class="recurring-bottom-space"></view>
+    </view>
+  </scroll-view>
+  <view class="recurring-add-bar"><button class="recurring-add" bindtap="openCreateForm">添加固定收支</button></view>
+
+  <view wx:if="{{showForm}}" class="recurring-mask" catchtap="closeForm">
+    <view class="recurring-sheet" catchtap="noop">
+      <text class="recurring-sheet-title">{{editingId ? '编辑固定收支' : '添加固定收支'}}</text>
+      <picker mode="selector" range="{{typeOptions}}" value="{{formType === 'income' ? 1 : 0}}" bindchange="handleTypeChange"><view class="recurring-form-row"><text>类型</text><view class="recurring-picker-value">{{typeOptions[formType === 'income' ? 1 : 0]}}<text class="recurring-caret"></text></view></view></picker>
+      <view class="recurring-form-row" bindtap="openCategoryPicker"><text>分类</text><view class="recurring-picker-value">{{formCategoryLabel}}<text class="recurring-caret"></text></view></view>
+      <input class="recurring-input" type="digit" value="{{formAmount}}" placeholder="请输入金额" bindinput="handleAmountInput" />
+      <view class="recurring-form-row" bindtap="openDayPicker"><text>每月执行日</text><view class="recurring-picker-value">{{dayOptions[formDayIndex]}}<text class="recurring-caret"></text></view></view>
+      <picker mode="date" value="{{formStartDate}}" bindchange="handleStartDateChange"><view class="recurring-date-row"><text>开始日期</text><view class="recurring-picker-value">{{formStartDate}}<text class="recurring-caret"></text></view></view></picker>
+      <input class="recurring-input" value="{{formRemark}}" placeholder="备注（可选）" maxlength="255" bindinput="handleRemarkInput" />
+      <text wx:if="{{formError}}" class="recurring-form-error">{{formError}}</text>
+      <view class="recurring-sheet-actions"><button bindtap="closeForm">取消</button><button class="recurring-save" bindtap="saveRule">保存</button></view>
+    </view>
+  </view>
+
+  <view wx:if="{{showOptionPicker}}" class="recurring-option-mask" bindtap="closeOptionPicker">
+    <view class="recurring-option-sheet" catchtap="noop">
+      <view class="recurring-option-title"><text>{{optionPickerType === 'category' ? '选择分类' : '选择执行日'}}</text><text bindtap="closeOptionPicker">关闭</text></view>
+      <scroll-view wx:if="{{optionPickerType === 'category'}}" scroll-y class="recurring-option-list" show-scrollbar="false">
+        <view wx:for="{{categoryOptions}}" wx:key="id" class="recurring-option-row {{formCategoryIndex === index ? 'recurring-option-active' : ''}}" data-index="{{index}}" bindtap="selectCategoryOption"><image src="{{item.icon}}" mode="aspectFit"></image><text>{{item.name}}</text><text wx:if="{{formCategoryIndex === index}}" class="recurring-option-check">✓</text></view>
+      </scroll-view>
+      <scroll-view wx:else scroll-y class="recurring-day-grid" show-scrollbar="false"><view class="recurring-day-grid-content"><view wx:for="{{dayOptions}}" wx:key="*this" class="recurring-day-option {{formDayIndex === index ? 'recurring-option-active' : ''}}" data-index="{{index}}" bindtap="selectDayOption">{{item}}</view></view></scroll-view>
+    </view>
+  </view>
+</view>

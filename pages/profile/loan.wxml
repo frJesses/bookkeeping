@@ -1,0 +1,28 @@
+<view class="loan-page" style="padding-top: {{statusBarHeight}}px;">
+  <image class="page-background" src="/assets/figma/profile/background.png" mode="scaleToFill"></image>
+  <view class="ds-header"><view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view><text class="ds-header-title">借出管理</text></view>
+  <view class="loan-static">
+    <view class="loan-summary"><view><text>借出总额</text><text>¥{{summary.totalAmount}}</text></view><view><text>已收回</text><text>¥{{summary.totalRepaid}}</text></view><view><text>待收回</text><text>¥{{summary.totalOutstanding}}</text></view></view>
+  </view>
+  <scroll-view wx:if="{{records.length}}" scroll-y class="loan-scroll" show-scrollbar="false">
+    <view class="loan-content">
+      <view class="loan-list">
+        <view wx:for="{{records}}" wx:key="id" class="loan-card">
+          <view class="loan-card-top"><view class="loan-person"><view class="loan-avatar">{{item.borrowerInitial}}</view><view><text class="loan-borrower">{{item.borrower}}</text><text wx:if="{{item.remark}}" class="loan-remark-inline">{{item.remark}}</text></view></view><text class="loan-status {{item.status}}">{{item.statusLabel}}</text></view>
+          <view class="loan-date-line"><text>借出 {{item.loanDate}}</text><text wx:if="{{item.dueDate}}">预计归还 {{item.dueDate}}</text></view>
+          <view class="loan-primary"><text>待收回</text><text>¥{{item.remainingAmount}}</text></view>
+          <view class="loan-metrics"><view><text>借出金额</text><text>¥{{item.amount}}</text></view><view><text>已收回</text><text>¥{{item.repaidAmount}}</text></view><view><text>完成度</text><text>{{item.progressPercent}}%</text></view></view>
+          <view class="loan-actions"><button wx:if="{{item.status !== 'settled'}}" class="loan-action loan-action-repay" data-id="{{item.id}}" bindtap="openRepay"><text class="loan-action-symbol">↩</text><text>收回</text></button><button class="loan-action loan-action-edit" data-id="{{item.id}}" bindtap="editLoan"><image src="/assets/figma/actions/edit.svg" mode="aspectFit"></image><text>编辑</text></button><button class="loan-action loan-action-delete" data-id="{{item.id}}" bindtap="deleteLoan"><image src="/assets/figma/actions/delete.svg" mode="aspectFit"></image><text>删除</text></button></view>
+        </view>
+      </view>
+      <view class="loan-bottom-space"></view>
+    </view>
+  </scroll-view>
+  <view wx:elif="{{isLoading}}" class="loan-state">正在加载</view>
+  <view wx:else class="loan-empty">还没有借出记录，先添加一笔吧</view>
+  <view class="loan-add-bar"><button class="loan-add" bindtap="openCreateForm">添加借出记录</button></view>
+
+  <view wx:if="{{showForm}}" class="loan-mask" catchtap="closeForm"><view class="loan-sheet" catchtap="noop"><text class="loan-sheet-title">{{editingId ? '编辑借出记录' : '添加借出记录'}}</text><input class="loan-input" value="{{borrower}}" placeholder="借款人" data-field="borrower" bindinput="handleInput" /><input class="loan-input" type="digit" value="{{amount}}" placeholder="借出金额" data-field="amount" bindinput="handleInput" /><picker mode="date" value="{{loanDate}}" end="{{todayDate}}" bindchange="handleLoanDateChange"><view class="loan-date-row"><text>借出日期</text><view class="loan-date-value"><text>{{loanDate}}</text><text class="loan-caret"></text></view></view></picker><view class="loan-due-toggle" bindtap="toggleDueDate"><text class="loan-checkbox {{hasDueDate ? 'checked' : ''}}">{{hasDueDate ? '✓' : ''}}</text><text>设置预计归还日期</text></view><picker wx:if="{{hasDueDate}}" mode="date" value="{{dueDate}}" start="{{loanDate}}" bindchange="handleDueDateChange"><view class="loan-date-row"><text>预计归还</text><view class="loan-date-value"><text>{{dueDate}}</text><text class="loan-caret"></text></view></view></picker><input class="loan-input" value="{{remark}}" placeholder="备注（可选）" maxlength="255" data-field="remark" bindinput="handleInput" /><text wx:if="{{formError}}" class="loan-form-error">{{formError}}</text><view class="loan-sheet-actions"><button bindtap="closeForm">取消</button><button class="loan-save" bindtap="saveLoan">保存</button></view></view></view>
+
+  <view wx:if="{{showRepay}}" class="loan-mask" catchtap="closeRepay"><view class="loan-repay-sheet" catchtap="noop"><text class="loan-sheet-title">记录收回金额</text><input class="loan-input" type="digit" value="{{repayAmount}}" placeholder="请输入本次收回金额" data-field="repayAmount" bindinput="handleInput" /><view class="loan-sheet-actions"><button bindtap="closeRepay">取消</button><button class="loan-save" bindtap="confirmRepay">确认收回</button></view></view></view>
+</view>

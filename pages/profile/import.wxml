@@ -1,0 +1,40 @@
+<view class="import-page" style="padding-top: {{statusBarHeight}}px;">
+  <image class="page-background" src="/assets/figma/profile/background.png" mode="scaleToFill"></image>
+  <view class="ds-header">
+    <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view>
+    <text class="ds-header-title">账单导入</text>
+  </view>
+  <view class="import-static">
+    <view class="import-tip">支持 CSV、Excel 文件。导入前会先校验日期、类型、分类和金额。</view>
+    <view class="import-file-card" bindtap="chooseFile">
+      <image src="/assets/figma/profile/bills.png" mode="aspectFit"></image>
+      <view><text class="import-file-title">{{fileName || '选择账单文件'}}</text><text class="import-file-subtitle">点击选择文件并预览</text></view>
+      <text class="import-file-arrow">›</text>
+    </view>
+    <view wx:if="{{preview}}" class="import-summary-card">
+      <view class="import-summary-item"><text>{{preview.total}}</text><text>总记录</text></view>
+      <view class="import-summary-item"><text class="import-valid">{{preview.validCount}}</text><text>可导入</text></view>
+      <view class="import-summary-item"><text class="import-invalid">{{preview.invalidCount}}</text><text>待处理</text></view>
+    </view>
+  </view>
+  <scroll-view scroll-y class="import-preview-scroll" show-scrollbar="false">
+    <view class="import-preview-content">
+      <view wx:if="{{preview && preview.invalidCount}}" class="import-error-card">
+        <text class="import-error-title">存在无效记录</text>
+        <view wx:for="{{preview.rows}}" wx:key="rowNumber" wx:if="{{item.errors.length}}" class="import-error-row">第{{item.rowNumber}}行：{{item.errorText}}</view>
+      </view>
+      <view wx:if="{{preview && preview.validCount}}" class="import-preview-card">
+        <text class="import-preview-title">记录预览</text>
+        <view wx:for="{{preview.rows}}" wx:key="rowNumber" wx:if="{{!item.errors.length}}" class="import-preview-row">
+          <view class="import-preview-main"><text>{{item.date}}</text><text>{{item.typeLabel}} · {{item.categoryName}}</text></view>
+          <text class="import-preview-amount">¥{{item.amount}}</text>
+        </view>
+      </view>
+      <view wx:if="{{errorMessage}}" class="import-error-message">{{errorMessage}}</view>
+    </view>
+  </scroll-view>
+  <view wx:if="{{fileName || preview}}" class="import-action-bar">
+    <button class="import-clear" catchtap="clearImport">清空</button>
+    <button class="import-submit" bindtap="submitImport">确认导入</button>
+  </view>
+</view>

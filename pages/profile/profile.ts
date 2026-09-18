@@ -49,6 +49,7 @@ Page({
       budget: '/pages/budget/budget',
       achievement: '/pages/profile/achievement',
       personal: '/pages/profile/personal',
+      settings: '/pages/profile/settings',
       feedback: '/pages/profile/feedback',
     }
     const url = action ? routeMap[action] : ''

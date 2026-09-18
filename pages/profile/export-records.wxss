@@ -1,0 +1,127 @@
+.export-records-page {
+  position: relative;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  padding-right: 30rpx;
+  padding-left: 30rpx;
+  flex-direction: column;
+  background: #f8f8f8;
+  box-sizing: border-box;
+}
+
+.page-background {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 0;
+  width: 100%;
+  height: 376rpx;
+  pointer-events: none;
+}
+
+.export-records-page .ds-header,
+.export-records-scroll {
+  position: relative;
+  z-index: 1;
+}
+
+.export-records-page .ds-header {
+  flex: 0 0 96rpx;
+}
+
+.export-records-scroll {
+  min-height: 0;
+  height: auto;
+  flex: 1;
+  width: calc(100% + 60rpx);
+  margin-left: -30rpx;
+  box-sizing: border-box;
+}
+
+.export-records-scroll > view {
+  padding-right: 30rpx;
+  padding-left: 30rpx;
+  box-sizing: border-box;
+}
+
+.export-records-list {
+  padding-top: 16rpx;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 30rpx);
+}
+
+.export-record-card {
+  position: relative;
+  margin-bottom: 18rpx;
+  padding: 26rpx 28rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+}
+
+.export-record-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.export-record-type {
+  color: #333333;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.export-record-status {
+  font-size: 22rpx;
+}
+
+.export-record-status.sent {
+  color: #01ad93;
+}
+
+.export-record-status.failed {
+  color: #e05b61;
+}
+
+.export-record-status.pending {
+  color: #a18a44;
+}
+
+.export-record-range,
+.export-record-email,
+.export-record-time {
+  display: block;
+  margin-top: 14rpx;
+  color: #7f8794;
+  font-size: 23rpx;
+}
+
+.export-record-time {
+  color: #b0b6c0;
+  font-size: 21rpx;
+}
+
+.password-button {
+  width: 190rpx;
+  height: 62rpx;
+  margin: 20rpx 0 0;
+  padding: 0;
+  border: 1rpx solid #01c6a6;
+  border-radius: 16rpx;
+  background: #ffffff;
+  color: #01ad93;
+  font-size: 23rpx;
+  line-height: 60rpx;
+}
+
+.password-button::after {
+  border: 0;
+}
+
+.export-records-state {
+  display: flex;
+  min-height: 500rpx;
+  align-items: center;
+  justify-content: center;
+  color: #989898;
+  font-size: 24rpx;
+  text-align: center;
+}

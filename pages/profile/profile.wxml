@@ -32,7 +32,7 @@
     <view class="menu-card">
       <view class="menu-row" data-action="achievement" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/figma/profile/achievement-menu.png" mode="aspectFit"></image><text>我的成就</text><image class="menu-arrow" src="/assets/figma/profile/chevron.png" mode="aspectFit"></image></view>
       <button class="menu-row share-row" open-type="share"><image class="menu-icon" src="/assets/figma/profile/invite.png" mode="aspectFit"></image><text>分享给微信好友</text><image class="menu-arrow" src="/assets/figma/profile/chevron.png" mode="aspectFit"></image></button>
-      <view class="menu-row" data-action="personal" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/figma/profile/settings.png" mode="aspectFit"></image><text>设置</text><image class="menu-arrow" src="/assets/figma/profile/chevron.png" mode="aspectFit"></image></view>
+      <view class="menu-row" data-action="settings" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/figma/profile/settings.png" mode="aspectFit"></image><text>设置</text><image class="menu-arrow" src="/assets/figma/profile/chevron.png" mode="aspectFit"></image></view>
       <!-- <view class="menu-row" data-action="feedback" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/figma/profile/feedback.png" mode="aspectFit"></image><text>意见反馈</text><image class="menu-arrow" src="/assets/figma/profile/chevron.png" mode="aspectFit"></image></view> -->
     </view>
   </scroll-view>

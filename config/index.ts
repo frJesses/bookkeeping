@@ -1,7 +1,7 @@
 export type MiniProgramEnvironment = 'develop' | 'trial' | 'release'
 
 const API_BASE_URLS: Record<MiniProgramEnvironment, string> = {
-  develop: 'https://wwlblog.top/api',
+  develop: 'http://172.25.2.246:3005/v1',
   trial: 'https://wwlblog.top/api',
   release: 'https://wwlblog.top/api',
 }

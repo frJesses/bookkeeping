@@ -1,0 +1,21 @@
+<view class="export-records-page" style="padding-top: {{statusBarHeight}}px;">
+  <image class="page-background" src="/assets/figma/profile/background.png" mode="scaleToFill"></image>
+  <view class="ds-header">
+    <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view>
+    <text class="ds-header-title">导出记录</text>
+  </view>
+  <scroll-view scroll-y class="export-records-scroll" show-scrollbar="false">
+    <view wx:if="{{isLoading}}" class="export-records-state">正在加载导出记录</view>
+    <view wx:elif="{{errorMessage}}" class="export-records-state">{{errorMessage}}</view>
+    <view wx:elif="{{!records.length}}" class="export-records-state">暂无导出记录</view>
+    <view wx:else class="export-records-list">
+      <view wx:for="{{records}}" wx:key="id" class="export-record-card">
+        <view class="export-record-head"><text class="export-record-type">{{item.typeLabel}}</text><text class="export-record-status {{item.status}}">{{item.statusLabel}}</text></view>
+        <text class="export-record-range">{{item.rangeLabel}}</text>
+        <text class="export-record-email">发送至 {{item.email}}</text>
+        <text class="export-record-time">{{item.createdAtLabel}}</text>
+        <button wx:if="{{item.canGetPassword}}" class="password-button" data-id="{{item.id}}" bindtap="handleGetPassword">获取解压码</button>
+      </view>
+    </view>
+  </scroll-view>
+</view>

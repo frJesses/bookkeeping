@@ -1,0 +1,21 @@
+<view class="export-page" style="padding-top: {{statusBarHeight}}px;">
+  <image class="page-background" src="/assets/figma/profile/background.png" mode="scaleToFill"></image>
+  <view class="ds-header">
+    <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view>
+    <text class="ds-header-title">账单导出</text>
+  </view>
+  <view class="export-content">
+    <view class="export-tip">导出文件会发送到你的邮箱，ZIP 的 4 位数字解压密码请在导出记录中获取。</view>
+    <view class="export-card">
+      <picker mode="date" value="{{startDate}}" end="{{todayDate}}" bindchange="handleDateChange" data-field="startDate"><view class="export-row"><text class="export-label">开始日期</text><view class="export-picker">{{startDateLabel}}<text class="export-caret"></text></view></view></picker>
+      <view class="export-divider"></view>
+      <picker mode="date" value="{{endDate}}" start="{{startDate}}" end="{{todayDate}}" bindchange="handleDateChange" data-field="endDate"><view class="export-row"><text class="export-label">结束日期</text><view class="export-picker">{{endDateLabel}}<text class="export-caret"></text></view></view></picker>
+      <view class="export-divider"></view>
+      <picker mode="selector" range="{{typeOptions}}" value="{{typeIndex}}" bindchange="handleTypeChange"><view class="export-row"><text class="export-label">账单类型</text><view class="export-picker">{{typeOptions[typeIndex]}}<text class="export-caret"></text></view></view></picker>
+    </view>
+    <view class="export-card export-email-card"><text class="export-label">接收邮箱</text><input class="export-email" type="text" value="{{email}}" placeholder="请输入接收 ZIP 文件的邮箱" bindinput="handleEmailInput" /></view>
+    <view wx:if="{{errorMessage}}" class="export-error">{{errorMessage}}</view>
+    <button class="export-submit" bindtap="submitExport">发送导出文件</button>
+    <view class="export-records-link" bindtap="openRecords">查看导出记录 <text>›</text></view>
+  </view>
+</view>

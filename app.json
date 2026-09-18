@@ -11,7 +11,13 @@
     "pages/stats/stats",
     "pages/profile/profile",
     "pages/profile/achievement",
-    "pages/profile/personal"
+    "pages/profile/personal",
+    "pages/profile/settings",
+    "pages/profile/import",
+    "pages/profile/recurring",
+    "pages/profile/loan",
+    "pages/profile/export",
+    "pages/profile/export-records"
   ],
   "window": {
     "navigationBarTextStyle": "black",
