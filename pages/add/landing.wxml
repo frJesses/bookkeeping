@@ -1,7 +1,7 @@
 <adaptive-viewport include-status-bar="{{true}}" include-bottom-safe-area="{{true}}" background="linear-gradient(145deg, #80e8d0 0%, #c7f8e9 64%, #f8f8f8 100%)">
 <view class="landing-page">
   <view class="landing-main">
-    <view class="ds-header"><view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view><text class="ds-header-title">添加记账</text></view>
+    <view class="ds-header"><view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/common/back.png" mode="aspectFit"></image></view><text class="ds-header-title">添加记账</text></view>
     <view class="landing-month">
       <view><text bindtap="openDatePicker">{{monthLabel}} ▾</text><text>太棒了，你已经连续记账{{recordedDays}}天啦~</text></view>
       <view class="month-nav {{!canGoPreviousMonth ? 'month-nav-disabled' : ''}}" bindtap="handlePreviousMonth">‹</view>
@@ -23,7 +23,7 @@
       <view wx:elif="{{!selectedRecords.length}}" class="landing-state">当天暂无账单</view>
       <view wx:else><view wx:for="{{selectedRecords}}" wx:key="recordKey" class="landing-record"><image src="{{item.iconUrl}}" mode="aspectFit"></image><view><text>{{item.title}}</text><text>{{item.tagText}}</text></view><text>{{item.amountSign}}{{item.amountValue}}</text></view></view>
     </scroll-view>
-    <button bindtap="startEntry"><image src="/assets/figma/calendar/add-record.png" mode="aspectFit"></image><text>记一笔</text></button>
+    <button bindtap="startEntry"><image src="/assets/calendar/add-record.png" mode="aspectFit"></image><text>记一笔</text></button>
   </view>
 </view>
 <view wx:if="{{showDatePicker}}" class="date-mask" bindtap="closeDatePicker">

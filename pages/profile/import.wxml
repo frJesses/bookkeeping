@@ -1,13 +1,13 @@
 <view class="import-page" style="padding-top: {{statusBarHeight}}px;">
-  <image class="page-background" src="/assets/figma/profile/background.png" mode="scaleToFill"></image>
+  <image class="page-background" src="/assets/profile/background.png" mode="scaleToFill"></image>
   <view class="ds-header">
-    <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view>
+    <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/common/back.png" mode="aspectFit"></image></view>
     <text class="ds-header-title">账单导入</text>
   </view>
   <view class="import-static">
     <view class="import-tip">支持 CSV、Excel 文件。导入前会先校验日期、类型、分类和金额。</view>
     <view class="import-file-card" bindtap="chooseFile">
-      <image src="/assets/figma/profile/bills.png" mode="aspectFit"></image>
+      <image src="/assets/profile/bills.png" mode="aspectFit"></image>
       <view><text class="import-file-title">{{fileName || '选择账单文件'}}</text><text class="import-file-subtitle">点击选择文件并预览</text></view>
       <text class="import-file-arrow">›</text>
     </view>

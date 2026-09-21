@@ -1,6 +1,6 @@
 <view class="detail-page">
-  <image class="detail-wash" src="/assets/figma/calendar/background.png" mode="scaleToFill"></image>
-  <view class="detail-header" style="padding-top: {{statusBarHeight}}px;"><view class="ds-header"><view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view><text class="ds-header-title">账单详情</text></view></view>
+  <image class="detail-wash" src="/assets/calendar/background.png" mode="scaleToFill"></image>
+  <view class="detail-header" style="padding-top: {{statusBarHeight}}px;"><view class="ds-header"><view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/common/back.png" mode="aspectFit"></image></view><text class="ds-header-title">账单详情</text></view></view>
   <view class="detail-summary-fixed" style="top: calc({{statusBarHeight}}px + 160rpx);">
     <view class="detail-summary"><view class="summary-title"><text>{{title}}</text><text>{{countText}}</text></view><view class="summary-metrics"><view><text>{{totalIncome}}</text><text>收入(元)</text></view><view><text>{{totalExpense}}</text><text>支出(元)</text></view><view><text>{{totalBalance}}</text><text>剩余(元)</text></view></view></view>
   </view>

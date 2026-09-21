@@ -33,6 +33,8 @@ type PersonalPageInstance = WechatMiniprogram.Page.Instance<
     genderCode: string
     phone: string
     email: string
+    nicknameDraft: string
+    showNickname: boolean
     showGender: boolean
     isLoading: boolean
     isSaving: boolean
@@ -44,16 +46,36 @@ function getAvatarText(name: string) {
   return value ? value.slice(0, 2).toUpperCase() : '我'
 }
 
+function getWechatNickname() {
+  return new Promise<string>((resolve) => {
+    if (typeof wx.getUserProfile !== 'function') {
+      resolve('')
+      return
+    }
+    wx.getUserProfile({
+      desc: '用于完善个人昵称',
+      lang: 'zh_CN',
+      success: (result) => {
+        const userInfo = result.userInfo
+        resolve(String(userInfo && userInfo.nickName ? userInfo.nickName : '').trim())
+      },
+      fail: () => resolve(''),
+    })
+  })
+}
+
 Page({
   data: {
     statusBarHeight: 20,
     avatarUrl: '',
     avatarText: '我',
     nickname: '',
+    nicknameDraft: '',
     gender: '保密',
     genderCode: '3',
     phone: '',
     email: '',
+    showNickname: false,
     showGender: false,
     isLoading: true,
     isSaving: false,
@@ -90,15 +112,17 @@ Page({
   },
   async saveProfile(this: PersonalPageInstance, update: UserProfileUpdate) {
     if (this.data.isSaving || !Object.keys(update).length) {
-      return
+      return false
     }
     this.setData({ isSaving: true })
     try {
       await updateCurrentUserInfo(update)
       wx.showToast({ title: '已保存', icon: 'success' })
+      return true
     } catch (error) {
       console.error('update personal user info failed', error)
       wx.showToast({ title: '保存失败，请重试', icon: 'none' })
+      return false
     } finally {
       this.setData({ isSaving: false })
     }
@@ -124,26 +148,37 @@ Page({
       this.setData({ isSaving: false })
     }
   },
-  editNickname(this: PersonalPageInstance) {
-    wx.showModal({
-      title: '修改昵称',
-      editable: true,
-      content: this.data.nickname,
-      placeholderText: '请输入昵称',
-      confirmText: '保存',
-      success: (result) => {
-        if (!result.confirm) {
-          return
-        }
-        const nickname = (result.content || '').trim()
-        if (!nickname) {
-          wx.showToast({ title: '昵称不能为空', icon: 'none' })
-          return
-        }
-        this.setData({ nickname, avatarText: getAvatarText(nickname) })
-        void this.saveProfile({ userName: nickname })
-      },
+  async editNickname(this: PersonalPageInstance) {
+    if (this.data.isSaving) {
+      return
+    }
+    const wechatNickname = await getWechatNickname()
+    this.setData({
+      nicknameDraft: wechatNickname || this.data.nickname,
+      showNickname: true,
     })
+  },
+  closeNickname(this: PersonalPageInstance) {
+    this.setData({ showNickname: false })
+  },
+  handleNicknameInput(this: PersonalPageInstance, e: WechatMiniprogram.Input) {
+    this.setData({ nicknameDraft: e.detail.value })
+  },
+  async saveNickname(this: PersonalPageInstance) {
+    const nickname = this.data.nicknameDraft.trim()
+    if (!nickname) {
+      wx.showToast({ title: '昵称不能为空', icon: 'none' })
+      return
+    }
+    const saved = await this.saveProfile({ userName: nickname })
+    if (saved) {
+      this.setData({
+        nickname,
+        nicknameDraft: nickname,
+        avatarText: getAvatarText(nickname),
+        showNickname: false,
+      })
+    }
   },
   openGender(this: PersonalPageInstance) {
     this.setData({ showGender: true })

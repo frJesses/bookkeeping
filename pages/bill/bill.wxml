@@ -1,6 +1,6 @@
 <view class="bills-page">
   <view class="bills-hero" style="padding-top: {{statusBarHeight}}px;">
-    <view class="ds-header bills-header"><view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image ds-back-image-light" src="/assets/figma/common/back.png" mode="aspectFit"></image></view><text class="ds-header-title">我的账单</text></view>
+    <view class="ds-header bills-header"><view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image ds-back-image-light" src="/assets/common/back.png" mode="aspectFit"></image></view><text class="ds-header-title">我的账单</text></view>
     <view class="bills-toolbar">
       <view class="bills-period-picker">
         <picker mode="selector" range="{{yearOptions}}" value="{{yearIndex}}" bindchange="selectYear">

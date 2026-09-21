@@ -2,7 +2,7 @@
   <view class="stats-wash"></view>
   <view class="stats-header" style="padding-top: {{statusBarHeight}}px;">
     <view class="ds-header">
-      <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view>
+      <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/common/back.png" mode="aspectFit"></image></view>
       <view class="report-tabs">
         <view
           wx:for="{{reportOptions}}"

@@ -1,5 +1,5 @@
 <view class="member-page" style="padding-top: {{statusBarHeight}}px;">
-  <view class="ds-header"><view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view><text class="ds-header-title">会员中心</text></view>
+  <view class="ds-header"><view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/common/back.png" mode="aspectFit"></image></view><text class="ds-header-title">会员中心</text></view>
   <scroll-view scroll-y class="member-scroll" show-scrollbar="false">
     <view class="member-hero"><view class="member-glow"></view><text class="opened">8000+人已开通会员</text><text class="hero-copy">开通会员 享4大权益</text></view>
     <view class="plan-row">
@@ -8,7 +8,7 @@
       </view>
     </view>
     <view class="benefit-card"><text class="benefit-title">四项会员专属权益</text><view class="benefit-row"><view><text class="benefit-icon">✕</text><text>去除广告</text></view><view><text class="benefit-icon">⇩</text><text>数据导出</text></view><view><text class="benefit-icon">▤</text><text>分类预算</text></view><view><text class="benefit-icon">○</text><text>解锁密码</text></view></view></view>
-    <scroll-view scroll-x class="review-scroll" show-scrollbar="false"><view class="review-row"><view class="review-card"><view><image src="/assets/figma/common/avatar.png"></image><text>徐先生</text></view><text>太超值了！喜欢这个简约记账软件，永久会员省心，可以一直用下去！</text></view><view class="review-card"><view><image src="/assets/figma/common/avatar.png"></image><text>小米糕</text></view><text>功能简洁，记账也很方便。</text></view></view></scroll-view>
+    <scroll-view scroll-x class="review-scroll" show-scrollbar="false"><view class="review-row"><view class="review-card"><view><image src="/assets/common/avatar.png"></image><text>徐先生</text></view><text>太超值了！喜欢这个简约记账软件，永久会员省心，可以一直用下去！</text></view><view class="review-card"><view><image src="/assets/common/avatar.png"></image><text>小米糕</text></view><text>功能简洁，记账也很方便。</text></view></view></scroll-view>
   </scroll-view>
   <button class="pay-button" bindtap="pay">立即支付 ¥88 <text>¥144/月</text></button>
 </view>

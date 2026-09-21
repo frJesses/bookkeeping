@@ -1,7 +1,7 @@
 <view class="export-page" style="padding-top: {{statusBarHeight}}px;">
-  <image class="page-background" src="/assets/figma/profile/background.png" mode="scaleToFill"></image>
+  <image class="page-background" src="/assets/profile/background.png" mode="scaleToFill"></image>
   <view class="ds-header">
-    <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view>
+    <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/common/back.png" mode="aspectFit"></image></view>
     <text class="ds-header-title">账单导出</text>
   </view>
   <view class="export-content">

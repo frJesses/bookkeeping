@@ -1,7 +1,7 @@
 <view class="settings-page" style="padding-top: {{statusBarHeight}}px;">
-  <image class="page-background" src="/assets/figma/profile/background.png" mode="scaleToFill"></image>
+  <image class="page-background" src="/assets/profile/background.png" mode="scaleToFill"></image>
   <view class="ds-header">
-    <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view>
+    <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/common/back.png" mode="aspectFit"></image></view>
     <text class="ds-header-title">设置</text>
   </view>
   <view class="settings-content">
@@ -12,7 +12,7 @@
           <text class="settings-title">{{item.title}}</text>
           <text class="settings-subtitle">{{item.subtitle}}</text>
         </view>
-        <image class="settings-arrow" src="/assets/figma/profile/chevron.png" mode="aspectFit"></image>
+        <image class="settings-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image>
       </view>
     </view>
   </view>

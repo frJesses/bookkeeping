@@ -41,31 +41,35 @@ type AchievementResponse = {
   achievements: AchievementItem[]
 }
 
-const ICON_ASSETS: Record<string, string> = {
-  'record-300': '/assets/figma/achievements/record-300.png',
-  lifetime: '/assets/figma/achievements/lifetime.png',
-  'streak-100': '/assets/figma/achievements/streak-100.png',
-  persist: '/assets/figma/achievements/persist.png',
-  steady: '/assets/figma/achievements/steady.png',
-  monthly: '/assets/figma/achievements/monthly-active.png',
-  invite: '/assets/figma/achievements/invite.png',
+const SEEN_ACHIEVEMENTS_STORAGE_KEY = 'bookkeeping_home_achievement_effect_seen_v3'
 
-  // Legacy keys remain mapped so an older seed does not render a blank card
-  // while the achievement definition migration is being applied.
-  'first-record': '/assets/figma/achievements/steady.png',
-  'records-10': '/assets/figma/achievements/persist.png',
-  'streak-7': '/assets/figma/achievements/monthly.png',
-  'days-30': '/assets/figma/achievements/steady.png',
-  'records-100': '/assets/figma/achievements/streak-100.png',
-  'streak-30': '/assets/figma/achievements/persist.png',
-  'days-180': '/assets/figma/achievements/steady.png',
-  'categories-10': '/assets/figma/achievements/invite.png',
-  'income-3': '/assets/figma/achievements/lifetime.png',
+type SeenAchievementMap = Record<string, string[]>
+
+export function getNewAchievementEffects(openId: string, earned: AchievementCard[], limit = 5) {
+  const seenMap = wx.getStorageSync<SeenAchievementMap>(SEEN_ACHIEVEMENTS_STORAGE_KEY) || {}
+  const seenCodes = Array.isArray(seenMap[openId]) ? seenMap[openId] : []
+  if (!earned.length) {
+    if (seenMap[openId]) {
+      const nextSeenMap = { ...seenMap }
+      delete nextSeenMap[openId]
+      wx.setStorageSync(SEEN_ACHIEVEMENTS_STORAGE_KEY, nextSeenMap)
+    }
+    return []
+  }
+  const newAchievements = earned.filter((item) => !seenCodes.includes(item.code))
+  if (!newAchievements.length) {
+    return []
+  }
+  wx.setStorageSync(SEEN_ACHIEVEMENTS_STORAGE_KEY, {
+    ...seenMap,
+    [openId]: [...new Set([...seenCodes, ...earned.map((item) => item.code)])],
+  })
+  return newAchievements.slice(0, limit)
 }
 
-const LOCKED_ICON_ASSETS: Record<string, string> = {
-  monthly: '/assets/figma/achievements/monthly.png',
-  invite: '/assets/figma/achievements/invite.png',
+function resolveAchievementImage(iconKey: string) {
+  const value = String(iconKey || '').trim()
+  return /^https?:\/\//i.test(value) ? value : ''
 }
 
 function formatJoinedAt(value: string | null) {
@@ -81,8 +85,7 @@ function formatUnlockedAt(value: string | null) {
 }
 
 function mapAchievement(item: AchievementItem): AchievementCard {
-  const image =
-    (!item.isUnlocked && LOCKED_ICON_ASSETS[item.iconKey]) || ICON_ASSETS[item.iconKey] || ICON_ASSETS['first-record']
+  const image = resolveAchievementImage(item.iconKey)
   const progressText =
     item.ruleType === 'manual' ? '' : `${Math.min(item.currentValue, item.targetValue)}/${item.targetValue}`
   return {

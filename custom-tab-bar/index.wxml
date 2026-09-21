@@ -1,5 +1,5 @@
 <view class="tab-shell {{hidden ? 'tab-shell-hidden' : ''}}">
-  <image class="tabbar-background" src="/assets/figma/tabbar/background.png" mode="scaleToFill"></image>
+  <image class="tabbar-background" src="/assets/tabbar/background.png" mode="scaleToFill"></image>
   <view class="tabbar">
     <block wx:for="{{tabs}}" wx:key="pagePath">
       <view

@@ -12,6 +12,8 @@ import {
   type HomeRecentRecordDTO,
   type HomeRecordItem,
 } from '../../services/home'
+import { ensureOpenId } from '../../services/auth'
+import { getAchievementPageData, getNewAchievementEffects, type AchievementCard } from '../../services/achievement'
 import { cacheEditingHomeTransaction, deleteTransactionById } from '../../services/transaction-detail'
 import { createAvailableMonthOptions, createMonthPickerState, createRecentYearOptions } from '../../utils/month-picker'
 import { getWindowInfo } from '../../utils/system-info'
@@ -40,6 +42,9 @@ type HomePageInstance = TabBarBehaviorPageInstance & {
     pickerYears: string[]
     pickerMonths: string[]
     pickerValue: number[]
+    unlockEffects: AchievementCard[]
+    showAchievementEffect: boolean
+    unlockEffectIndex: number
   }
   pickerSelection: number[]
   isPickerScrolling: boolean
@@ -70,6 +75,9 @@ Page({
     pickerYears: initialPickerYears,
     pickerMonths: createAvailableMonthOptions(initialPickerYears[0]),
     pickerValue: [0, 0],
+    unlockEffects: [],
+    showAchievementEffect: false,
+    unlockEffectIndex: 0,
   },
   onLoad(this: HomePageInstance) {
     this.initTabBarLayout()
@@ -80,7 +88,7 @@ Page({
   },
   onShow(this: HomePageInstance) {
     this.syncTabBarState()
-    setCustomTabBarHidden(this, this.data.showDatePicker)
+    setCustomTabBarHidden(this, this.data.showDatePicker || this.data.showAchievementEffect)
     if (this.homeInitialized) {
       void this.loadPageData()
     }
@@ -101,9 +109,27 @@ Page({
           status: 'normal',
         })
       : Promise.resolve()
-    const [overview] = await Promise.all([getHomeMonthOverview(selectedMonth), listTask])
+    const openId = await ensureOpenId()
+    const achievementTask = getAchievementPageData().catch((error) => {
+      console.error('get achievement effect data failed', error)
+      return null
+    })
+    const [overview, , achievementData] = await Promise.all([
+      getHomeMonthOverview(selectedMonth),
+      listTask,
+      achievementTask,
+    ])
     if (requestVersion === this.loadPageDataVersion && selectedMonth === this.data.selectedMonth) {
-      this.setData(overview)
+      const unlockEffects = achievementData ? getNewAchievementEffects(openId, achievementData.earned) : []
+      this.setData(
+        {
+          ...overview,
+          unlockEffects,
+          showAchievementEffect: unlockEffects.length > 0,
+          unlockEffectIndex: 0,
+        },
+        () => setCustomTabBarHidden(this, this.data.showDatePicker || this.data.showAchievementEffect),
+      )
     }
   },
   fetchRecentRecords(this: HomePageInstance, params: PagedScrollRequest) {
@@ -133,6 +159,35 @@ Page({
   },
   goToStats() {
     wx.navigateTo({ url: '/pages/stats/stats' })
+  },
+  closeAchievementEffect(this: HomePageInstance) {
+    this.setData({ showAchievementEffect: false, unlockEffects: [], unlockEffectIndex: 0 }, () => {
+      setCustomTabBarHidden(this, this.data.showDatePicker)
+    })
+  },
+  viewAchievements(this: HomePageInstance) {
+    this.closeAchievementEffect()
+    wx.navigateTo({ url: '/pages/profile/achievement' })
+  },
+  handleUnlockTouchStart(this: HomePageInstance, event: WechatMiniprogram.TouchEvent) {
+    const touch = event.touches[0]
+    if (touch) {
+      this.unlockEffectTouchStartX = touch.clientX
+    }
+  },
+  handleUnlockTouchEnd(this: HomePageInstance, event: WechatMiniprogram.TouchEvent) {
+    const touch = event.changedTouches[0]
+    const startX = this.unlockEffectTouchStartX
+    if (!touch || !startX || this.data.unlockEffects.length < 2) {
+      return
+    }
+    const deltaX = touch.clientX - startX
+    if (Math.abs(deltaX) < 40) {
+      return
+    }
+    const nextIndex = deltaX < 0 ? this.data.unlockEffectIndex + 1 : this.data.unlockEffectIndex - 1
+    const unlockEffectIndex = Math.max(0, Math.min(this.data.unlockEffects.length - 1, nextIndex))
+    this.setData({ unlockEffectIndex })
   },
   handleSwipeOpen(e: WechatMiniprogram.CustomEvent<{ id?: string }>) {
     const openedId = `${e.detail.id || ''}`
@@ -258,6 +313,7 @@ Page({
   pickerSelection: [0, 0],
   isPickerScrolling: false,
   pendingPickerConfirmation: false,
+  unlockEffectTouchStartX: 0,
   goToAdd(e: WechatMiniprogram.BaseEvent) {
     const { type } = e.currentTarget.dataset as { type?: EntryType }
     const entryType = type === 'income' ? 'income' : 'expense'

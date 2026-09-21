@@ -1,7 +1,7 @@
 <view class="recurring-page" style="padding-top: {{statusBarHeight}}px;">
-  <image class="page-background" src="/assets/figma/profile/background.png" mode="scaleToFill"></image>
+  <image class="page-background" src="/assets/profile/background.png" mode="scaleToFill"></image>
   <view class="ds-header">
-    <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view>
+    <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/common/back.png" mode="aspectFit"></image></view>
     <text class="ds-header-title">固定收支</text>
   </view>
   <scroll-view scroll-y="{{rules.length > 2}}" class="recurring-scroll" show-scrollbar="false">
@@ -14,7 +14,7 @@
           <view class="recurring-card-top"><view class="recurring-identity"><image wx:if="{{item.categoryIcon}}" src="{{item.categoryIcon}}" mode="aspectFit"></image><view><text class="recurring-title">{{item.title}}</text><text class="recurring-category">{{item.categoryName}} · 每月{{item.dayOfMonth}}日</text></view></view><text class="recurring-status {{item.isEnabled ? 'enabled' : 'disabled'}}">{{item.isEnabled ? '执行中' : '已停用'}}</text></view>
           <view class="recurring-primary"><view><text>每月{{item.dayOfMonth}}日自动记账</text><text>开始于 {{item.startDate}}</text></view><text class="recurring-amount {{item.type}}">{{item.type === 'income' ? '+' : '-'}}¥{{item.amount}}</text></view>
           <text wx:if="{{item.remark}}" class="recurring-remark">{{item.remark}}</text>
-          <view class="recurring-actions"><button class="recurring-action recurring-action-edit" data-id="{{item.id}}" bindtap="editRule"><image src="/assets/figma/actions/edit.svg" mode="aspectFit"></image><text>编辑</text></button><button class="recurring-action recurring-action-toggle" data-id="{{item.id}}" bindtap="toggleRule"><text>{{item.isEnabled ? 'Ⅱ' : '▶'}}</text><text>{{item.isEnabled ? '停用' : '启用'}}</text></button><button class="recurring-action recurring-action-delete" data-id="{{item.id}}" bindtap="deleteRule"><image src="/assets/figma/actions/delete.svg" mode="aspectFit"></image><text>删除</text></button></view>
+          <view class="recurring-actions"><button class="recurring-action recurring-action-edit" data-id="{{item.id}}" bindtap="editRule"><image src="/assets/actions/edit.svg" mode="aspectFit"></image><text>编辑</text></button><button class="recurring-action recurring-action-toggle" data-id="{{item.id}}" bindtap="toggleRule"><text>{{item.isEnabled ? 'Ⅱ' : '▶'}}</text><text>{{item.isEnabled ? '停用' : '启用'}}</text></button><button class="recurring-action recurring-action-delete" data-id="{{item.id}}" bindtap="deleteRule"><image src="/assets/actions/delete.svg" mode="aspectFit"></image><text>删除</text></button></view>
         </view>
       </view>
       <view class="recurring-bottom-space"></view>

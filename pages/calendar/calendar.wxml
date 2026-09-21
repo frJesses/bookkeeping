@@ -1,9 +1,9 @@
 <view class="calendar-page">
   <view class="calendar-shell">
-    <image class="page-background" src="/assets/figma/calendar/background.png" mode="scaleToFill"></image>
+    <image class="page-background" src="/assets/calendar/background.png" mode="scaleToFill"></image>
     <view class="calendar-header" style="padding-top: {{statusBarHeight}}px;">
       <view class="ds-header">
-        <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view>
+        <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/common/back.png" mode="aspectFit"></image></view>
         <text class="ds-header-title">收支日历</text>
       </view>
     </view>
@@ -12,7 +12,7 @@
         <view class="month-row">
           <view class="month-trigger" bindtap="openDatePicker">
             <text>{{monthLabel}}</text>
-            <image src="/assets/figma/calendar/date-caret.png" mode="aspectFit"></image>
+            <image src="/assets/calendar/date-caret.png" mode="aspectFit"></image>
           </view>
           <text class="month-days">本月已记录{{recordedDays}}天</text>
         </view>

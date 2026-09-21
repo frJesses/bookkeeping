@@ -1,5 +1,5 @@
 <view class="profile-page">
-  <image class="profile-wash" src="/assets/figma/profile/background.png" mode="scaleToFill"></image>
+  <image class="profile-wash" src="/assets/profile/background.png" mode="scaleToFill"></image>
   <scroll-view scroll-y class="profile-scroll" show-scrollbar="false" style="padding-bottom: {{tabBarSpacer + 24}}px;">
     <view class="profile-safe"></view>
     <view class="identity" data-action="personal" bindtap="handleMenuClick">
@@ -7,13 +7,13 @@
       <view wx:else class="avatar avatar-placeholder">{{avatarText}}</view>
       <view class="identity-copy">
         <text class="nickname">{{nickname}}</text>
-        <view class="achievement-chip"><image src="/assets/figma/profile/achievement.png" mode="aspectFit"></image><text>我的成就</text></view>
+        <view class="achievement-chip"><image src="/assets/profile/achievement.png" mode="aspectFit"></image><text>我的成就</text></view>
       </view>
-      <view class="personal-link"><text>个人信息</text><image src="/assets/figma/profile/personal.png" mode="aspectFit"></image></view>
+      <view class="personal-link"><text>个人信息</text><image src="/assets/profile/personal.png" mode="aspectFit"></image></view>
     </view>
 
     <view class="member-banner">
-      <view class="member-line"><image class="member-mark" src="/assets/figma/profile/member.png" mode="aspectFit"></image><text>成为平台会员，解锁全部功能</text></view>
+      <view class="member-line"><image class="member-mark" src="/assets/profile/member.png" mode="aspectFit"></image><text>成为平台会员，解锁全部功能</text></view>
       <text class="member-subtitle">去除广告/数据导出/分类预算/图片载入专属特权</text>
     </view>
 
@@ -25,15 +25,15 @@
     </view>
 
     <view class="menu-card">
-      <view class="menu-row" data-action="bills" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/figma/profile/bills.png" mode="aspectFit"></image><text>我的账本</text><image class="menu-arrow" src="/assets/figma/profile/chevron.png" mode="aspectFit"></image></view>
-      <view class="menu-row" data-action="budget" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/figma/profile/budget.png" mode="aspectFit"></image><text>我的预算</text><image class="menu-arrow" src="/assets/figma/profile/chevron.png" mode="aspectFit"></image></view>
+      <view class="menu-row" data-action="bills" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/profile/bills.png" mode="aspectFit"></image><text>我的账本</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></view>
+      <view class="menu-row" data-action="budget" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/profile/budget.png" mode="aspectFit"></image><text>我的预算</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></view>
     </view>
 
     <view class="menu-card">
-      <view class="menu-row" data-action="achievement" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/figma/profile/achievement-menu.png" mode="aspectFit"></image><text>我的成就</text><image class="menu-arrow" src="/assets/figma/profile/chevron.png" mode="aspectFit"></image></view>
-      <button class="menu-row share-row" open-type="share"><image class="menu-icon" src="/assets/figma/profile/invite.png" mode="aspectFit"></image><text>分享给微信好友</text><image class="menu-arrow" src="/assets/figma/profile/chevron.png" mode="aspectFit"></image></button>
-      <view class="menu-row" data-action="settings" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/figma/profile/settings.png" mode="aspectFit"></image><text>设置</text><image class="menu-arrow" src="/assets/figma/profile/chevron.png" mode="aspectFit"></image></view>
-      <!-- <view class="menu-row" data-action="feedback" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/figma/profile/feedback.png" mode="aspectFit"></image><text>意见反馈</text><image class="menu-arrow" src="/assets/figma/profile/chevron.png" mode="aspectFit"></image></view> -->
+      <view class="menu-row" data-action="achievement" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/profile/achievement-menu.png" mode="aspectFit"></image><text>我的成就</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></view>
+      <button class="menu-row share-row" open-type="share"><image class="menu-icon" src="/assets/profile/invite.png" mode="aspectFit"></image><text>分享给微信好友</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></button>
+      <view class="menu-row" data-action="settings" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/profile/settings.png" mode="aspectFit"></image><text>设置</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></view>
+      <!-- <view class="menu-row" data-action="feedback" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/profile/feedback.png" mode="aspectFit"></image><text>意见反馈</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></view> -->
     </view>
   </scroll-view>
 </view>

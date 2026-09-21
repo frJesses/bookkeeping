@@ -1,6 +1,6 @@
 <view class="loan-page" style="padding-top: {{statusBarHeight}}px;">
-  <image class="page-background" src="/assets/figma/profile/background.png" mode="scaleToFill"></image>
-  <view class="ds-header"><view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/figma/common/back.png" mode="aspectFit"></image></view><text class="ds-header-title">借出管理</text></view>
+  <image class="page-background" src="/assets/profile/background.png" mode="scaleToFill"></image>
+  <view class="ds-header"><view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/common/back.png" mode="aspectFit"></image></view><text class="ds-header-title">借出管理</text></view>
   <view class="loan-static">
     <view class="loan-summary"><view><text>借出总额</text><text>¥{{summary.totalAmount}}</text></view><view><text>已收回</text><text>¥{{summary.totalRepaid}}</text></view><view><text>待收回</text><text>¥{{summary.totalOutstanding}}</text></view></view>
   </view>
@@ -12,7 +12,7 @@
           <view class="loan-date-line"><text>借出 {{item.loanDate}}</text><text wx:if="{{item.dueDate}}">预计归还 {{item.dueDate}}</text></view>
           <view class="loan-primary"><text>待收回</text><text>¥{{item.remainingAmount}}</text></view>
           <view class="loan-metrics"><view><text>借出金额</text><text>¥{{item.amount}}</text></view><view><text>已收回</text><text>¥{{item.repaidAmount}}</text></view><view><text>完成度</text><text>{{item.progressPercent}}%</text></view></view>
-          <view class="loan-actions"><button wx:if="{{item.status !== 'settled'}}" class="loan-action loan-action-repay" data-id="{{item.id}}" bindtap="openRepay"><text class="loan-action-symbol">↩</text><text>收回</text></button><button class="loan-action loan-action-edit" data-id="{{item.id}}" bindtap="editLoan"><image src="/assets/figma/actions/edit.svg" mode="aspectFit"></image><text>编辑</text></button><button class="loan-action loan-action-delete" data-id="{{item.id}}" bindtap="deleteLoan"><image src="/assets/figma/actions/delete.svg" mode="aspectFit"></image><text>删除</text></button></view>
+          <view class="loan-actions"><button wx:if="{{item.status !== 'settled'}}" class="loan-action loan-action-repay" data-id="{{item.id}}" bindtap="openRepay"><text class="loan-action-symbol">↩</text><text>收回</text></button><button class="loan-action loan-action-edit" data-id="{{item.id}}" bindtap="editLoan"><image src="/assets/actions/edit.svg" mode="aspectFit"></image><text>编辑</text></button><button class="loan-action loan-action-delete" data-id="{{item.id}}" bindtap="deleteLoan"><image src="/assets/actions/delete.svg" mode="aspectFit"></image><text>删除</text></button></view>
         </view>
       </view>
       <view class="loan-bottom-space"></view>

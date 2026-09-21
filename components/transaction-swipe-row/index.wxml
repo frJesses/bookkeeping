@@ -1,10 +1,10 @@
 <view class="swipe-shell">
   <view class="swipe-actions {{offsetRpx === 0 ? 'swipe-actions-hidden' : ''}}">
     <view class="swipe-action edit-action" role="button" aria-label="编辑" catchtap="handleEdit">
-      <image class="swipe-action-image" src="/assets/figma/actions/edit.svg" mode="aspectFit"></image>
+      <image class="swipe-action-image" src="/assets/actions/edit.svg" mode="aspectFit"></image>
     </view>
     <view class="swipe-action delete-action" role="button" aria-label="删除" catchtap="handleDelete">
-      <image class="swipe-action-image" src="/assets/figma/actions/delete.svg" mode="aspectFit"></image>
+      <image class="swipe-action-image" src="/assets/actions/delete.svg" mode="aspectFit"></image>
     </view>
   </view>
   <view

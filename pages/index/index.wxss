@@ -122,7 +122,7 @@
 .date-mask {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  z-index: 9999;
   background: rgba(0, 0, 0, 0.38);
   animation: date-mask-fade-in 180ms ease-out both;
 }
@@ -210,6 +210,222 @@
 .date-actions .date-confirm {
   background: #01c6a6;
   color: #ffffff;
+}
+
+.unlock-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(11, 18, 34, 0.74);
+  animation: unlock-mask-fade-in 180ms ease-out both;
+}
+
+.unlock-stage {
+  position: relative;
+  display: flex;
+  width: 100%;
+  padding: 80rpx 54rpx 48rpx;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  animation: unlock-stage-pop 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.unlock-close {
+  position: fixed;
+  top: calc(env(safe-area-inset-top) + 80rpx);
+  right: 36rpx;
+  display: flex;
+  width: 68rpx;
+  height: 68rpx;
+  align-items: center;
+  justify-content: center;
+  border: 1rpx solid rgba(255, 255, 255, 0.65);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.unlock-close-icon {
+  font-size: 52rpx;
+  font-weight: 200;
+  line-height: 1;
+}
+
+.unlock-icon-wrap {
+  position: relative;
+  display: flex;
+  width: 310rpx;
+  height: 310rpx;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  animation: unlock-icon-pulse 1000ms ease-out 120ms both;
+}
+
+.unlock-icon-wrap image {
+  width: 282rpx;
+  height: 282rpx;
+  filter: drop-shadow(0 14rpx 24rpx rgba(255, 220, 126, 0.5));
+  animation: unlock-icon-float 1800ms ease-in-out 1s infinite;
+}
+
+.unlock-sparkle {
+  position: absolute;
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 4rpx;
+  background: rgba(255, 235, 164, 0.96);
+  box-shadow: 0 0 18rpx rgba(255, 223, 117, 0.9);
+  transform: rotate(45deg) scale(0.65);
+  animation: unlock-sparkle-twinkle 1400ms ease-in-out infinite;
+}
+
+.unlock-sparkle-a {
+  top: 42rpx;
+  left: 52rpx;
+  animation-delay: 180ms;
+}
+
+.unlock-sparkle-b {
+  top: 82rpx;
+  right: 32rpx;
+  width: 10rpx;
+  height: 10rpx;
+  animation-delay: 520ms;
+}
+
+.unlock-sparkle-c {
+  right: 54rpx;
+  bottom: 62rpx;
+  animation-delay: 820ms;
+}
+
+.unlock-sparkle-d {
+  bottom: 36rpx;
+  left: 76rpx;
+  width: 9rpx;
+  height: 9rpx;
+  animation-delay: 1060ms;
+}
+
+.unlock-eyebrow {
+  margin-top: 44rpx;
+  color: #ffdb7c;
+  font-size: 25rpx;
+  font-weight: 600;
+  letter-spacing: 4rpx;
+}
+
+.unlock-name {
+  margin-top: 14rpx;
+  color: #ffffff;
+  font-size: 42rpx;
+  font-weight: 700;
+  text-shadow: 0 4rpx 14rpx rgba(0, 0, 0, 0.24);
+}
+
+.unlock-description {
+  margin-top: 12rpx;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 25rpx;
+  text-align: center;
+}
+
+.unlock-dots {
+  display: flex;
+  margin-top: 28rpx;
+  gap: 12rpx;
+}
+
+.unlock-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.unlock-dot-active {
+  width: 28rpx;
+  border-radius: 12rpx;
+  background: #ffffff;
+}
+
+.unlock-button {
+  width: 360rpx;
+  height: 82rpx;
+  margin-top: 44rpx;
+  padding: 0;
+  border: 1rpx solid rgba(255, 255, 255, 0.86);
+  border-radius: 42rpx;
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  font-size: 28rpx;
+  line-height: 80rpx;
+}
+
+.unlock-button::after {
+  border: 0;
+}
+
+@keyframes unlock-mask-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes unlock-stage-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.78) translateY(30rpx);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes unlock-icon-pulse {
+  0% {
+    transform: scale(0.7) rotate(-8deg);
+    filter: drop-shadow(0 0 0 rgba(255, 218, 111, 0));
+  }
+  70% {
+    transform: scale(1.06) rotate(3deg);
+    filter: drop-shadow(0 0 46rpx rgba(255, 218, 111, 0.72));
+  }
+  100% {
+    transform: scale(1) rotate(0);
+    filter: drop-shadow(0 0 26rpx rgba(255, 218, 111, 0.46));
+  }
+}
+
+@keyframes unlock-icon-float {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-10rpx) scale(1.025);
+  }
+}
+
+@keyframes unlock-sparkle-twinkle {
+  0%,
+  100% {
+    opacity: 0.28;
+    transform: rotate(45deg) scale(0.55);
+  }
+  45% {
+    opacity: 1;
+    transform: rotate(45deg) scale(1.15);
+  }
 }
 
 .caret {

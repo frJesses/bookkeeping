@@ -1,8 +1,8 @@
 <view class="ledger-page">
-  <image class="mint-wash" src="/assets/figma/home/page-background.png" mode="scaleToFill"></image>
+  <image class="mint-wash" src="/assets/home/page-background.png" mode="scaleToFill"></image>
   <image
     class="brand-title"
-    src="/assets/figma/home/brand-title.png"
+    src="/assets/home/brand-title.png"
     mode="aspectFit"
     style="top: {{statusBarHeight + 10}}px;"
   ></image>
@@ -11,21 +11,21 @@
     style="top: {{capsuleTop}}px; right: {{capsuleRight + capsuleWidth + 12}}px; height: {{capsuleHeight}}px;"
   >
     <view class="header-action" bindtap="goToCalendar">
-      <image src="/assets/figma/home/calendar.png" mode="aspectFit"></image>
+      <image src="/assets/home/calendar.png" mode="aspectFit"></image>
     </view>
     <view class="header-action" bindtap="goToStats">
-      <image src="/assets/figma/home/statistics.png" mode="aspectFit"></image>
+      <image src="/assets/home/statistics.png" mode="aspectFit"></image>
     </view>
   </view>
   <view
     class="summary-card"
     style="top: {{statusBarHeight + 54}}px;"
   >
-    <image class="summary-card-background" src="/assets/figma/home/summary-background.png" mode="scaleToFill"></image>
+    <image class="summary-card-background" src="/assets/home/summary-background.png" mode="scaleToFill"></image>
     <view class="month-picker month-trigger" bindtap="openDatePicker">
-      <image class="month-background" src="/assets/figma/home/month-background.png" mode="scaleToFill"></image>
+      <image class="month-background" src="/assets/home/month-background.png" mode="scaleToFill"></image>
       <text>{{selectedMonthLabel}}</text>
-      <image class="caret" src="/assets/figma/home/month-caret.png" mode="aspectFit"></image>
+      <image class="caret" src="/assets/home/month-caret.png" mode="aspectFit"></image>
     </view>
     <text class="summary-label">当月支出(元)</text>
     <text class="summary-expense">{{monthExpenseText}}</text>
@@ -98,6 +98,25 @@
         </picker-view-column>
       </picker-view>
       <view class="date-actions"><button bindtap="closeDatePicker">取消</button><button class="date-confirm" bindtap="confirmDatePicker">确定</button></view>
+    </view>
+  </view>
+  <view wx:if="{{showAchievementEffect}}" class="unlock-mask" bindtap="closeAchievementEffect">
+    <view class="unlock-stage" catchtap="noop" bindtouchstart="handleUnlockTouchStart" bindtouchend="handleUnlockTouchEnd">
+      <view class="unlock-close" bindtap="closeAchievementEffect"><text class="unlock-close-icon">×</text></view>
+      <view class="unlock-icon-wrap">
+        <view class="unlock-sparkle unlock-sparkle-a"></view>
+        <view class="unlock-sparkle unlock-sparkle-b"></view>
+        <view class="unlock-sparkle unlock-sparkle-c"></view>
+        <view class="unlock-sparkle unlock-sparkle-d"></view>
+        <image src="{{unlockEffects[unlockEffectIndex].image}}" mode="aspectFit"></image>
+      </view>
+      <text class="unlock-eyebrow">成就解锁</text>
+      <text class="unlock-name">{{unlockEffects[unlockEffectIndex].name}}</text>
+      <text class="unlock-description">{{unlockEffects[unlockEffectIndex].description}}</text>
+      <view wx:if="{{unlockEffects.length > 1}}" class="unlock-dots">
+        <view wx:for="{{unlockEffects}}" wx:key="code" class="unlock-dot {{index === unlockEffectIndex ? 'unlock-dot-active' : ''}}"></view>
+      </view>
+      <button class="unlock-button" bindtap="viewAchievements">查看成就</button>
     </view>
   </view>
 </view>

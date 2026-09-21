@@ -193,7 +193,7 @@
 }
 
 .achievement-bottom-space {
-  height: calc(env(safe-area-inset-bottom) + 140rpx);
+  height: calc(env(safe-area-inset-bottom) + 24rpx);
 }
 
 .locked-title {
