@@ -1,5 +1,5 @@
 .add-page {
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
   background: #ffffff;
 }
@@ -20,36 +20,10 @@
   justify-content: center;
 }
 
-.add-tag {
-  position: absolute;
-  right: 32rpx;
-  top: 50%;
-  width: 42rpx;
-  height: 42rpx;
-  transform: translateY(-50%);
-}
-
-.add-tag::before,
-.add-tag::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 38rpx;
-  height: 4rpx;
-  border-radius: 2rpx;
-  background: #333333;
-  transform: translate(-50%, -50%);
-}
-
-.add-tag::after {
-  transform: translate(-50%, -50%) rotate(90deg);
-}
-
 .category-scroll {
   display: block;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   padding: 24rpx 0 env(safe-area-inset-bottom) 24rpx;
   box-sizing: border-box;
 }
@@ -82,7 +56,7 @@
 }
 
 .entry-form {
-  height: 100vh;
+  height: 100%;
   padding-left: 30rpx;
   padding-right: 30rpx;
   box-sizing: border-box;

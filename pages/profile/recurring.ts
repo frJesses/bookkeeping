@@ -76,7 +76,6 @@ Page({
     } catch (error) {
       console.error('load recurring rules failed', error)
       this.setData({ isLoading: false })
-      wx.showToast({ title: '固定收支加载失败', icon: 'none' })
     }
   },
   async openCreateForm(this: RecurringPageInstance) {

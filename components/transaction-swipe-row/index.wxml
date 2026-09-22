@@ -1,8 +1,5 @@
 <view class="swipe-shell">
   <view class="swipe-actions {{offsetRpx === 0 ? 'swipe-actions-hidden' : ''}}">
-    <view class="swipe-action edit-action" role="button" aria-label="编辑" catchtap="handleEdit">
-      <image class="swipe-action-image" src="/assets/actions/edit.svg" mode="aspectFit"></image>
-    </view>
     <view class="swipe-action delete-action" role="button" aria-label="删除" catchtap="handleDelete">
       <image class="swipe-action-image" src="/assets/actions/delete.svg" mode="aspectFit"></image>
     </view>
@@ -14,6 +11,7 @@
     bindtouchmove="handleTouchMove"
     bindtouchend="handleTouchEnd"
     bindtouchcancel="handleTouchEnd"
+    catchtap="handleTap"
   >
     <image class="record-icon" src="{{iconSource}}" mode="aspectFit" binderror="handleIconError"></image>
     <view class="record-info">

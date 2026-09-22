@@ -87,7 +87,7 @@ Component({
         this.setData({ list: [], status: 'loading', hasMore: false })
         this.triggerEvent('change', { list: [] })
       } else if (mode === 'refresh') {
-        this.setData({ isRefreshing: true })
+        this.setData({ isRefreshing: true, status: 'loading' })
       } else {
         this.setData({ isLoadingMore: true })
       }

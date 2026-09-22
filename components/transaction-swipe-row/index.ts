@@ -16,7 +16,7 @@ type SwipeRowInternalInstance = WechatMiniprogram.Component.TrivialInstance & {
   close: () => void
 }
 
-const ACTION_WIDTH_RPX = 216
+const ACTION_WIDTH_RPX = 108
 const ACTION_GAP_RPX = 20
 const REVEAL_WIDTH_RPX = ACTION_WIDTH_RPX + ACTION_GAP_RPX
 
@@ -88,7 +88,7 @@ Component({
         this.setData({ offsetRpx: 0, isDragging: false })
       }
     },
-    handleEdit(this: SwipeRowInternalInstance) {
+    handleTap(this: SwipeRowInternalInstance) {
       this.close()
       this.triggerEvent('edit', { record: this.data.record })
     },

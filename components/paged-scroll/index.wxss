@@ -19,25 +19,6 @@
   box-sizing: border-box;
 }
 
-.load-state-image {
-  display: block;
-  width: 260rpx;
-  height: 220rpx;
-}
-
-.state-title {
-  margin-top: 18rpx;
-  color: #333333;
-  font-size: 28rpx;
-  font-weight: 600;
-}
-
-.state-description {
-  margin-top: 10rpx;
-  color: #989898;
-  font-size: 23rpx;
-}
-
 .loading-state {
   min-height: 220rpx;
   color: #989898;
@@ -59,27 +40,6 @@
   width: 30rpx;
   height: 30rpx;
   border-width: 4rpx;
-}
-
-.retry-button {
-  display: flex;
-  width: 220rpx !important;
-  height: 72rpx;
-  margin: 30rpx 0 0 !important;
-  padding: 0;
-  align-items: center;
-  justify-content: center;
-  border: 0;
-  border-radius: 18rpx;
-  background: #01c6a6;
-  color: #ffffff;
-  font-size: 25rpx;
-  line-height: 1;
-  box-sizing: border-box;
-}
-
-.retry-button::after {
-  border: 0;
 }
 
 .load-more-row {

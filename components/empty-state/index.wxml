@@ -1,0 +1,6 @@
+<view class="empty-state empty-state-{{mode}} {{compact ? 'empty-state-compact' : ''}}">
+  <view class="empty-state-icon"><image src="/assets/states/ledger-state.svg" mode="aspectFit"></image></view>
+  <text class="empty-state-title">{{title}}</text>
+  <text wx:if="{{description}}" class="empty-state-description">{{description}}</text>
+  <button wx:if="{{showRetry}}" class="empty-state-retry" bindtap="handleRetry">重新加载</button>
+</view>

@@ -85,7 +85,6 @@ Page({
     } catch (error) {
       console.error('load loan page failed', error)
       this.setData({ isLoading: false })
-      wx.showToast({ title: '借出记录加载失败', icon: 'none' })
     }
   },
   openCreateForm(this: LoanPageInstance) {

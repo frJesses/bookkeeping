@@ -8,7 +8,13 @@
     <view class="recurring-content">
       <view class="recurring-tip">设置后，每月到执行日会自动生成一条流水。2月没有31日时会按当月最后一天执行。</view>
       <view wx:if="{{isLoading}}" class="recurring-state">正在加载</view>
-      <view wx:elif="{{!rules.length}}" class="recurring-empty">还没有固定收支，先添加一条吧</view>
+      <empty-state
+        wx:elif="{{!rules.length}}"
+        mode="empty"
+        compact="{{true}}"
+        title="还没有固定收支"
+        description="先添加一条固定收支吧"
+      />
       <view wx:else class="recurring-list">
         <view wx:for="{{rules}}" wx:key="id" class="recurring-card {{item.isEnabled ? '' : 'recurring-card-disabled'}}">
           <view class="recurring-card-top"><view class="recurring-identity"><image wx:if="{{item.categoryIcon}}" src="{{item.categoryIcon}}" mode="aspectFit"></image><view><text class="recurring-title">{{item.title}}</text><text class="recurring-category">{{item.categoryName}} · 每月{{item.dayOfMonth}}日</text></view></view><text class="recurring-status {{item.isEnabled ? 'enabled' : 'disabled'}}">{{item.isEnabled ? '执行中' : '已停用'}}</text></view>

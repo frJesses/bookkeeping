@@ -1,6 +1,6 @@
 {
   "navigationStyle": "custom",
   "usingComponents": {
-    "adaptive-viewport": "../../components/adaptive-viewport/index"
+    "empty-state": "../../components/empty-state/index"
   }
 }

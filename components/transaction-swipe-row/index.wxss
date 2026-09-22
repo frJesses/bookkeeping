@@ -11,9 +11,12 @@
 .swipe-actions {
   position: absolute;
   inset: 0 0 0 auto;
-  display: grid;
-  width: 216rpx;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  width: 128rpx;
+  height: 100%;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .swipe-actions-hidden {
@@ -33,11 +36,10 @@
   height: 34rpx;
 }
 
-.edit-action {
-  background: #01c6a6;
-}
-
 .delete-action {
+  width: 108rpx;
+  height: 108rpx;
+  flex-shrink: 0;
   background: #ff6b6b;
 }
 

@@ -309,6 +309,21 @@ export async function getCategoryOptions(type: RecordType): Promise<AddCategoryI
     }
   })
 }
+
+export async function createCategory(payload: { type: RecordType; name: string; icon: string }) {
+  const data = await post<FrontendCategoryDTO>(
+    '/frontend/bookkeeping/category/create',
+    {
+      type: payload.type,
+      name: payload.name,
+      icon: payload.icon || null,
+      iconText: payload.name.slice(0, 2),
+      iconColor: '#01c6a6',
+    },
+    { skipToken: true },
+  )
+  return data
+}
 export function getCategorySelection(name: string, categories: AddCategoryItem[]) {
   const activeCategory = categories.find((item) => item.name === name)
   if (!activeCategory) {

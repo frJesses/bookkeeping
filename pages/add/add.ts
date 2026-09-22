@@ -4,6 +4,7 @@ import {
   applyAmountAction,
   buildSubmitPayload,
   createAddPageState,
+  createCategory,
   formatDateLabel,
   formatAmountDisplay,
   getCategoryOptions,
@@ -158,8 +159,8 @@ Page({
         ? selectedIcon
         : ''
       : customIcons.includes(this.data.selectedCustomIcon)
-      ? this.data.selectedCustomIcon
-      : customIcons[0] || ''
+        ? this.data.selectedCustomIcon
+        : customIcons[0] || ''
     const selectedIndex = customIcons.indexOf(selectedCustomIcon)
     const customIconPage = selectedIndex >= 0 ? Math.floor(selectedIndex / 12) : 0
     this.setData({
@@ -174,7 +175,7 @@ Page({
     this.setData({ showTagModal: false })
   },
   handleCustomTagName(e: WechatMiniprogram.CustomEvent<{ value?: string }>) {
-    this.setData({ customTagName: (e.detail.value || '').slice(0, 4) })
+    this.setData({ customTagName: e.detail.value || '' })
   },
   selectCustomIcon(e: WechatMiniprogram.BaseEvent) {
     const { icon } = e.currentTarget.dataset as { icon?: string }
@@ -194,26 +195,33 @@ Page({
     }
     this.setData({ customIconPage: page })
   },
-  confirmCustomTag() {
+  async confirmCustomTag() {
     const name = (this.data.customTagName || '').trim()
     if (!name) {
       wx.showToast({ title: '请输入标签名称', icon: 'none' })
       return
     }
-    const categories = [
-      ...this.data.categories,
-      {
-        id: `custom-${Date.now()}`,
+    if (Array.from(name).length > 4) {
+      wx.showToast({ title: '分类名称最多4个字', icon: 'none' })
+      return
+    }
+    if (!this.data.selectedCustomIcon) {
+      wx.showToast({ title: '请选择分类图标', icon: 'none' })
+      return
+    }
+    try {
+      await createCategory({
+        type: this.data.activeType,
         name,
         icon: this.data.selectedCustomIcon,
-        accent: '#01c6a6',
-        surface: '#e4f8f2',
-        shadow: 'none',
-        activeSurface: '#e4f8f2',
-        activeShadow: 'none',
-      },
-    ]
-    this.setData({ categories, showTagModal: false, customTagName: '' })
+      })
+      await this.loadCategories(this.data.activeType)
+      this.setData({ showTagModal: false, customTagName: '' })
+      wx.showToast({ title: '分类已添加', icon: 'success' })
+    } catch (error) {
+      console.error('create custom category failed', error)
+      wx.showToast({ title: '分类添加失败，请重试', icon: 'none' })
+    }
   },
   noop() {},
   handleRemarkChange(e: WechatMiniprogram.CustomEvent<{ value?: string }>) {

@@ -19,7 +19,13 @@
     </view>
   </scroll-view>
   <view wx:elif="{{isLoading}}" class="loan-state">正在加载</view>
-  <view wx:else class="loan-empty">还没有借出记录，先添加一笔吧</view>
+  <empty-state
+    wx:else
+    mode="empty"
+    compact="{{true}}"
+    title="还没有借出记录"
+    description="先添加一笔借出记录吧"
+  />
   <view class="loan-add-bar"><button class="loan-add" bindtap="openCreateForm">添加借出记录</button></view>
 
   <view wx:if="{{showForm}}" class="loan-mask" catchtap="closeForm"><view class="loan-sheet" catchtap="noop"><text class="loan-sheet-title">{{editingId ? '编辑借出记录' : '添加借出记录'}}</text><input class="loan-input" value="{{borrower}}" placeholder="借款人" data-field="borrower" bindinput="handleInput" /><input class="loan-input" type="digit" value="{{amount}}" placeholder="借出金额" data-field="amount" bindinput="handleInput" /><picker mode="date" value="{{loanDate}}" end="{{todayDate}}" bindchange="handleLoanDateChange"><view class="loan-date-row"><text>借出日期</text><view class="loan-date-value"><text>{{loanDate}}</text><text class="loan-caret"></text></view></view></picker><view class="loan-due-toggle" bindtap="toggleDueDate"><text class="loan-checkbox {{hasDueDate ? 'checked' : ''}}">{{hasDueDate ? '✓' : ''}}</text><text>设置预计归还日期</text></view><picker wx:if="{{hasDueDate}}" mode="date" value="{{dueDate}}" start="{{loanDate}}" bindchange="handleDueDateChange"><view class="loan-date-row"><text>预计归还</text><view class="loan-date-value"><text>{{dueDate}}</text><text class="loan-caret"></text></view></view></picker><input class="loan-input" value="{{remark}}" placeholder="备注（可选）" maxlength="255" data-field="remark" bindinput="handleInput" /><text wx:if="{{formError}}" class="loan-form-error">{{formError}}</text><view class="loan-sheet-actions"><button bindtap="closeForm">取消</button><button class="loan-save" bindtap="saveLoan">保存</button></view></view></view>
