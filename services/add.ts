@@ -8,13 +8,14 @@ import {
   type KeypadKey,
   type RecordType,
 } from '../constants/add'
-import { get, post, put } from './request'
+import { del, get, post, put } from './request'
 import { ensureOpenId } from './auth'
 import { TransactionDetailRecord } from './transaction-detail'
 import { CATEGORY_ICON_ASSETS, getCategoryIconAsset } from '../constants/design'
 export type AddCategoryItem = CategoryItem
 type FrontendCategoryDTO = {
   id: string | number
+  openId?: string | null
   type: string
   name: string
   icon: string | null
@@ -241,6 +242,7 @@ function mapCategoryOptions(items: FrontendCategoryDTO[]): AddCategoryItem[] {
       return {
         id: item.id,
         name: item.name.trim(),
+        isDefault: Boolean(item.isDefault),
         icon: /^(https?:\/\/|\/)/.test(remoteIcon)
           ? remoteIcon
           : getCategoryIconAsset(item.name, CATEGORY_ICON_ASSETS['日用']),
@@ -250,11 +252,13 @@ function mapCategoryOptions(items: FrontendCategoryDTO[]): AddCategoryItem[] {
 }
 export async function getCategoryOptions(type: RecordType): Promise<AddCategoryItem[]> {
   try {
+    const openId = await ensureOpenId()
     const categories = await get<FrontendCategoryDTO[]>(
       '/frontend/bookkeeping/category/list',
       {
         type,
         isEnabled: true,
+        openId,
       },
       {
         skipToken: true,
@@ -304,6 +308,7 @@ export async function getCategoryOptions(type: RecordType): Promise<AddCategoryI
     return {
       id: `local-${type}-${index}`,
       name,
+      isDefault: true,
       icon: getCategoryIconAsset(name, CATEGORY_ICON_ASSETS['日用']),
       ...CATEGORY_PALETTES[index % CATEGORY_PALETTES.length],
     }
@@ -311,9 +316,11 @@ export async function getCategoryOptions(type: RecordType): Promise<AddCategoryI
 }
 
 export async function createCategory(payload: { type: RecordType; name: string; icon: string }) {
+  const openId = await ensureOpenId()
   const data = await post<FrontendCategoryDTO>(
     '/frontend/bookkeeping/category/create',
     {
+      openId,
       type: payload.type,
       name: payload.name,
       icon: payload.icon || null,
@@ -323,6 +330,10 @@ export async function createCategory(payload: { type: RecordType; name: string; 
     { skipToken: true },
   )
   return data
+}
+export async function deleteCategory(id: string | number) {
+  const openId = await ensureOpenId()
+  return del<null>('/frontend/bookkeeping/category/delete', { openId, id }, { skipToken: true })
 }
 export function getCategorySelection(name: string, categories: AddCategoryItem[]) {
   const activeCategory = categories.find((item) => item.name === name)

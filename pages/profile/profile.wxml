@@ -27,6 +27,7 @@
     <view class="menu-card">
       <view class="menu-row" data-action="bills" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/profile/bills.png" mode="aspectFit"></image><text>我的账本</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></view>
       <view class="menu-row" data-action="budget" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/profile/budget.png" mode="aspectFit"></image><text>我的预算</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></view>
+      <view class="menu-row" data-action="categories" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/profile/category-management.svg" mode="aspectFit"></image><text>分类管理</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></view>
     </view>
 
     <view class="menu-card">

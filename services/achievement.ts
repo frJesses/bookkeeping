@@ -1,4 +1,4 @@
-import { get } from './request'
+import { get, post } from './request'
 import { ensureOpenId } from './auth'
 
 export type AchievementItem = {
@@ -12,6 +12,7 @@ export type AchievementItem = {
   progressPercent: number
   isUnlocked: boolean
   unlockedAt: string | null
+  effectSeen: boolean
 }
 
 export type AchievementCard = {
@@ -24,6 +25,7 @@ export type AchievementCard = {
   image: string
   imageClass: string
   isUnlocked: boolean
+  effectSeen: boolean
 }
 
 export type AchievementPageData = {
@@ -41,30 +43,9 @@ type AchievementResponse = {
   achievements: AchievementItem[]
 }
 
-const SEEN_ACHIEVEMENTS_STORAGE_KEY = 'bookkeeping_home_achievement_effect_seen_v3'
-
-type SeenAchievementMap = Record<string, string[]>
-
-export function getNewAchievementEffects(openId: string, earned: AchievementCard[], limit = 5) {
-  const seenMap = wx.getStorageSync<SeenAchievementMap>(SEEN_ACHIEVEMENTS_STORAGE_KEY) || {}
-  const seenCodes = Array.isArray(seenMap[openId]) ? seenMap[openId] : []
-  if (!earned.length) {
-    if (seenMap[openId]) {
-      const nextSeenMap = { ...seenMap }
-      delete nextSeenMap[openId]
-      wx.setStorageSync(SEEN_ACHIEVEMENTS_STORAGE_KEY, nextSeenMap)
-    }
-    return []
-  }
-  const newAchievements = earned.filter((item) => !seenCodes.includes(item.code))
-  if (!newAchievements.length) {
-    return []
-  }
-  wx.setStorageSync(SEEN_ACHIEVEMENTS_STORAGE_KEY, {
-    ...seenMap,
-    [openId]: [...new Set([...seenCodes, ...earned.map((item) => item.code)])],
-  })
-  return newAchievements.slice(0, limit)
+export async function markAchievementEffectsSeen(codes: string[]) {
+  const openId = await ensureOpenId()
+  await post<null>('/frontend/bookkeeping/achievement/effect-seen', { openId, codes }, { skipToken: true })
 }
 
 function resolveAchievementImage(iconKey: string) {
@@ -98,6 +79,7 @@ function mapAchievement(item: AchievementItem): AchievementCard {
     image,
     imageClass: '',
     isUnlocked: item.isUnlocked,
+    effectSeen: Boolean(item.effectSeen),
   }
 }
 

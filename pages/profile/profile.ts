@@ -47,6 +47,7 @@ Page({
     const routeMap: Record<string, string> = {
       bills: '/pages/bill/bill',
       budget: '/pages/budget/budget',
+      categories: '/pages/profile/categories',
       achievement: '/pages/profile/achievement',
       personal: '/pages/profile/personal',
       settings: '/pages/profile/settings',

@@ -12,8 +12,7 @@ import {
   type HomeRecentRecordDTO,
   type HomeRecordItem,
 } from '../../services/home'
-import { ensureOpenId } from '../../services/auth'
-import { getAchievementPageData, getNewAchievementEffects, type AchievementCard } from '../../services/achievement'
+import { getAchievementPageData, markAchievementEffectsSeen, type AchievementCard } from '../../services/achievement'
 import { cacheEditingHomeTransaction, deleteTransactionById } from '../../services/transaction-detail'
 import { createAvailableMonthOptions, createMonthPickerState, createRecentYearOptions } from '../../utils/month-picker'
 import { getWindowInfo } from '../../utils/system-info'
@@ -49,6 +48,7 @@ type HomePageInstance = TabBarBehaviorPageInstance & {
   pickerSelection: number[]
   isPickerScrolling: boolean
   pendingPickerConfirmation: boolean
+  shownAchievementCodes: Set<string>
 }
 
 function setCustomTabBarHidden(page: HomePageInstance, hidden: boolean) {
@@ -109,7 +109,6 @@ Page({
           status: 'normal',
         })
       : Promise.resolve()
-    const openId = await ensureOpenId()
     const achievementTask = getAchievementPageData().catch((error) => {
       console.error('get achievement effect data failed', error)
       return null
@@ -120,7 +119,10 @@ Page({
       achievementTask,
     ])
     if (requestVersion === this.loadPageDataVersion && selectedMonth === this.data.selectedMonth) {
-      const unlockEffects = achievementData ? getNewAchievementEffects(openId, achievementData.earned) : []
+      const pendingEffects = achievementData
+        ? achievementData.earned.filter((item) => !item.effectSeen && !this.shownAchievementCodes.has(item.code))
+        : []
+      const unlockEffects = pendingEffects.slice(0, 5)
       this.setData(
         {
           ...overview,
@@ -128,7 +130,14 @@ Page({
           showAchievementEffect: unlockEffects.length > 0,
           unlockEffectIndex: 0,
         },
-        () => setCustomTabBarHidden(this, this.data.showDatePicker || this.data.showAchievementEffect),
+        () => {
+          setCustomTabBarHidden(this, this.data.showDatePicker || this.data.showAchievementEffect)
+          if (!pendingEffects.length) return
+          pendingEffects.forEach((item) => this.shownAchievementCodes.add(item.code))
+          void markAchievementEffectsSeen(pendingEffects.map((item) => item.code)).catch((error) => {
+            console.error('mark achievement effects seen failed', error)
+          })
+        },
       )
     }
   },
@@ -313,6 +322,7 @@ Page({
   pickerSelection: [0, 0],
   isPickerScrolling: false,
   pendingPickerConfirmation: false,
+  shownAchievementCodes: new Set<string>(),
   unlockEffectTouchStartX: 0,
   goToAdd(e: WechatMiniprogram.BaseEvent) {
     const { type } = e.currentTarget.dataset as { type?: EntryType }

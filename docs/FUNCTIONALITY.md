@@ -25,7 +25,7 @@
 | 收支预览 | 本月与上月总收入、支出、结余和对比数据 | `pages/stats/preview.ts`、`services/stats-preview.ts` |
 | 我的账单 | 年度筛选、全部/支出/收入筛选、月账单列表、月账单详情 | `pages/bill/bill.ts`、`pages/bill/record-detail/index.ts` |
 | 预算 | 年份/月选择、收入、分类预算、已用/剩余/使用率、保存、删除分类、重置预算 | `pages/budget/budget.ts`、`services/budget.ts` |
-| 个人中心 | 用户资料、头像上传到七牛云、连续打卡/总天数/总笔数、账本/预算/成就/反馈入口、微信分享 | `pages/profile/profile.ts`、`pages/profile/personal.ts` |
+| 个人中心 | 用户资料、头像上传到七牛云、连续打卡/总天数/总笔数、账本/预算/分类管理/成就/反馈入口、微信分享 | `pages/profile/profile.ts`、`pages/profile/categories.ts`、`pages/profile/personal.ts` |
 | 成就 | 已获得/未获得徽章、实时成就进度、加入日期 | `pages/profile/achievement.ts`、`services/achievement.ts` |
 | 意见反馈 | 类型、描述、联系方式、最多 3 张图片、七牛云图片上传、提交反馈 | `pages/profile/feedback.ts`、`services/feedback.ts` |
 | 会员中心 | 会员页面和权益展示界面 | `pages/profile/member/*` |
@@ -35,7 +35,7 @@
 小程序当前调用的记账前端接口包括：
 
 - 身份：`/frontend/bookkeeping/auth/openid`、`/auth/user-info`、`/auth/avatar-upload`
-- 分类：`/frontend/bookkeeping/category/list`
+- 分类：`/frontend/bookkeeping/category/list`、`create`、`delete`
 - 流水：`/transaction/recent`、`create`、`update`、`delete`
 - 汇总：`/transaction/month-bill`、`year-bill`、`month-bill/detail`
 - 分析：`/transaction/calendar`、`expense-trend`、`category-distribution`
@@ -48,13 +48,11 @@
 
 ## 四、已实现但需要补强的部分
 
-### 1. 自定义分类没有真正持久化
+### 1. 自定义分类
 
-添加页可以临时新增“标签/分类”，使用 `custom-*` ID 放入当前页面的分类数组；重新进入
-页面后会重新从接口加载分类。后端当前也没有小程序端创建分类接口，因此它是当前会话的
-临时能力，不能作为完整的自定义分类需求交付。
-
-建议补齐：分类创建、编辑、停用、排序和用户数据隔离，并让流水引用真实分类 ID。
+“我的”页面提供分类管理入口。默认分类对所有用户可见且不可删除；自定义分类写入创建者
+`openId`，查询时只返回默认分类和当前用户自己的自定义分类。删除采用停用方式，历史流水
+仍保留分类引用，用户之后可以重新创建同名分类。
 
 ### 2. 头像已具备上传链路，但需要线上验证
 

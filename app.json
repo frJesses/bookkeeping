@@ -13,6 +13,7 @@
     "pages/profile/achievement",
     "pages/profile/personal",
     "pages/profile/settings",
+    "pages/profile/categories",
     "pages/profile/import",
     "pages/profile/recurring",
     "pages/profile/loan",

@@ -1,0 +1,56 @@
+<view class="categories-page" style="padding-top: {{statusBarHeight}}px;">
+  <image class="page-background" src="/assets/profile/background.png" mode="scaleToFill"></image>
+  <view class="ds-header">
+    <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/common/back.png" mode="aspectFit"></image></view>
+    <text class="ds-header-title">分类管理</text>
+  </view>
+  <view class="categories-content">
+    <view class="type-tabs">
+      <view class="type-tab {{activeType === 'expense' ? 'type-tab-active' : ''}}" data-type="expense" bindtap="handleTypeChange">支出</view>
+      <view class="type-tab {{activeType === 'income' ? 'type-tab-active' : ''}}" data-type="income" bindtap="handleTypeChange">收入</view>
+    </view>
+    <view class="category-hint">默认分类不可删除，自建分类仅当前用户可删除</view>
+    <scroll-view scroll-y class="category-scroll" show-scrollbar="false">
+      <view wx:if="{{isLoading}}" class="category-state">正在加载分类</view>
+      <view wx:elif="{{errorMessage}}" class="category-state category-state-error">{{errorMessage}}</view>
+      <view wx:else class="category-card">
+        <view wx:for="{{categories}}" wx:key="id" class="category-row">
+          <view class="category-main">
+            <image class="category-icon" src="{{item.icon}}" mode="aspectFit"></image>
+            <text class="category-name">{{item.name}}</text>
+          </view>
+          <text wx:if="{{item.isDefault}}" class="default-label">默认</text>
+          <view wx:else class="category-delete {{deletingId === item.id ? 'category-delete-disabled' : ''}}" data-index="{{index}}" role="button" aria-label="删除分类" catchtap="removeCategory">
+            <image class="category-delete-image" src="/assets/actions/delete-danger.svg" mode="aspectFit"></image>
+          </view>
+        </view>
+        <view wx:if="{{!categories.length}}" class="category-state">暂无分类</view>
+      </view>
+    </scroll-view>
+    <button class="add-category-button" bindtap="openCreateModal">＋ 添加分类</button>
+  </view>
+  <view wx:if="{{showCreateModal}}" class="create-mask" catchtap="closeCreateModal">
+    <view class="create-sheet" catchtap="noop">
+      <view class="create-sheet-head"><text>新增分类</text><text class="create-close" bindtap="closeCreateModal">×</text></view>
+      <view class="create-input-wrap">
+        <input
+          class="create-input"
+          maxlength="32"
+          value="{{newName}}"
+          placeholder="请输入分类名称"
+          bindinput="handleNameInput"
+          bindcompositionstart="handleNameCompositionStart"
+          bindcompositionend="handleNameCompositionEnd"
+        />
+        <text class="create-input-count">{{nameLength}}/4</text>
+      </view>
+      <text class="create-label">选择图标</text>
+      <view class="icon-options">
+        <view wx:for="{{iconOptions}}" wx:key="*this" class="icon-option {{selectedIcon === item ? 'icon-option-active' : ''}}" data-index="{{index}}" bindtap="selectIcon">
+          <image class="icon-option-image" src="{{item}}" mode="aspectFit"></image>
+        </view>
+      </view>
+      <button class="create-submit" loading="{{saving}}" disabled="{{saving}}" bindtap="confirmCreate">保存分类</button>
+    </view>
+  </view>
+</view>

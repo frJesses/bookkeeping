@@ -3,6 +3,7 @@ export type CategoryItem = {
   id: string | number
   name: string
   icon: string
+  isDefault?: boolean
   accent: string
   surface: string
   shadow: string
