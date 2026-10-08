@@ -24,6 +24,7 @@ type PagedScrollInternalInstance = PagedScrollInstance & {
   fetchMethod?: PagedScrollFetchMethod
   requestParams: Record<string, unknown>
   requestVersion: number
+  loadingRequestKey: string
   loadPage: (pageNo: number, mode: LoadMode, requestVersion: number) => Promise<void>
 }
 
@@ -83,6 +84,11 @@ Component({
       if (!this.fetchMethod) {
         return
       }
+      const requestKey = `${requestVersion}:${pageNo}`
+      if (this.loadingRequestKey === requestKey) {
+        return
+      }
+      this.loadingRequestKey = requestKey
       if (mode === 'initial') {
         this.setData({ list: [], status: 'loading', hasMore: false })
         this.triggerEvent('change', { list: [] })
@@ -136,6 +142,10 @@ Component({
           isLoadingMore: false,
         })
         this.triggerEvent('change', { list: [] })
+      } finally {
+        if (this.loadingRequestKey === requestKey) {
+          this.loadingRequestKey = ''
+        }
       }
     },
     handleRefresh(this: PagedScrollInternalInstance) {
@@ -158,6 +168,7 @@ Component({
     created(this: PagedScrollInternalInstance) {
       this.requestParams = {}
       this.requestVersion = 0
+      this.loadingRequestKey = ''
     },
   },
 })

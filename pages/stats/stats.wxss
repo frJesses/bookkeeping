@@ -191,6 +191,7 @@
 }
 
 .donut {
+  position: relative;
   display: flex;
   width: 258rpx;
   height: 258rpx;
@@ -198,10 +199,20 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: conic-gradient(#01c6a6 0 41%, #ffd85a 41% 65%, #ff8087 65% 79%, #75a9ef 79% 91%, #5bd3ef 91% 100%);
+  background: transparent;
+}
+
+.donut-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .donut-hole {
+  position: relative;
+  z-index: 1;
   display: flex;
   width: 150rpx;
   height: 150rpx;
@@ -625,7 +636,7 @@
   transform: translateY(4rpx) rotate(225deg);
 }
 
-.category-modal-record text:last-child {
+.category-modal-record-amount {
   color: #333333;
   font-family: DIN, sans-serif;
   font-weight: 600;

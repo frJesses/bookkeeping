@@ -24,7 +24,7 @@
   height: 132rpx;
 }
 
-.empty-state-compact .empty-state-icon image {
+.empty-state-compact .empty-state-icon-image {
   width: 96rpx;
   height: 96rpx;
 }
@@ -54,14 +54,14 @@
   justify-content: center;
 }
 
-.empty-state-icon image {
+.empty-state-icon-image {
   display: block;
   width: 136rpx;
   height: 136rpx;
   opacity: 0.78;
 }
 
-.empty-state-error .empty-state-icon image {
+.empty-state-error .empty-state-icon-image {
   opacity: 0.62;
 }
 

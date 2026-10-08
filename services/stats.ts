@@ -51,13 +51,6 @@ type MonthDetailResponse = {
   incomeRankings: MonthRanking[]
 }
 
-type YearBillResponse = {
-  year: string
-  totalExpense: string
-  totalIncome: string
-  totalBalance: string
-}
-
 type CategoryDistributionResponse = {
   categories: MonthCategory[]
   rankings: MonthRanking[]
@@ -103,6 +96,19 @@ export type StatsPageData = {
 }
 
 const CATEGORY_COLORS = ['#01c6a6', '#ffd85a', '#ff8087', '#75a9ef', '#5bd3ef', '#a57cff']
+
+function createEmptyMonthDetail(month: string): MonthDetailResponse {
+  return {
+    month,
+    totalExpense: '0.00',
+    totalIncome: '0.00',
+    totalBalance: '0.00',
+    categories: [],
+    incomeCategories: [],
+    rankings: [],
+    incomeRankings: [],
+  }
+}
 
 function formatMonthLabel(month: string) {
   const [year, monthNumber] = month.split('-')
@@ -178,7 +184,7 @@ function mapCategories(detail: MonthDetailResponse, flow: StatsFlowMode) {
       percent: Number(rest.reduce((sum, item) => sum + item.percent, 0).toFixed(2)),
       value: rest.reduce((sum, item) => sum + parseAmount(item.value), 0).toFixed(2),
       count: rest.reduce((sum, item) => sum + item.count, 0),
-      icon: getCategoryIconAsset('日用'),
+      icon: getCategoryIconAsset('其他'),
       color: '#5bd3ef',
       records: rest.reduce((all, item) => all.concat(item.records), [] as StatsCategoryRecord[]),
     },
@@ -238,14 +244,16 @@ export async function getStatsPageData(
 ): Promise<StatsPageData> {
   const openId = await ensureOpenId()
   const [detail, trendExpense, trendIncome, distribution] = await Promise.all([
-    get<MonthDetailResponse>(
-      '/frontend/bookkeeping/transaction/month-bill/detail',
-      {
-        openId,
-        month,
-      },
-      { skipToken: true },
-    ),
+    report === 'year'
+      ? Promise.resolve(createEmptyMonthDetail(month))
+      : get<MonthDetailResponse>(
+          '/frontend/bookkeeping/transaction/month-bill/detail',
+          {
+            openId,
+            month,
+          },
+          { skipToken: true },
+        ),
     get<ExpenseTrendResponse>(
       '/frontend/bookkeeping/transaction/expense-trend',
       {
@@ -277,17 +285,6 @@ export async function getStatsPageData(
       { skipToken: true },
     ),
   ])
-  const yearSummary =
-    report === 'year'
-      ? await get<YearBillResponse>(
-          '/frontend/bookkeeping/transaction/year-bill',
-          {
-            openId,
-            year: (periodDate || month).slice(0, 4),
-          },
-          { skipToken: true },
-        )
-      : null
   const periodDetail =
     flow === 'expense'
       ? { ...detail, categories: distribution.categories, rankings: distribution.rankings }
@@ -297,15 +294,15 @@ export async function getStatsPageData(
   const periodExpense =
     report === 'week'
       ? sumTrendItems(trendExpense.currentTrend.list)
-      : yearSummary
-        ? parseAmount(yearSummary.totalExpense)
-        : parseAmount(detail.totalExpense)
+      : report === 'year'
+      ? sumTrendItems(trendExpense.currentTrend.list)
+      : parseAmount(detail.totalExpense)
   const periodIncome =
     report === 'week'
       ? sumTrendItems(trendIncome.currentTrend.list)
-      : yearSummary
-        ? parseAmount(yearSummary.totalIncome)
-        : parseAmount(detail.totalIncome)
+      : report === 'year'
+      ? sumTrendItems(trendIncome.currentTrend.list)
+      : parseAmount(detail.totalIncome)
   const barData = mapBars(trendExpense, trendIncome)
   return {
     month: detail.month,

@@ -16,7 +16,7 @@
   <view class="landing-ledger">
     <view class="landing-ledger-head"><text>{{selectedDateLabel}}</text><text>支出: {{selectedExpenseText}}</text></view>
     <view class="landing-divider"></view>
-    <scroll-view scroll-y bounces="false" class="landing-records" show-scrollbar="false">
+    <scroll-view scroll-y bounces="false" class="landing-records" show-scrollbar="true">
       <empty-state
         wx:if="{{errorMessage}}"
         mode="error"
@@ -32,9 +32,7 @@
     <button bindtap="startEntry"><image src="/assets/calendar/add-record.png" mode="aspectFit"></image><text>记一笔</text></button>
   </view>
 </view>
-<view wx:if="{{showDatePicker}}" class="date-mask" bindtap="closeDatePicker">
-  <view class="date-sheet" catchtap="noop">
-    <text class="date-title">月份选择</text>
+<popup-sheet wx:if="{{showDatePicker}}" visible="{{showDatePicker}}" title="月份选择" sheet-class="date-sheet" bind:close="closeDatePicker">
     <picker-view class="date-wheels" value="{{pickerValue}}" indicator-style="height: 92rpx;" bindchange="handleDatePickerChange" bindpickstart="handleDatePickerStart" bindpickend="handleDatePickerEnd">
       <picker-view-column>
         <view wx:for="{{pickerYears}}" wx:key="*this" class="wheel-item">{{item}}年</view>
@@ -44,5 +42,4 @@
       </picker-view-column>
     </picker-view>
     <view class="date-actions"><button bindtap="closeDatePicker">取消</button><button class="date-confirm" bindtap="confirmDatePicker">确定</button></view>
-  </view>
-</view>
+</popup-sheet>

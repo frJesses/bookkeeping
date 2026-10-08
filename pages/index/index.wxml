@@ -86,9 +86,7 @@
       </block>
     </view>
   </paged-scroll>
-  <view wx:if="{{showDatePicker}}" class="date-mask" bindtap="closeDatePicker">
-    <view class="date-sheet" catchtap="noop">
-      <text class="date-title">日期选择</text>
+  <popup-sheet wx:if="{{showDatePicker}}" visible="{{showDatePicker}}" title="日期选择" sheet-class="date-sheet" bind:close="closeDatePicker">
       <picker-view class="date-wheels" value="{{pickerValue}}" indicator-style="height: 92rpx;" bindchange="handleDatePickerChange" bindpickstart="handleDatePickerStart" bindpickend="handleDatePickerEnd">
         <picker-view-column>
           <view wx:for="{{pickerYears}}" wx:key="*this" class="wheel-item">{{item}}年</view>
@@ -98,9 +96,8 @@
         </picker-view-column>
       </picker-view>
       <view class="date-actions"><button bindtap="closeDatePicker">取消</button><button class="date-confirm" bindtap="confirmDatePicker">确定</button></view>
-    </view>
-  </view>
-  <view wx:if="{{showAchievementEffect}}" class="unlock-mask" bindtap="closeAchievementEffect">
+  </popup-sheet>
+  <view wx:if="{{showAchievementEffect}}" class="unlock-mask ui-popup-mask" bindtap="closeAchievementEffect">
     <view class="unlock-stage" catchtap="noop" bindtouchstart="handleUnlockTouchStart" bindtouchend="handleUnlockTouchEnd">
       <view class="unlock-close" bindtap="closeAchievementEffect"><text class="unlock-close-icon">×</text></view>
       <view class="unlock-icon-wrap">
@@ -108,7 +105,7 @@
         <view class="unlock-sparkle unlock-sparkle-b"></view>
         <view class="unlock-sparkle unlock-sparkle-c"></view>
         <view class="unlock-sparkle unlock-sparkle-d"></view>
-        <image src="{{unlockEffects[unlockEffectIndex].image}}" mode="aspectFit"></image>
+        <image class="unlock-icon-image" src="{{unlockEffects[unlockEffectIndex].image}}" mode="aspectFit"></image>
       </view>
       <text class="unlock-eyebrow">成就解锁</text>
       <text class="unlock-name">{{unlockEffects[unlockEffectIndex].name}}</text>

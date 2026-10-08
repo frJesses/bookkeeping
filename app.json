@@ -42,6 +42,9 @@
       }
     ]
   },
+  "usingComponents": {
+    "popup-sheet": "/components/popup-sheet/index"
+  },
   "style": "v2",
   "componentFramework": "glass-easel",
   "lazyCodeLoading": "requiredComponents"

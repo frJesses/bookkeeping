@@ -13,6 +13,8 @@ type SwipeRowInternalInstance = WechatMiniprogram.Component.TrivialInstance & {
   startOffsetRpx: number
   isHorizontalGesture: boolean
   viewportWidth: number
+  pendingOffsetRpx: number | null
+  moveTimer: number | null
   close: () => void
 }
 
@@ -68,13 +70,27 @@ Component({
       }
       const deltaRpx = (deltaX * 750) / this.viewportWidth
       const offsetRpx = Math.max(-REVEAL_WIDTH_RPX, Math.min(0, this.startOffsetRpx + deltaRpx))
-      this.setData({ offsetRpx, isDragging: true })
+      this.pendingOffsetRpx = offsetRpx
+      if (this.moveTimer === null) {
+        this.moveTimer = setTimeout(() => {
+          this.moveTimer = null
+          if (this.pendingOffsetRpx !== null) {
+            this.setData({ offsetRpx: this.pendingOffsetRpx, isDragging: true })
+          }
+        }, 16) as unknown as number
+      }
     },
     handleTouchEnd(this: SwipeRowInternalInstance) {
       if (!this.isHorizontalGesture) {
         return
       }
-      const isOpen = this.data.offsetRpx <= -REVEAL_WIDTH_RPX / 2
+      if (this.moveTimer !== null) {
+        clearTimeout(this.moveTimer)
+        this.moveTimer = null
+      }
+      const finalOffsetRpx = this.pendingOffsetRpx === null ? this.data.offsetRpx : this.pendingOffsetRpx
+      this.pendingOffsetRpx = null
+      const isOpen = finalOffsetRpx <= -REVEAL_WIDTH_RPX / 2
       this.setData({
         offsetRpx: isOpen ? -REVEAL_WIDTH_RPX : 0,
         isDragging: false,
@@ -84,6 +100,11 @@ Component({
       }
     },
     close(this: SwipeRowInternalInstance) {
+      if (this.moveTimer !== null) {
+        clearTimeout(this.moveTimer)
+        this.moveTimer = null
+      }
+      this.pendingOffsetRpx = null
       if (this.data.offsetRpx !== 0 || this.data.isDragging) {
         this.setData({ offsetRpx: 0, isDragging: false })
       }
@@ -109,6 +130,8 @@ Component({
       this.startOffsetRpx = 0
       this.isHorizontalGesture = false
       this.viewportWidth = getWindowInfo().windowWidth || 375
+      this.pendingOffsetRpx = null
+      this.moveTimer = null
     },
   },
 })

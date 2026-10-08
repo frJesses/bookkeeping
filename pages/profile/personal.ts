@@ -46,24 +46,6 @@ function getAvatarText(name: string) {
   return value ? value.slice(0, 2).toUpperCase() : '我'
 }
 
-function getWechatNickname() {
-  return new Promise<string>((resolve) => {
-    if (typeof wx.getUserProfile !== 'function') {
-      resolve('')
-      return
-    }
-    wx.getUserProfile({
-      desc: '用于完善个人昵称',
-      lang: 'zh_CN',
-      success: (result) => {
-        const userInfo = result.userInfo
-        resolve(String(userInfo && userInfo.nickName ? userInfo.nickName : '').trim())
-      },
-      fail: () => resolve(''),
-    })
-  })
-}
-
 Page({
   data: {
     statusBarHeight: 20,
@@ -148,13 +130,12 @@ Page({
       this.setData({ isSaving: false })
     }
   },
-  async editNickname(this: PersonalPageInstance) {
+  editNickname(this: PersonalPageInstance) {
     if (this.data.isSaving) {
       return
     }
-    const wechatNickname = await getWechatNickname()
     this.setData({
-      nicknameDraft: wechatNickname || this.data.nickname,
+      nicknameDraft: this.data.nickname,
       showNickname: true,
     })
   },

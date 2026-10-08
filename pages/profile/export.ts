@@ -98,15 +98,8 @@ Page({
         endDate: this.data.endDate,
         type: this.data.type,
       })
-      wx.showModal({
-        title: '导出成功',
-        content: 'ZIP 文件已发送到你的邮箱，解压密码请在导出记录中获取。',
-        confirmText: '查看记录',
-        cancelText: '留在当前页',
-        success: (result) => {
-          if (result.confirm) wx.navigateTo({ url: '/pages/profile/export-records' })
-        },
-      })
+      wx.hideLoading()
+      wx.showToast({ title: '导出成功', icon: 'success', duration: 2200 })
     } catch (error) {
       console.error('create bookkeeping export failed', error)
       this.setData({ errorMessage: '导出失败，请检查邮箱和网络后重试' })

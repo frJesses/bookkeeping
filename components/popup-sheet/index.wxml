@@ -1,0 +1,11 @@
+<view wx:if="{{visible}}" class="popup-mask ui-popup-mask {{maskClass}}" bindtap="handleMaskTap">
+  <view class="popup-sheet ui-popup-sheet {{sheetClass}}" catchtap="stopPropagation">
+    <view wx:if="{{title || showClose}}" class="popup-header">
+      <text class="popup-title">{{title}}</text>
+      <view wx:if="{{showClose}}" class="popup-close" role="button" aria-label="关闭" bindtap="handleClose">
+        <text class="popup-close-icon">×</text>
+      </view>
+    </view>
+    <slot></slot>
+  </view>
+</view>

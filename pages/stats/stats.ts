@@ -3,6 +3,9 @@ import { getWindowInfo } from '../../utils/system-info'
 
 type StatsPageInstance = WechatMiniprogram.Page.Instance<WechatMiniprogram.IAnyObject, WechatMiniprogram.IAnyObject> & {
   requestVersion: number
+  hasShown: boolean
+  donutCanvas: DonutCanvasState | null
+  donutAnimationFrame: number | null
   data: StatsPageData & {
     statusBarHeight: number
     activeReport: StatsReportMode
@@ -20,6 +23,91 @@ type StatsPageInstance = WechatMiniprogram.Page.Instance<WechatMiniprogram.IAnyO
     weekOptions: Array<{ label: string; value: string; rangeLabel: string }>
     weekPickerIndex: number
   }
+}
+
+type DonutCanvasContext = {
+  clearRect: (x: number, y: number, width: number, height: number) => void
+  beginPath: () => void
+  arc: (x: number, y: number, radius: number, startAngle: number, endAngle: number, counterclockwise?: boolean) => void
+  stroke: () => void
+  lineWidth: number
+  lineCap: string
+  strokeStyle: string
+}
+
+type DonutCanvasNode = {
+  width: number
+  height: number
+  getContext: (type: string) => DonutCanvasContext
+  requestAnimationFrame: (callback: (timestamp: number) => void) => number
+  cancelAnimationFrame: (requestId: number) => void
+}
+
+type DonutCanvasState = {
+  node: DonutCanvasNode
+  context: DonutCanvasContext
+  width: number
+  height: number
+  pixelRatio: number
+}
+
+const DONUT_ANIMATION_DURATION = 900
+const DONUT_TRACK_COLOR = '#e9eeee'
+
+function drawDonutFrame(canvas: DonutCanvasState, categories: StatsPageData['categories'], progress: number) {
+  const { context, width, height } = canvas
+  const centerX = width / 2
+  const centerY = height / 2
+  const lineWidth = Math.max(14, width * 0.21)
+  const radius = Math.max(1, Math.min(width, height) / 2 - lineWidth / 2 - 2)
+  const totalPercent = categories.reduce((sum, item) => sum + Math.max(0, item.percent), 0) || 100
+  const targetAngle = Math.PI * 2 * Math.max(0, Math.min(1, progress))
+
+  context.clearRect(0, 0, width, height)
+  context.lineWidth = lineWidth
+  context.lineCap = 'butt'
+  context.beginPath()
+  context.arc(centerX, centerY, radius, 0, Math.PI * 2)
+  context.strokeStyle = DONUT_TRACK_COLOR
+  context.stroke()
+
+  let currentAngle = -Math.PI / 2
+  let remainingAngle = targetAngle
+  categories.forEach((category) => {
+    const segmentAngle = (Math.max(0, category.percent) / totalPercent) * Math.PI * 2
+    const visibleAngle = Math.min(segmentAngle, Math.max(0, remainingAngle))
+    if (visibleAngle > 0) {
+      context.beginPath()
+      context.arc(centerX, centerY, radius, currentAngle, currentAngle + visibleAngle)
+      context.strokeStyle = category.color
+      context.stroke()
+    }
+    currentAngle += segmentAngle
+    remainingAngle -= segmentAngle
+  })
+}
+
+function animateDonut(this: StatsPageInstance, categories: StatsPageData['categories']) {
+  const canvas = this.donutCanvas
+  if (!canvas) {
+    return
+  }
+  if (this.donutAnimationFrame !== null) {
+    canvas.node.cancelAnimationFrame(this.donutAnimationFrame)
+  }
+  const startedAt = Date.now()
+  const render = () => {
+    const elapsed = Date.now() - startedAt
+    const linearProgress = Math.min(1, elapsed / DONUT_ANIMATION_DURATION)
+    const progress = 1 - Math.pow(1 - linearProgress, 3)
+    drawDonutFrame(canvas, categories, progress)
+    if (linearProgress < 1) {
+      this.donutAnimationFrame = canvas.node.requestAnimationFrame(render)
+      return
+    }
+    this.donutAnimationFrame = null
+  }
+  render()
 }
 
 function createCurrentMonth() {
@@ -105,7 +193,10 @@ Page({
     categoryModalTitle: '',
     categoryModalRows: [],
     pickerStart: `${new Date().getFullYear() - 3}-01-01`,
-    pickerEnd: `${new Date().getFullYear()}-${`${new Date().getMonth() + 1}`.padStart(2, '0')}-${`${new Date().getDate()}`.padStart(2, '0')}`,
+    pickerEnd: `${new Date().getFullYear()}-${`${new Date().getMonth() + 1}`.padStart(
+      2,
+      '0',
+    )}-${`${new Date().getDate()}`.padStart(2, '0')}`,
     periodPickerFields: 'month' as 'year' | 'month' | 'day',
     periodPickerValue: initialMonth,
     showWeekPicker: false,
@@ -122,13 +213,21 @@ Page({
     void this.loadStats()
   },
   onShow(this: StatsPageInstance) {
+    if (!this.hasShown) {
+      this.hasShown = true
+      return
+    }
     if (this.requestVersion > 0) {
       void this.loadStats()
     }
   },
+  onUnload(this: StatsPageInstance) {
+    this.cancelDonutAnimation()
+  },
   async loadStats(this: StatsPageInstance) {
     this.requestVersion += 1
     const requestVersion = this.requestVersion
+    this.cancelDonutAnimation()
     this.setData({ isLoading: true, errorMessage: '' })
     wx.showLoading({ title: '', mask: true })
     try {
@@ -141,19 +240,22 @@ Page({
       if (requestVersion !== this.requestVersion) {
         return
       }
-      this.setData({
-        ...data,
-        periodLabel: formatPeriodLabel(this.data.activeReport, data.month, data.periodDate),
-        periodPickerFields:
-          this.data.activeReport === 'year' ? 'year' : this.data.activeReport === 'week' ? 'day' : 'month',
-        periodPickerValue:
-          this.data.activeReport === 'year'
-            ? data.month.slice(0, 4)
-            : this.data.activeReport === 'week'
+      this.setData(
+        {
+          ...data,
+          periodLabel: formatPeriodLabel(this.data.activeReport, data.month, data.periodDate),
+          periodPickerFields:
+            this.data.activeReport === 'year' ? 'year' : this.data.activeReport === 'week' ? 'day' : 'month',
+          periodPickerValue:
+            this.data.activeReport === 'year'
+              ? data.month.slice(0, 4)
+              : this.data.activeReport === 'week'
               ? data.periodDate
               : data.month,
-        isLoading: false,
-      })
+          isLoading: false,
+        },
+        () => this.prepareDonutCanvas(data.categories),
+      )
     } catch (error) {
       if (requestVersion !== this.requestVersion) {
         return
@@ -165,6 +267,52 @@ Page({
         wx.hideLoading()
       }
     }
+  },
+  prepareDonutCanvas(this: StatsPageInstance, categories: StatsPageData['categories']) {
+    wx.nextTick(() => {
+      wx.createSelectorQuery()
+        .select('#statsDonutCanvas')
+        .fields({ node: true, size: true })
+        .exec((result) => {
+          const canvasResult =
+            result &&
+            (result[0] as
+              | {
+                  node?: DonutCanvasNode
+                  width?: number
+                  height?: number
+                }
+              | undefined)
+          if (!canvasResult || !canvasResult.node) {
+            return
+          }
+          const width = Number(canvasResult.width) || 129
+          const height = Number(canvasResult.height) || width
+          const systemInfo = (
+            wx as typeof wx & {
+              getWindowInfo?: () => { pixelRatio?: number }
+            }
+          ).getWindowInfo?.()
+          const pixelRatio = systemInfo && systemInfo.pixelRatio ? systemInfo.pixelRatio : 1
+          canvasResult.node.width = Math.round(width * pixelRatio)
+          canvasResult.node.height = Math.round(height * pixelRatio)
+          this.donutCanvas = {
+            node: canvasResult.node,
+            context: canvasResult.node.getContext('2d'),
+            width: canvasResult.node.width,
+            height: canvasResult.node.height,
+            pixelRatio,
+          }
+          animateDonut.call(this, categories)
+        })
+    })
+  },
+  cancelDonutAnimation(this: StatsPageInstance) {
+    if (this.donutAnimationFrame !== null && this.donutCanvas) {
+      this.donutCanvas.node.cancelAnimationFrame(this.donutAnimationFrame)
+    }
+    this.donutAnimationFrame = null
+    this.donutCanvas = null
   },
   goBack() {
     if (getCurrentPages().length > 1) {
@@ -294,4 +442,7 @@ Page({
     void this.loadStats()
   },
   requestVersion: 0,
+  hasShown: false,
+  donutCanvas: null,
+  donutAnimationFrame: null,
 })

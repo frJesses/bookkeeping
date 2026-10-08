@@ -2,7 +2,7 @@
   class="paged-scroll"
   scroll-y
   enhanced
-  show-scrollbar="false"
+  show-scrollbar="true"
   lower-threshold="80"
   refresher-enabled
   refresher-triggered="{{isRefreshing}}"

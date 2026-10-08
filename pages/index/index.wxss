@@ -124,7 +124,6 @@
   inset: 0;
   z-index: 9999;
   background: rgba(0, 0, 0, 0.38);
-  animation: date-mask-fade-in 180ms ease-out both;
 }
 
 .date-sheet {
@@ -134,27 +133,6 @@
   border-radius: 36rpx 36rpx 0 0;
   background: #ffffff;
   box-sizing: border-box;
-  animation: date-sheet-slide-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-@keyframes date-mask-fade-in {
-  from {
-    background: rgba(0, 0, 0, 0);
-  }
-  to {
-    background: rgba(0, 0, 0, 0.38);
-  }
-}
-
-@keyframes date-sheet-slide-in {
-  from {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .date-title {
@@ -266,7 +244,7 @@
   animation: unlock-icon-pulse 1000ms ease-out 120ms both;
 }
 
-.unlock-icon-wrap image {
+.unlock-icon-image {
   width: 282rpx;
   height: 282rpx;
   filter: drop-shadow(0 14rpx 24rpx rgba(255, 220, 126, 0.5));

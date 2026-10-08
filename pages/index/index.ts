@@ -30,6 +30,8 @@ type TransactionSwipeRowInstance = WechatMiniprogram.Component.TrivialInstance &
 type HomePageInstance = TabBarBehaviorPageInstance & {
   homeInitialized: boolean
   loadPageDataVersion: number
+  loadPageDataTask: Promise<void> | null
+  loadPageDataTaskMonth: string
   data: ReturnType<typeof createHomePageState> & {
     statusBarHeight: number
     navBarHeight: number
@@ -80,6 +82,7 @@ Page({
     unlockEffectIndex: 0,
   },
   onLoad(this: HomePageInstance) {
+    this.shownAchievementCodes = new Set<string>()
     this.initTabBarLayout()
     this.initCustomHeader()
   },
@@ -97,10 +100,26 @@ Page({
     setCustomTabBarHidden(this, false)
   },
   async loadPageData(this: HomePageInstance, month?: string) {
+    const selectedMonth = month || this.data.selectedMonth
+    if (this.loadPageDataTask && this.loadPageDataTaskMonth === selectedMonth) {
+      return this.loadPageDataTask
+    }
+    const task = this.performLoadPageData(selectedMonth)
+    this.loadPageDataTask = task
+    this.loadPageDataTaskMonth = selectedMonth
+    try {
+      await task
+    } finally {
+      if (this.loadPageDataTask === task) {
+        this.loadPageDataTask = null
+        this.loadPageDataTaskMonth = ''
+      }
+    }
+  },
+  async performLoadPageData(this: HomePageInstance, selectedMonth: string) {
     this.homeInitialized = true
     this.loadPageDataVersion += 1
     const requestVersion = this.loadPageDataVersion
-    const selectedMonth = month || this.data.selectedMonth
     const pagedScroll = this.selectComponent('#homePagedScroll') as PagedScrollInstance | null
     const listTask = pagedScroll
       ? pagedScroll.initLoad(this.fetchRecentRecords.bind(this) as PagedScrollFetchMethod, {
@@ -113,11 +132,21 @@ Page({
       console.error('get achievement effect data failed', error)
       return null
     })
-    const [overview, , achievementData] = await Promise.all([
-      getHomeMonthOverview(selectedMonth),
-      listTask,
-      achievementTask,
-    ])
+    let overview: Awaited<ReturnType<typeof getHomeMonthOverview>>
+    let achievementData: Awaited<ReturnType<typeof getAchievementPageData>> | null
+    try {
+      ;[overview, , achievementData] = await Promise.all([
+        getHomeMonthOverview(selectedMonth),
+        listTask,
+        achievementTask,
+      ])
+    } catch (error) {
+      if (requestVersion === this.loadPageDataVersion && selectedMonth === this.data.selectedMonth) {
+        console.error('load home page data failed', error)
+        wx.showToast({ title: '首页数据加载失败，请稍后重试', icon: 'none' })
+      }
+      return
+    }
     if (requestVersion === this.loadPageDataVersion && selectedMonth === this.data.selectedMonth) {
       const pendingEffects = achievementData
         ? achievementData.earned.filter((item) => !item.effectSeen && !this.shownAchievementCodes.has(item.code))
@@ -155,9 +184,14 @@ Page({
   },
   async handleRecordsRefresh(this: HomePageInstance) {
     const selectedMonth = this.data.selectedMonth
-    const overview = await getHomeMonthOverview(selectedMonth)
-    if (selectedMonth === this.data.selectedMonth) {
-      this.setData(overview)
+    try {
+      const overview = await getHomeMonthOverview(selectedMonth)
+      if (selectedMonth === this.data.selectedMonth) {
+        this.setData(overview)
+      }
+    } catch (error) {
+      console.error('refresh home overview failed', error)
+      wx.showToast({ title: '概览刷新失败，请稍后重试', icon: 'none' })
     }
   },
   goToBudget() {
@@ -322,7 +356,6 @@ Page({
   pickerSelection: [0, 0],
   isPickerScrolling: false,
   pendingPickerConfirmation: false,
-  shownAchievementCodes: new Set<string>(),
   unlockEffectTouchStartX: 0,
   goToAdd(e: WechatMiniprogram.BaseEvent) {
     const { type } = e.currentTarget.dataset as { type?: EntryType }
@@ -347,4 +380,6 @@ Page({
   },
   homeInitialized: false,
   loadPageDataVersion: 0,
+  loadPageDataTask: null,
+  loadPageDataTaskMonth: '',
 })

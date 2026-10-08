@@ -12,25 +12,18 @@
     <view class="personal-row"><text>邮箱</text><text class="row-value">{{email || '未绑定'}}</text><image class="row-arrow-image" src="/assets/personal/chevron.png" mode="aspectFit"></image></view>
   </view>
 
-  <view wx:if="{{showGender}}" class="gender-mask" bindtap="closeGender">
-    <view class="gender-sheet" catchtap="noop">
-      <text class="gender-title">性别选择</text>
+  <popup-sheet wx:if="{{showGender}}" visible="{{showGender}}" title="性别选择" sheet-class="gender-sheet" bind:close="closeGender">
       <view class="gender-options">
         <view class="gender-option {{gender === '男' ? 'gender-active' : ''}}" data-gender="男" bindtap="chooseGender"><image src="/assets/personal/male.png" mode="aspectFit"></image><text>男</text></view>
         <view class="gender-option {{gender === '女' ? 'gender-active' : ''}}" data-gender="女" bindtap="chooseGender"><image src="/assets/personal/female.png" mode="aspectFit"></image><text>女</text></view>
       </view>
-    </view>
-  </view>
+  </popup-sheet>
 
-  <view wx:if="{{showNickname}}" class="nickname-mask" bindtap="closeNickname">
-    <view class="nickname-sheet" catchtap="noop">
-      <view class="nickname-sheet-handle"></view>
-      <text class="nickname-title">修改昵称</text>
+  <popup-sheet wx:if="{{showNickname}}" visible="{{showNickname}}" title="修改昵称" sheet-class="nickname-sheet" bind:close="closeNickname">
       <input class="nickname-input" type="nickname" value="{{nicknameDraft}}" maxlength="24" placeholder="请输入昵称" confirm-type="done" bindinput="handleNicknameInput" bindconfirm="saveNickname" />
       <view class="nickname-actions">
         <button bindtap="closeNickname">取消</button>
         <button class="nickname-save" loading="{{isSaving}}" disabled="{{isSaving}}" bindtap="saveNickname">保存</button>
       </view>
-    </view>
-  </view>
+  </popup-sheet>
 </view>

@@ -1,4 +1,5 @@
 export const CATEGORY_ICON_ASSETS: Record<string, string> = {
+  其他: '/assets/category-icons/other.svg',
   餐饮: '/assets/category-icons-png/餐饮.png',
   购物: '/assets/category-icons-png/购物.png',
   交通: '/assets/category-icons-png/交通.png',

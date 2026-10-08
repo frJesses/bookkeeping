@@ -38,7 +38,7 @@
   box-sizing: border-box;
 }
 
-.export-records-scroll > view {
+.export-records-scroll-content {
   padding-right: 30rpx;
   padding-left: 30rpx;
   box-sizing: border-box;

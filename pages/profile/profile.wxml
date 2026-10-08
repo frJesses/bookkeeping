@@ -1,6 +1,6 @@
 <view class="profile-page">
   <image class="profile-wash" src="/assets/profile/background.png" mode="scaleToFill"></image>
-  <scroll-view scroll-y class="profile-scroll" show-scrollbar="false" style="padding-bottom: {{tabBarSpacer + 24}}px;">
+  <scroll-view scroll-y class="profile-scroll" show-scrollbar="true" style="padding-bottom: {{tabBarSpacer + 24}}px;">
     <view class="profile-safe"></view>
     <view class="identity" data-action="personal" bindtap="handleMenuClick">
       <image wx:if="{{avatarUrl}}" class="avatar" src="{{avatarUrl}}" mode="aspectFill"></image>

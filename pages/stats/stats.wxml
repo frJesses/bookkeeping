@@ -14,7 +14,7 @@
       </view>
     </view>
   </view>
-  <scroll-view scroll-y class="stats-scroll" show-scrollbar="false" style="padding-top: {{statusBarHeight + 72}}px;">
+  <scroll-view scroll-y class="stats-scroll" show-scrollbar="true" style="padding-top: {{statusBarHeight + 72}}px;">
     <view class="stats-content">
       <view wx:if="{{errorMessage}}" class="stats-state"><text>{{errorMessage}}</text><button bindtap="handleRetry">重新加载</button></view>
       <block wx:elif="{{!isLoading}}">
@@ -36,15 +36,15 @@
         </view>
       </view>
       <view class="distribution">
-        <view class="donut" style="background: conic-gradient({{donutGradient}});"><view class="donut-hole"><text>{{activeFlow === 'expense' ? '总支出' : '总收入'}}</text><text>{{activeFlow === 'expense' ? totalExpense : totalIncome}}</text></view></view>
+        <view class="donut"><canvas type="2d" id="statsDonutCanvas" class="donut-canvas"></canvas><view class="donut-hole"><text>{{activeFlow === 'expense' ? '总支出' : '总收入'}}</text><text>{{activeFlow === 'expense' ? totalExpense : totalIncome}}</text></view></view>
         <view class="legend">
-          <view wx:for="{{categories}}" wx:key="name" class="legend-row">
+          <view wx:for="{{categories}}" wx:key="index" class="legend-row">
             <view class="legend-dot" style="background: {{item.color}};"></view><text>{{item.name}}</text><text>{{item.percent}}%</text>
           </view>
         </view>
       </view>
       <view class="category-list">
-        <view wx:for="{{categories}}" wx:key="name" class="category-row" data-index="{{index}}" bindtap="openCategoryDetail">
+        <view wx:for="{{categories}}" wx:key="index" class="category-row" data-index="{{index}}" bindtap="openCategoryDetail">
           <image src="{{item.icon}}" mode="aspectFit"></image>
           <view class="category-body">
             <view class="category-copy"><text class="category-name">{{item.name}}</text><text class="category-count">共{{activeFlow === 'expense' ? '支出' : '收入'}}{{item.count}}笔</text><text class="category-value">{{item.value}} ›</text></view>
@@ -58,9 +58,9 @@
     <view class="compare-card">
       <view class="card-heading"><text class="card-title">收支对比</text><view class="compare-legend"><text class="income-key">收入</text><text class="expense-key">支出</text></view></view>
       <view class="compare-chart">
-        <view class="bar-y-axis"><text wx:for="{{barScaleLabels}}" wx:key="*this">{{item}}</text></view>
+        <view class="bar-y-axis"><text wx:for="{{barScaleLabels}}" wx:key="index">{{item}}</text></view>
         <view class="bar-chart">
-          <view wx:for="{{bars}}" wx:key="label" class="bar-group">
+          <view wx:for="{{bars}}" wx:key="index" class="bar-group">
             <view class="bar-columns"><view class="bar income-bar" style="height: {{item.income}}%;"></view><view class="bar expense-bar" style="height: {{item.expense}}%;"></view></view>
             <text>{{item.label}}</text>
           </view>
@@ -70,30 +70,24 @@
       </block>
     </view>
   </scroll-view>
-  <view wx:if="{{categoryModalVisible}}" class="category-modal-mask" bindtap="closeCategoryModal">
-    <view class="category-modal" catchtap="noop">
-      <view class="category-modal-head"><text>{{categoryModalTitle}}</text><text class="category-modal-close" bindtap="closeCategoryModal">×</text></view>
-      <scroll-view scroll-y class="category-modal-scroll" show-scrollbar="false">
-        <view wx:for="{{categoryModalRows}}" wx:key="name" class="category-modal-row">
+  <popup-sheet wx:if="{{categoryModalVisible}}" visible="{{categoryModalVisible}}" title="{{categoryModalTitle}}" sheet-class="category-modal" bind:close="closeCategoryModal">
+      <scroll-view scroll-y class="category-modal-scroll" show-scrollbar="true">
+        <view wx:for="{{categoryModalRows}}" wx:key="index" class="category-modal-row">
           <view class="category-modal-summary" data-index="{{index}}" bindtap="toggleCategoryRecords">
             <image src="{{item.icon}}" mode="aspectFit"></image>
             <view class="category-modal-copy"><text>{{item.name}}</text><text>{{item.percent}}% · {{item.count}}笔 · {{item.value}}</text></view>
             <view class="category-toggle-icon {{item.expanded ? 'category-toggle-icon-open' : ''}}" aria-label="{{item.expanded ? '收起' : '展开'}}"></view>
           </view>
-          <view wx:if="{{item.expanded}}" wx:for="{{item.records}}" wx:for-item="record" wx:key="title" class="category-modal-record"><text>{{record.occurredAt}}</text><text>{{record.title}}</text><text>{{activeFlow === 'expense' ? '-' : ''}}{{record.amount}}</text></view>
+          <view wx:if="{{item.expanded}}" wx:for="{{item.records}}" wx:for-item="record" wx:key="index" class="category-modal-record"><text>{{record.occurredAt}}</text><text>{{record.title}}</text><text class="category-modal-record-amount">{{activeFlow === 'expense' ? '-' : ''}}{{record.amount}}</text></view>
         </view>
       </scroll-view>
-    </view>
-  </view>
-  <view wx:if="{{showWeekPicker}}" class="week-picker-mask" bindtap="closeWeekPicker">
-    <view class="week-picker-sheet" catchtap="noop">
-      <view class="week-picker-head"><text>选择周</text><text class="week-picker-close" bindtap="closeWeekPicker">×</text></view>
-      <scroll-view scroll-y class="week-picker-list" show-scrollbar="false">
+  </popup-sheet>
+  <popup-sheet wx:if="{{showWeekPicker}}" visible="{{showWeekPicker}}" title="选择周" sheet-class="week-picker-sheet" bind:close="closeWeekPicker">
+      <scroll-view scroll-y class="week-picker-list" show-scrollbar="true">
         <view wx:for="{{weekOptions}}" wx:key="value" class="week-picker-option {{weekPickerIndex === index ? 'week-picker-option-active' : ''}}" data-index="{{index}}" bindtap="selectWeekOption">
           <text>{{item.label}}</text><text>{{item.rangeLabel}}</text>
         </view>
       </scroll-view>
       <view class="week-picker-actions"><button bindtap="closeWeekPicker">取消</button><button class="week-picker-confirm" bindtap="confirmWeekPicker">确定</button></view>
-    </view>
-  </view>
+  </popup-sheet>
 </view>

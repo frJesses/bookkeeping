@@ -4,7 +4,7 @@
   <view class="detail-summary-fixed" style="top: calc({{statusBarHeight}}px + 160rpx);">
     <view class="detail-summary"><view class="summary-title"><text>{{title}}</text><text>{{countText}}</text></view><view class="summary-metrics"><view><text>{{totalIncome}}</text><text>收入(元)</text></view><view><text>{{totalExpense}}</text><text>支出(元)</text></view><view><text>{{totalBalance}}</text><text>剩余(元)</text></view></view></view>
   </view>
-  <scroll-view scroll-y class="detail-scroll" show-scrollbar="false" style="padding-top: calc({{statusBarHeight}}px + 380rpx);">
+  <scroll-view scroll-y class="detail-scroll" show-scrollbar="true" style="padding-top: calc({{statusBarHeight}}px + 380rpx);">
     <view class="detail-content">
       <view wx:if="{{errorMessage}}" class="detail-state"><text>{{errorMessage}}</text><button bindtap="handleRetry">重新加载</button></view>
       <view wx:elif="{{isLoading}}" class="detail-state">正在加载账单详情</view>

@@ -7,7 +7,7 @@
     </view>
   </view>
 
-  <scroll-view wx:if="{{!activeCategory}}" scroll-y bounces="false" scroll-top="{{categoryScrollTop}}" class="category-scroll" show-scrollbar="false" style="padding-top: {{statusBarHeight + 66}}px;">
+    <scroll-view wx:if="{{!activeCategory}}" scroll-y bounces="false" scroll-top="{{categoryScrollTop}}" class="category-scroll" show-scrollbar="true" style="padding-top: {{statusBarHeight + 66}}px;">
     <view wx:if="{{categoryLoading}}" class="category-state">正在加载分类</view>
     <view wx:elif="{{categoryError}}" class="category-state">
       <text>{{categoryError}}</text><button class="category-retry" bindtap="handleCategoryRetry">重新加载</button>
@@ -60,9 +60,7 @@
     </view>
   </view>
 
-  <view wx:if="{{showTagModal}}" class="modal-mask" bindtap="closeTagModal">
-    <view class="tag-sheet" catchtap="noop">
-      <text class="sheet-title">添加标签</text>
+  <popup-sheet wx:if="{{showTagModal}}" visible="{{showTagModal}}" title="添加标签" sheet-class="tag-sheet" bind:close="closeTagModal">
       <input class="tag-name-input" value="{{customTagName}}" placeholder="请输入4字以内名称" bindinput="handleCustomTagName" />
       <text class="icon-heading">选择图标</text>
       <swiper class="custom-icon-swiper" style="height: {{customIconSwiperHeight}}px;" current="{{customIconPage}}" duration="200" circular="{{customIconCircular}}" bindchange="handleCustomIconPageChange">
@@ -79,6 +77,5 @@
         <text wx:for="{{customIconPages}}" wx:key="*this" class="{{customIconPage === index ? 'dot-active' : ''}}" data-page="{{index}}" bindtap="selectCustomIconPage"></text>
       </view>
       <button class="ds-primary-button tag-confirm" bindtap="confirmCustomTag">确定</button>
-    </view>
-  </view>
+  </popup-sheet>
 </view>

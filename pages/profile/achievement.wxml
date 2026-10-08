@@ -7,7 +7,7 @@
       <image class="hero-medal" src="/assets/achievements/hero.png" mode="aspectFit"></image>
     </view>
   </view>
-  <scroll-view scroll-y class="achievement-scroll" show-scrollbar="false">
+  <scroll-view scroll-y class="achievement-scroll" show-scrollbar="true">
     <view class="badge-section">
       <view wx:if="{{errorMessage}}" class="achievement-state"><text>{{errorMessage}}</text><button bindtap="handleRetry">重新加载</button></view>
       <view wx:elif="{{isLoading}}" class="achievement-state">正在加载成就</view>
