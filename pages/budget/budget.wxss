@@ -208,26 +208,46 @@
   width: 28rpx;
   height: 28rpx;
 }
-.slider-panel {
+.budget-progress-panel {
+  display: block;
   margin-top: 24rpx;
   padding: 28rpx 20rpx;
   border-radius: 20rpx;
   background: #ffffff;
 }
-.budget-value {
-  display: block;
-  font-family: DIN, sans-serif;
-  font-size: 40rpx;
-  font-weight: 700;
-}
-.slider-panel slider {
-  margin: 26rpx 0 12rpx;
-}
-.slider-caption {
+.budget-progress-head,
+.budget-progress-caption {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+}
+.budget-progress-head {
+  color: #333333;
+  font-size: 25rpx;
+  font-weight: 600;
+}
+.budget-progress-track {
+  height: 14rpx;
+  margin-top: 24rpx;
+  overflow: hidden;
+  border-radius: 999rpx;
+  background: #edf2f1;
+}
+.budget-progress-value {
+  height: 100%;
+  min-width: 0;
+  max-width: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #01c6a6 0%, #14dbbb 100%);
+}
+.budget-progress-caption {
+  margin-top: 16rpx;
   color: #989898;
-  font-size: 21rpx;
+  font-size: 22rpx;
+}
+.budget-progress-caption text:last-child {
+  color: #01a98f;
+  font-size: 20rpx;
 }
 .budget-action-bar {
   flex: 0 0 auto;
@@ -316,6 +336,32 @@
   background: #f8f8f8;
   font-size: 28rpx;
   box-sizing: border-box;
+}
+.budget-amount-input {
+  height: 96rpx !important;
+  margin-top: 28rpx !important;
+  border: 0;
+  border-bottom: 2rpx solid #dfe6e4;
+  border-radius: 0;
+  background: #ffffff !important;
+  color: #333333;
+  font-family: DIN, sans-serif;
+  font-size: 42rpx !important;
+  font-weight: 700;
+  text-align: center;
+}
+.budget-amount-input::placeholder {
+  color: #a1a8a6;
+  font-family: 'PingFang SC', 'Helvetica Neue', sans-serif;
+  font-size: 26rpx;
+  font-weight: 400;
+}
+.budget-amount-hint {
+  display: block;
+  margin-top: 14rpx;
+  color: #989898;
+  font-size: 21rpx;
+  text-align: center;
 }
 .budget-modal-actions {
   display: grid;

@@ -38,6 +38,14 @@ function calculateBudgetTotals(categories: BudgetCategory[], income: number) {
   }
 }
 
+function decorateCategoryAmounts(categories: BudgetCategory[]) {
+  return categories.map((item) => ({
+    ...item,
+    spentText: money(item.spent),
+    valueText: money(item.value),
+  }))
+}
+
 const initialMonth = getCurrentBudgetMonth()
 const initialMonths = createBudgetMonths(initialMonth)
 const initialMonthIndex = initialMonths.findIndex((item) => item.active)
@@ -71,6 +79,11 @@ Page({
     incomeDraft: '',
     showCategoryModal: false,
     categoryPickerCandidates: [] as AddCategoryItem[],
+    showBudgetAmountModal: false,
+    budgetAmountIndex: -1,
+    budgetAmountDraft: '',
+    budgetAmountTitle: '设置分类预算',
+    savingBudgetAmount: false,
     deletingCategoryId: '',
     savingCategoryId: '',
   },
@@ -94,7 +107,7 @@ Page({
   },
   applyBudgetData(data: BudgetPageData, preserveDrafts = false) {
     const drafts = preserveDrafts ? this.data.categories.filter((item: BudgetCategory) => item.isDraft) : []
-    const categories = drafts.length ? [...data.categories, ...drafts] : data.categories
+    const categories = decorateCategoryAmounts(drafts.length ? [...data.categories, ...drafts] : data.categories)
     this.setData({
       ...data,
       categories,
@@ -151,36 +164,71 @@ Page({
       itemIndex === index ? { ...item, value } : item,
     )
     const income = Number(this.data.income || 0)
-    const nextCategories = categories.map((item) => ({
-      ...item,
-      percent: item.value > 0 ? Math.round((item.spent / item.value) * 100) : 0,
-    }))
+    const nextCategories = decorateCategoryAmounts(
+      categories.map((item) => ({
+        ...item,
+        percent: item.value > 0 ? Math.round((item.spent / item.value) * 100) : 0,
+      })),
+    )
     this.setData({
       categories: nextCategories,
       ...calculateBudgetTotals(nextCategories, income),
     })
     return { isDraft, income, categories: nextCategories }
   },
-  previewBudget(e: WechatMiniprogram.CustomEvent<{ value?: number }>) {
+  openBudgetAmount(
+    this: WechatMiniprogram.Page.Instance<WechatMiniprogram.IAnyObject, WechatMiniprogram.IAnyObject>,
+    e: WechatMiniprogram.BaseEvent,
+  ) {
     const index = Number(e.currentTarget.dataset.index)
-    const value = Math.max(0, Number(e.detail.value || 0))
-    this.updateBudgetValue(index, value)
+    const category = this.data.categories[index] as BudgetCategory | undefined
+    if (!category) return
+    this.setData({
+      showBudgetAmountModal: true,
+      budgetAmountIndex: index,
+      budgetAmountDraft: category.value > 0 ? String(category.value) : '',
+      budgetAmountTitle: `设置${category.name}预算`,
+    })
   },
-  async changeBudget(e: WechatMiniprogram.CustomEvent<{ value?: number }>) {
-    const index = Number(e.currentTarget.dataset.index)
-    const value = Math.max(0, Number(e.detail.value || 0))
-    const { isDraft, income, categories } = this.updateBudgetValue(index, value)
-    if (isDraft) return
+  closeBudgetAmount() {
+    if (!this.data.savingBudgetAmount) {
+      this.setData({ showBudgetAmountModal: false, budgetAmountIndex: -1, budgetAmountDraft: '' })
+    }
+  },
+  handleBudgetAmountInput(e: WechatMiniprogram.CustomEvent<{ value?: string }>) {
+    const value = (e.detail.value || '').replace(/[^\d.]/g, '')
+    const [integer = '', decimal = ''] = value.split('.')
+    this.setData({ budgetAmountDraft: decimal ? `${integer}.${decimal.slice(0, 2)}` : integer })
+  },
+  async confirmBudgetAmount(
+    this: WechatMiniprogram.Page.Instance<WechatMiniprogram.IAnyObject, WechatMiniprogram.IAnyObject>,
+  ) {
+    const index = Number(this.data.budgetAmountIndex)
+    const category = this.data.categories[index] as BudgetCategory | undefined
+    const amount = Number(this.data.budgetAmountDraft || 0)
+    if (!category || !Number.isFinite(amount) || amount < 0) {
+      wx.showToast({ title: '请输入正确的预算金额', icon: 'none' })
+      return
+    }
+    const { categories, income } = this.updateBudgetValue(index, amount)
+    this.setData({ savingBudgetAmount: true })
     try {
-      await saveBudgetPageData(
-        this.data.month,
-        income,
-        categories.filter((item) => !item.isDraft),
+      const categoriesToSave = categories.filter(
+        (item: BudgetCategory) => !item.isDraft || `${item.id}` === `${category.id}`,
       )
+      await saveBudgetPageData(this.data.month, income, categoriesToSave)
+      this.setData({
+        showBudgetAmountModal: false,
+        budgetAmountIndex: -1,
+        budgetAmountDraft: '',
+        savingBudgetAmount: false,
+      })
+      await this.loadBudgetPage(this.data.month, true)
+      wx.showToast({ title: '预算已保存', icon: 'success' })
     } catch (error) {
-      console.error('save budget failed', error)
-      wx.showToast({ title: '预算保存失败', icon: 'none' })
-      void this.loadBudgetPage(this.data.month, true)
+      console.error('save budget amount failed', error)
+      this.setData({ savingBudgetAmount: false })
+      wx.showToast({ title: '预算保存失败，请重试', icon: 'none' })
     }
   },
   adjustIncome() {
@@ -232,12 +280,22 @@ Page({
     const index = Number(e.currentTarget.dataset.index)
     const category = this.data.categoryPickerCandidates[index]
     if (!category) return
-    const categories = addBudgetCategory(this.data.categories, category)
-    this.setData({
-      showCategoryModal: false,
-      categories,
-      ...calculateBudgetTotals(categories, this.data.income),
-    })
+    const categories = decorateCategoryAmounts(addBudgetCategory(this.data.categories, category))
+    this.setData(
+      {
+        showCategoryModal: false,
+        categories,
+        ...calculateBudgetTotals(categories, this.data.income),
+      },
+      () => {
+        this.setData({
+          showBudgetAmountModal: true,
+          budgetAmountIndex: categories.length - 1,
+          budgetAmountDraft: '',
+          budgetAmountTitle: `设置${category.name}预算`,
+        })
+      },
+    )
   },
   async confirmBudgetCategory(e: WechatMiniprogram.BaseEvent) {
     const index = Number(e.currentTarget.dataset.index)

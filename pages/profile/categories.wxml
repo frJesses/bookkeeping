@@ -43,11 +43,13 @@
         <text class="create-input-count">{{nameLength}}/4</text>
       </view>
       <text class="create-label">选择图标</text>
-      <view class="icon-options">
-        <view wx:for="{{iconOptions}}" wx:key="*this" class="icon-option {{selectedIcon === item ? 'icon-option-active' : ''}}" data-index="{{index}}" bindtap="selectIcon">
-          <image class="icon-option-image" src="{{item}}" mode="aspectFit"></image>
+      <scroll-view scroll-y enhanced show-scrollbar="true" class="icon-options">
+        <view class="icon-options-grid">
+          <view wx:for="{{iconOptions}}" wx:key="*this" class="icon-option {{selectedIcon === item ? 'icon-option-active' : ''}}" data-index="{{index}}" bindtap="selectIcon">
+            <image class="icon-option-image" src="{{item}}" mode="aspectFit"></image>
+          </view>
         </view>
-      </view>
+      </scroll-view>
       <button class="create-submit" loading="{{saving}}" disabled="{{saving}}" bindtap="confirmCreate">保存分类</button>
   </popup-sheet>
 </view>

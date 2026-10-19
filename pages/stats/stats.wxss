@@ -605,14 +605,19 @@
 .category-modal-record {
   display: grid;
   width: calc(100% - 82rpx);
-  margin: 14rpx 0 0 82rpx;
-  padding-top: 12rpx;
+  min-height: 72rpx;
+  margin: 0 0 0 82rpx;
+  padding: 14rpx 0;
+  align-items: center;
   grid-template-columns: 240rpx 1fr 120rpx;
   border-top: 1rpx solid #eeeeee;
   color: #989898;
   font-size: 21rpx;
-  gap: 10rpx;
+  column-gap: 10rpx;
+  row-gap: 0;
+  line-height: 1.35;
   text-align: left;
+  box-sizing: border-box;
 }
 
 .category-modal-record text {

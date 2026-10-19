@@ -18,7 +18,14 @@
   position: relative;
   z-index: 1;
   height: 100vh;
+  width: calc(100% + 60rpx);
+  margin-right: -60rpx;
   padding: 0 30rpx;
+  box-sizing: border-box;
+}
+
+.profile-scroll-content {
+  width: calc(100% - 60rpx);
   box-sizing: border-box;
 }
 

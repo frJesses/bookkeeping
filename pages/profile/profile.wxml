@@ -1,8 +1,9 @@
 <view class="profile-page">
   <image class="profile-wash" src="/assets/profile/background.png" mode="scaleToFill"></image>
   <scroll-view scroll-y class="profile-scroll" show-scrollbar="true" style="padding-bottom: {{tabBarSpacer + 24}}px;">
-    <view class="profile-safe"></view>
-    <view class="identity" data-action="personal" bindtap="handleMenuClick">
+    <view class="profile-scroll-content">
+      <view class="profile-safe"></view>
+      <view class="identity" data-action="personal" bindtap="handleMenuClick">
       <image wx:if="{{avatarUrl}}" class="avatar" src="{{avatarUrl}}" mode="aspectFill"></image>
       <view wx:else class="avatar avatar-placeholder">{{avatarText}}</view>
       <view class="identity-copy">
@@ -10,31 +11,32 @@
         <view class="achievement-chip"><image src="/assets/profile/achievement.png" mode="aspectFit"></image><text>我的成就</text></view>
       </view>
       <view class="personal-link"><text>个人信息</text><image src="/assets/profile/personal.png" mode="aspectFit"></image></view>
-    </view>
+      </view>
 
-    <view class="member-banner">
+      <view class="member-banner">
       <view class="member-line"><image class="member-mark" src="/assets/profile/member.png" mode="aspectFit"></image><text>成为平台会员，解锁全部功能</text></view>
       <text class="member-subtitle">去除广告/数据导出/分类预算/图片载入专属特权</text>
-    </view>
+      </view>
 
-    <view class="stats-card">
+      <view class="stats-card">
       <view wx:for="{{summaryItems}}" wx:key="label" class="stats-item">
         <text class="stats-value">{{item.value}}</text>
         <text class="stats-label">{{item.label}}</text>
       </view>
-    </view>
+      </view>
 
-    <view class="menu-card">
+      <view class="menu-card">
       <view class="menu-row" data-action="bills" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/profile/bills.png" mode="aspectFit"></image><text>我的账本</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></view>
       <view class="menu-row" data-action="budget" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/profile/budget.png" mode="aspectFit"></image><text>我的预算</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></view>
       <view class="menu-row" data-action="categories" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/profile/category-management.svg" mode="aspectFit"></image><text>分类管理</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></view>
-    </view>
+      </view>
 
-    <view class="menu-card">
+      <view class="menu-card">
       <view class="menu-row" data-action="achievement" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/profile/achievement-menu.png" mode="aspectFit"></image><text>我的成就</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></view>
       <button class="menu-row share-row" open-type="share"><image class="menu-icon" src="/assets/profile/invite.png" mode="aspectFit"></image><text>分享给微信好友</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></button>
       <view class="menu-row" data-action="settings" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/profile/settings.png" mode="aspectFit"></image><text>设置</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></view>
       <!-- <view class="menu-row" data-action="feedback" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/profile/feedback.png" mode="aspectFit"></image><text>意见反馈</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></view> -->
+      </view>
     </view>
   </scroll-view>
 </view>

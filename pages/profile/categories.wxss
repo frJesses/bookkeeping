@@ -257,18 +257,27 @@
 }
 
 .icon-options {
-  display: grid;
+  height: 524rpx;
   max-height: 524rpx;
+  width: 100%;
   margin-top: 14rpx;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 16rpx;
-  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.icon-options-grid {
+  display: grid;
+  width: 560rpx;
+  margin-right: auto;
+  margin-left: auto;
+  grid-template-columns: repeat(5, 100rpx);
+  column-gap: 15rpx;
+  row-gap: 10rpx;
 }
 
 .icon-option {
   display: flex;
-  width: 92rpx;
-  height: 92rpx;
+  width: 100rpx;
+  height: 100rpx;
   align-items: center;
   justify-content: center;
   border: 2rpx solid transparent;
@@ -278,8 +287,8 @@
 }
 
 .icon-option-image {
-  width: 84rpx;
-  height: 84rpx;
+  width: 94rpx;
+  height: 94rpx;
 }
 
 .icon-option-active {

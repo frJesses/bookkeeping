@@ -12,8 +12,8 @@
         <view wx:elif="{{isLoading}}" class="budget-state">正在加载预算</view>
         <view wx:elif="{{!categories.length}}" class="budget-state">当前月份还没有预算，点击下方添加分类预算</view>
         <block wx:else><view wx:for="{{categories}}" wx:key="id" class="category-budget">
-          <view class="category-heading"><view class="category-heading-title"><text>{{item.name}}预算</text><text wx:if="{{item.isDraft}}" class="draft-label">待保存</text></view><view class="category-heading-actions"><view wx:if="{{item.isDraft}}" class="category-confirm" role="button" aria-label="保存该分类预算" data-index="{{index}}" bindtap="confirmBudgetCategory"><text>✓</text></view><view class="category-delete" role="button" aria-label="删除该分类预算" data-index="{{index}}" bindtap="removeBudgetCategory"><image src="/assets/actions/delete.svg" mode="aspectFit"></image></view></view></view>
-          <view class="slider-panel"><text class="budget-value">¥{{item.value}}.00</text><slider value="{{item.value}}" min="0" max="3000" activeColor="#01c6a6" backgroundColor="#f1f1f1" block-color="#ffffff" block-size="24" data-index="{{index}}" bindchanging="previewBudget" bindchange="changeBudget" /><view class="slider-caption"><text>已支出 ¥{{item.spent}}.00</text><text>使用率 {{item.percent}}%</text></view></view>
+          <view class="category-heading"><view class="category-heading-title"><text>{{item.name}}预算</text><text wx:if="{{item.isDraft}}" class="draft-label">待设置</text></view><view class="category-heading-actions"><view class="category-delete" role="button" aria-label="删除该分类预算" data-index="{{index}}" catchtap="removeBudgetCategory"><image src="/assets/actions/delete.svg" mode="aspectFit"></image></view></view></view>
+          <view class="budget-progress-panel" data-index="{{index}}" bindtap="openBudgetAmount"><view class="budget-progress-head"><text>预算使用进度</text><text>{{item.percent}}%</text></view><view class="budget-progress-track"><view class="budget-progress-value" style="width: {{item.percent}}%;"></view></view><view class="budget-progress-caption"><text>已支出 ¥{{item.spentText}} / 预算 ¥{{item.valueText}}</text><text>点击修改</text></view></view>
         </view></block>
       </view>
     </scroll-view>
@@ -32,5 +32,10 @@
         </view>
       </scroll-view>
       <button class="budget-modal-cancel" bindtap="closeCategoryModal">取消</button>
+  </popup-sheet>
+  <popup-sheet wx:if="{{showBudgetAmountModal}}" visible="{{showBudgetAmountModal}}" title="{{budgetAmountTitle}}" sheet-class="budget-modal budget-amount-modal" bind:close="closeBudgetAmount">
+    <input class="budget-amount-input" type="digit" value="{{budgetAmountDraft}}" bindinput="handleBudgetAmountInput" placeholder="请输入预算金额" confirm-type="done" />
+    <text class="budget-amount-hint">请输入 0.00 至 99999999.99 元</text>
+    <view class="budget-modal-actions"><button bindtap="closeBudgetAmount">取消</button><button class="budget-modal-confirm" loading="{{savingBudgetAmount}}" disabled="{{savingBudgetAmount}}" bindtap="confirmBudgetAmount">保存</button></view>
   </popup-sheet>
 </view>
