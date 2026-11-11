@@ -98,8 +98,24 @@
   line-height: 1;
 }
 .upload-placeholder {
+  flex-direction: column;
+  gap: 6rpx;
   color: #bbbbbb;
+}
+
+.upload-placeholder-hover {
+  background: #e4f8f2;
+}
+
+.upload-plus {
   font-size: 54rpx;
+  line-height: 1;
+}
+
+.upload-label {
+  color: #98a1b2;
+  font-size: 22rpx;
+  line-height: 1.4;
 }
 .image-hint {
   display: block;

@@ -52,6 +52,7 @@ Page({
       personal: '/pages/profile/personal',
       settings: '/pages/profile/settings',
       feedback: '/pages/profile/feedback',
+      member: '/pages/profile/member',
     }
     const url = action ? routeMap[action] : ''
     if (url) wx.navigateTo({ url })

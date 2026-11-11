@@ -18,7 +18,10 @@
     "pages/profile/recurring",
     "pages/profile/loan",
     "pages/profile/export",
-    "pages/profile/export-records"
+    "pages/profile/export-records",
+    "pages/profile/feedback",
+    "pages/profile/member",
+    "pages/search/search"
   ],
   "window": {
     "navigationBarTextStyle": "black",

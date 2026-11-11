@@ -328,3 +328,13 @@
   height: 76rpx;
   margin-top: 26rpx;
 }
+
+.save-template {
+  margin-left: 20rpx;
+  padding: 8rpx 16rpx;
+  border-radius: 999rpx;
+  background: #e4f8f2;
+  color: #01a98d;
+  font-size: 22rpx;
+  line-height: 1.4;
+}

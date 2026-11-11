@@ -1,0 +1,25 @@
+<view class="template-section">
+  <view class="template-head">
+    <text class="template-title">常用模板</text>
+    <text class="template-hint">点击带入 · 长按删除</text>
+  </view>
+  <scroll-view scroll-x enhanced show-scrollbar="false" class="template-scroll">
+    <view class="template-row">
+      <view
+        wx:for="{{templates}}"
+        wx:key="id"
+        class="template-chip {{item.type === activeType ? 'template-chip-current' : ''}}"
+        data-index="{{index}}"
+        bindtap="handleUse"
+        bindlongpress="handleRemove"
+      >
+        <image class="template-icon" src="{{item.icon}}" mode="aspectFit"></image>
+        <view class="template-copy">
+          <text class="template-name">{{item.categoryName}}</text>
+          <text class="template-meta">{{item.amount ? '¥' + item.amount : '未填金额'}}{{item.remark ? ' · ' + item.remark : ''}}</text>
+        </view>
+        <text class="template-type {{item.type}}">{{item.type === 'income' ? '收入' : '支出'}}</text>
+      </view>
+    </view>
+  </scroll-view>
+</view>

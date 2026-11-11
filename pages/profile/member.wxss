@@ -189,3 +189,19 @@
   font-size: 22rpx;
   text-decoration: line-through;
 }
+
+.review-avatar {
+  display: flex;
+  width: 52rpx;
+  height: 52rpx;
+  margin-right: 14rpx;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #07c160;
+  color: #ffffff;
+  font-size: 24rpx;
+}
+.review-card .review-avatar-alt {
+  background: #ff9f43;
+}

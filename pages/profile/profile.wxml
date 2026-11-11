@@ -13,7 +13,7 @@
       <view class="personal-link"><text>个人信息</text><image src="/assets/profile/personal.png" mode="aspectFit"></image></view>
       </view>
 
-      <view class="member-banner">
+      <view class="member-banner" data-action="member" bindtap="handleMenuClick">
       <view class="member-line"><image class="member-mark" src="/assets/profile/member.png" mode="aspectFit"></image><text>成为平台会员，解锁全部功能</text></view>
       <text class="member-subtitle">去除广告/数据导出/分类预算/图片载入专属特权</text>
       </view>
@@ -35,7 +35,7 @@
       <view class="menu-row" data-action="achievement" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/profile/achievement-menu.png" mode="aspectFit"></image><text>我的成就</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></view>
       <button class="menu-row share-row" open-type="share"><image class="menu-icon" src="/assets/profile/invite.png" mode="aspectFit"></image><text>分享给微信好友</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></button>
       <view class="menu-row" data-action="settings" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/profile/settings.png" mode="aspectFit"></image><text>设置</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></view>
-      <!-- <view class="menu-row" data-action="feedback" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/profile/feedback.png" mode="aspectFit"></image><text>意见反馈</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></view> -->
+      <view class="menu-row" data-action="feedback" bindtap="handleMenuClick"><image class="menu-icon" src="/assets/profile/feedback.png" mode="aspectFit"></image><text>意见反馈</text><image class="menu-arrow" src="/assets/profile/chevron.png" mode="aspectFit"></image></view>
       </view>
     </view>
   </scroll-view>

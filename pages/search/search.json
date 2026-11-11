@@ -1,0 +1,7 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "transaction-swipe-row": "../../components/transaction-swipe-row/index",
+    "empty-state": "../../components/empty-state/index"
+  }
+}

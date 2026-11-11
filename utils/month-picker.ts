@@ -31,6 +31,17 @@ export function createCurrentMonthValue(referenceDate = new Date()) {
   return `${referenceDate.getFullYear()}-${month}`
 }
 
+export function createRecentMonthOptions(count = 24, referenceDate = new Date()) {
+  return Array.from({ length: count }, (_, index) => {
+    const date = new Date(referenceDate.getFullYear(), referenceDate.getMonth() - index, 1)
+    const value = `${date.getFullYear()}-${`${date.getMonth() + 1}`.padStart(2, '0')}`
+    return {
+      value,
+      label: `${date.getFullYear()}年${date.getMonth() + 1}月`,
+    }
+  })
+}
+
 export function createDefaultDateForMonth(month: string, referenceDate = new Date()) {
   const currentMonth = createCurrentMonthValue(referenceDate)
   if (month === currentMonth) {

@@ -5,6 +5,7 @@ import {
   buildSubmitPayload,
   createAddPageState,
   createCategory,
+  evaluateAmount,
   formatDateLabel,
   formatAmountDisplay,
   getCategoryOptions,
@@ -14,7 +15,14 @@ import {
   resolveSubmitAction,
   submitTransaction,
   updateTransaction,
+  type AddCategoryItem,
 } from '../../services/add'
+import {
+  deleteRecordTemplate,
+  getRecordTemplates,
+  saveRecordTemplate,
+  type RecordTemplate,
+} from '../../services/template'
 import { clearEditingTransaction, getEditingTransaction } from '../../services/transaction-detail'
 import { getWindowInfo } from '../../utils/system-info'
 
@@ -49,12 +57,13 @@ Page({
     customIconPage: 0,
     customIconSwiperHeight: 0,
     customIconCircular: false,
+    templates: [] as RecordTemplate[],
   },
   async onLoad(options: Record<string, string | undefined>) {
     const initialState = createAddPageState(options.type, options.date)
     const pageMode = options.mode === 'edit' ? 'edit' : 'create'
     this.initCustomHeader()
-    this.setData({ ...initialState, pageMode })
+    this.setData({ ...initialState, pageMode, templates: getRecordTemplates() })
     if (pageMode !== 'edit') {
       clearEditingTransaction()
     }
@@ -63,7 +72,7 @@ Page({
   onUnload() {
     clearEditingTransaction()
   },
-  async loadCategories(type: RecordType, pageMode?: 'create' | 'edit') {
+  async loadCategories(type: RecordType, pageMode?: 'create' | 'edit'): Promise<AddCategoryItem[]> {
     this.setData({ categoryLoading: true, categoryError: '' })
     try {
       const categories = await getCategoryOptions(type)
@@ -89,6 +98,7 @@ Page({
         }
       }
       this.setData({ ...nextState, categoryLoading: false })
+      return categories
     } catch (error) {
       console.error('load categories failed', error)
       this.setData({
@@ -96,6 +106,7 @@ Page({
         categoryError: error instanceof Error ? error.message : '分类加载失败',
         categories: [],
       })
+      return []
     }
   },
   handleCategoryRetry() {
@@ -128,6 +139,80 @@ Page({
       return
     }
     this.setData(getCategorySelection(name, this.data.categories))
+  },
+  handleTemplateUse(e: WechatMiniprogram.CustomEvent<{ template?: RecordTemplate }>) {
+    void this.applyTemplate(e.detail.template)
+  },
+  async applyTemplate(template?: RecordTemplate) {
+    if (!template) {
+      return
+    }
+    let categories = this.data.categories
+    if (template.type !== this.data.activeType) {
+      this.setData({
+        activeType: template.type,
+        activeCategory: '',
+        activeCategoryIcon: '',
+        amount: '',
+        amountDisplay: '0',
+        remark: '',
+        submitLabel: '完成',
+        categoryScrollTop: 0,
+      })
+      categories = await this.loadCategories(template.type)
+    }
+    const matched =
+      categories.find((item) => `${item.id}` === `${template.categoryId}`) ||
+      categories.find((item) => item.name === template.categoryName)
+    if (!matched) {
+      wx.showToast({ title: '模板分类已失效', icon: 'none' })
+      return
+    }
+    this.setData({
+      ...getCategorySelection(matched.name, categories),
+      amount: template.amount || '',
+      amountDisplay: template.amount ? formatAmountDisplay(template.amount) : '0',
+      remark: template.remark || '',
+      submitLabel: '完成',
+    })
+  },
+  handleTemplateRemove(e: WechatMiniprogram.CustomEvent<{ id?: string }>) {
+    const id = e.detail.id || ''
+    if (!id) {
+      return
+    }
+    wx.showModal({
+      title: '删除模板',
+      content: '确定删除这个常用模板吗？',
+      confirmText: '删除',
+      confirmColor: '#ff6b6b',
+      success: (result) => {
+        if (!result.confirm) {
+          return
+        }
+        deleteRecordTemplate(id)
+        this.setData({ templates: getRecordTemplates() })
+        wx.showToast({ title: '模板已删除', icon: 'success' })
+      },
+    })
+  },
+  saveAsTemplate() {
+    const category = this.data.categories.find((item) => item.name === this.data.activeCategory)
+    if (!category) {
+      wx.showToast({ title: '请先选择分类', icon: 'none' })
+      return
+    }
+    const amountValue = evaluateAmount(this.data.amount || '')
+    saveRecordTemplate({
+      type: this.data.activeType,
+      categoryId: `${category.id}`,
+      categoryName: category.name,
+      icon: category.icon,
+      amount: amountValue > 0 ? amountValue.toFixed(2) : '',
+      remark: normalizeRemark(this.data.remark || ''),
+    })
+    this.setData({ templates: getRecordTemplates() })
+    wx.showToast({ title: '已存为常用模板', icon: 'success' })
   },
   handleKeyTap(e: WechatMiniprogram.CustomEvent<{ action?: 'digit' | 'operator' | 'backspace'; value?: string }>) {
     const { action, value } = e.detail

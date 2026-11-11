@@ -21,6 +21,8 @@ export type KeypadKey = {
 export const DEFAULT_RECORD_TYPE: RecordType = 'expense'
 export const DEFAULT_CATEGORY_NAME = ''
 export const SETTINGS_CATEGORY_NAME = '设置'
+export const RECORD_TEMPLATE_STORAGE_KEY = 'bookkeeping_record_templates'
+export const RECORD_TEMPLATE_LIMIT = 8
 export const ADD_RECORD_TABS: Array<{ type: RecordType; label: string }> = [
   {
     type: 'expense',

@@ -12,7 +12,16 @@
     <view wx:elif="{{categoryError}}" class="category-state">
       <text>{{categoryError}}</text><button class="category-retry" bindtap="handleCategoryRetry">重新加载</button>
     </view>
-    <add-category-grid wx:else categories="{{categories}}" activeCategory="{{activeCategory}}" bind:select="handleCategorySelect" />
+    <block wx:else>
+      <add-template-bar
+        wx:if="{{pageMode !== 'edit' && templates.length}}"
+        templates="{{templates}}"
+        activeType="{{activeType}}"
+        bind:use="handleTemplateUse"
+        bind:remove="handleTemplateRemove"
+      />
+      <add-category-grid categories="{{categories}}" activeCategory="{{activeCategory}}" bind:select="handleCategorySelect" />
+    </block>
   </scroll-view>
 
   <view wx:else class="entry-form" style="padding-top: {{statusBarHeight + 82}}px;">
@@ -20,6 +29,7 @@
       <image src="{{activeCategoryIcon}}" mode="aspectFit"></image>
       <text>{{activeCategory}}</text>
       <text class="change-category" bindtap="handleChangeCategory">更换 ›</text>
+      <text wx:if="{{pageMode !== 'edit'}}" class="save-template" bindtap="saveAsTemplate">存为模板</text>
     </view>
     <view class="amount-panel">
       <text class="field-title">{{activeType === 'expense' ? '消费金额' : '收入金额'}}</text>

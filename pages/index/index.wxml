@@ -10,6 +10,9 @@
     class="header-actions"
     style="top: {{capsuleTop}}px; right: {{capsuleRight + capsuleWidth + 12}}px; height: {{capsuleHeight}}px;"
   >
+    <view class="header-action" bindtap="goToSearch">
+      <image src="/assets/home/search.svg" mode="aspectFit"></image>
+    </view>
     <view class="header-action" bindtap="goToCalendar">
       <image src="/assets/home/calendar.png" mode="aspectFit"></image>
     </view>

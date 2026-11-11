@@ -1,0 +1,94 @@
+<view class="search-page">
+  <view class="search-top" style="padding-top: {{statusBarHeight}}px;">
+    <view class="ds-header">
+      <view class="ds-back-hitarea" bindtap="goBack"><image class="ds-back-image" src="/assets/common/back.png" mode="aspectFit"></image></view>
+      <text class="ds-header-title">账单搜索</text>
+    </view>
+    <view class="search-box-row">
+      <view class="search-box">
+        <image class="search-box-icon" src="/assets/home/search.svg" mode="aspectFit"></image>
+        <input
+          class="search-input"
+          value="{{keyword}}"
+          placeholder="搜索分类 / 备注 / 金额"
+          placeholder-class="search-placeholder"
+          confirm-type="search"
+          bindinput="handleKeywordInput"
+          bindconfirm="handleSearch"
+        />
+        <view wx:if="{{keyword}}" class="search-clear" bindtap="clearKeyword">×</view>
+        <view class="search-submit" bindtap="handleSearch">搜索</view>
+      </view>
+    </view>
+    <view class="filter-row">
+      <picker mode="selector" range="{{monthLabels}}" value="{{monthIndex}}" bindchange="handleMonthChange">
+        <view class="filter-chip">{{months[monthIndex].label}}<text class="filter-caret"></text></view>
+      </picker>
+      <view class="type-switch">
+        <view
+          wx:for="{{typeOptions}}"
+          wx:key="key"
+          class="type-option {{activeType === item.key ? 'type-option-active' : ''}}"
+          data-type="{{item.key}}"
+          bindtap="handleTypeSelect"
+        >{{item.label}}</view>
+      </view>
+    </view>
+    <view class="filter-row filter-row-second">
+      <picker mode="selector" range="{{categoryLabels}}" value="{{categoryIndex}}" bindchange="handleCategoryChange">
+        <view class="filter-chip filter-chip-category">{{categoryLabels[categoryIndex]}}<text class="filter-caret"></text></view>
+      </picker>
+      <text class="filter-hint">左滑账单可编辑删除</text>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="search-scroll" show-scrollbar="true">
+    <view class="search-content">
+      <view wx:if="{{hasSearched && !isSearching && !errorMessage}}" class="summary-card">
+        <view class="summary-item"><text class="summary-value">{{summary.count}}</text><text class="summary-label">找到笔数</text></view>
+        <view class="summary-item"><text class="summary-value summary-expense">{{summary.expenseText}}</text><text class="summary-label">支出(元)</text></view>
+        <view class="summary-item"><text class="summary-value summary-income">{{summary.incomeText}}</text><text class="summary-label">收入(元)</text></view>
+      </view>
+      <view wx:if="{{truncated}}" class="truncated-tip">数据较多，仅检索了 {{fetchedCount}} 条，建议缩小月份范围后再搜索</view>
+      <view wx:if="{{isSearching}}" class="search-state">
+        <view class="loading-ring"></view>
+        <text>正在搜索</text>
+      </view>
+      <view wx:elif="{{errorMessage}}" class="search-state">
+        <text>{{errorMessage}}</text>
+        <button class="search-retry" bindtap="handleRetry">重新搜索</button>
+      </view>
+      <empty-state
+        wx:elif="{{hasSearched && !groups.length}}"
+        mode="empty"
+        title="没有找到符合条件的账单"
+        description="换个关键词，或调整月份和分类再试试"
+      />
+      <block wx:else>
+        <view wx:for="{{groups}}" wx:key="groupKey" class="record-group">
+          <view class="record-group-head">
+            <view class="record-date">
+              <text>{{item.dateLabel}}</text>
+              <text>{{item.weekLabel}}</text>
+            </view>
+            <view class="record-totals">
+              <text wx:if="{{item.expenseText}}">支出: {{item.expenseText}}</text>
+              <text wx:if="{{item.hasIncome}}">收入: {{item.incomeText}}</text>
+            </view>
+          </view>
+          <view class="record-divider"></view>
+          <block wx:for="{{item.records}}" wx:key="recordKey" wx:for-item="record">
+            <transaction-swipe-row
+              class="record-swipe-row"
+              record="{{record}}"
+              bind:open="handleSwipeOpen"
+              bind:edit="handleRecordEdit"
+              bind:delete="handleRecordDelete"
+            />
+          </block>
+        </view>
+      </block>
+      <view class="search-bottom-space"></view>
+    </view>
+  </scroll-view>
+</view>

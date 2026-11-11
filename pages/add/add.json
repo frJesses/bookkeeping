@@ -2,6 +2,7 @@
   "navigationStyle": "custom",
   "usingComponents": {
     "add-type-switch": "./components/type-switch/index",
-    "add-category-grid": "./components/category-grid/index"
+    "add-category-grid": "./components/category-grid/index",
+    "add-template-bar": "./components/template-bar/index"
   }
 }

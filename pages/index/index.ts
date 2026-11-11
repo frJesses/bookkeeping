@@ -203,6 +203,9 @@ Page({
   goToStats() {
     wx.navigateTo({ url: '/pages/stats/stats' })
   },
+  goToSearch() {
+    wx.navigateTo({ url: '/pages/search/search' })
+  },
   closeAchievementEffect(this: HomePageInstance) {
     this.setData({ showAchievementEffect: false, unlockEffects: [], unlockEffectIndex: 0 }, () => {
       setCustomTabBarHidden(this, this.data.showDatePicker)
