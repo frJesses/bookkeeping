@@ -13,7 +13,7 @@
       <view class="personal-link"><text>个人信息</text><image src="/assets/profile/personal.png" mode="aspectFit"></image></view>
       </view>
 
-      <view class="member-banner" data-action="member" bindtap="handleMenuClick">
+      <view class="member-banner">
       <view class="member-line"><image class="member-mark" src="/assets/profile/member.png" mode="aspectFit"></image><text>成为平台会员，解锁全部功能</text></view>
       <text class="member-subtitle">去除广告/数据导出/分类预算/图片载入专属特权</text>
       </view>

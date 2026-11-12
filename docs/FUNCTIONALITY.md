@@ -29,7 +29,6 @@
 | 个人中心 | 用户资料、头像上传到七牛云、连续打卡/总天数/总笔数、账本/预算/分类管理/成就/意见反馈入口、微信分享 | `pages/profile/profile.ts`、`pages/profile/categories.ts`、`pages/profile/personal.ts` |
 | 成就 | 已获得/未获得徽章、实时成就进度、加入日期、首页解锁动效 | `pages/profile/achievement.ts`、`services/achievement.ts` |
 | 意见反馈 | 类型、描述、联系方式、最多 3 张图片、七牛云图片上传、提交反馈 | `pages/profile/feedback.ts`、`services/feedback.ts` |
-| 会员中心 | 会员页与权益展示、套餐切换；支付尚未接入 | `pages/profile/member.ts` |
 | 设置 | 账单导入、账单导出、固定收支、借出管理入口 | `pages/profile/settings.ts` |
 | 账单导入 | 选择文件、预览解析结果、确认导入 | `pages/profile/import.ts`、`services/import.ts` |
 | 账单导出 | 时间范围、全部/支出/收入、邮箱导出、导出记录、解压密码 | `pages/profile/export.ts`、`pages/profile/export-records.ts` |
@@ -89,18 +88,16 @@
 
 ### 3. 断链修复
 
-- `pages/profile/feedback` 和 `pages/profile/member` 已补进 `app.json`，之前页面存在但未注册，无法跳转
+- `pages/profile/feedback` 已补进 `app.json`，之前页面存在但未注册，无法跳转
 - 个人中心“意见反馈”入口恢复
-- 个人中心会员横幅可点击进入会员中心
-- 会员页“立即支付”改为明确提示“支付即将上线”，不再用 toast 假装已选套餐
-- 会员页缺失的 `assets/common/avatar.png` 改为文字头像，避免破图
+- 个人中心会员横幅保留为静态展示，不再跳转到已移除的会员中心
 
 ## 五、已实现但需要补强的部分
 
-### 1. 会员中心仍只有展示层
+### 1. 会员入口保持静态展示
 
-会员权益、套餐和价格页面已经可用，但当前没有支付下单、支付回调、订单状态查询或
-权益校验闭环。不能把页面展示当作会员购买已实现。
+会员中心页面已移除，个人中心仅保留会员权益提示横幅，点击不会跳转。当前没有支付下单、
+支付回调、订单状态查询或权益校验闭环。
 
 ### 2. 删除流水是物理删除
 
@@ -190,7 +187,7 @@
 ### 会员支付
 
 需要确定商品、价格、微信支付商户配置、订单状态机、退款、权益有效期和服务端校验。
-在这些条件明确前，只能继续完善会员介绍页。
+在这些条件明确前，不接入会员支付入口，避免提供不可用的购买流程。
 
 ## 八、验证边界
 
